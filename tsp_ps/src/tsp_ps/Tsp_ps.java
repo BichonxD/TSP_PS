@@ -73,25 +73,25 @@ public class Tsp_ps
 			if (true)
 			{
 				ArrayList<CycleHam> c = new ArrayList<CycleHam>();
-				c.add(new CycleHam("a280.xml"));
-				c.add(new CycleHam("att48.xml"));
-				c.add(new CycleHam("att532.xml"));
-				//c.add(new CycleHam("br17.xml"));
-				c.add(new CycleHam("brazil58.xml"));
+				//c.add(new CycleHam("a280.xml"));
+				//c.add(new CycleHam("att48.xml"));
+				//c.add(new CycleHam("att532.xml"));
+				//BUGGE !! c.add(new CycleHam("br17.xml"));
+				//c.add(new CycleHam("brazil58.xml"));
 				c.add(new CycleHam("fl1577.xml"));
-				c.add(new CycleHam("fl3795.xml"));
-				c.add(new CycleHam("fnl4461.xml"));
-				c.add(new CycleHam("kroB100.xml"));
-				c.add(new CycleHam("kroB150.xml"));
-				c.add(new CycleHam("kroB200.xml"));
-				c.add(new CycleHam("kroD100.xml"));
-				c.add(new CycleHam("pla7397.xml"));
-				c.add(new CycleHam("pr2392.xml"));
-				c.add(new CycleHam("rl5915.xml"));
-				c.add(new CycleHam("rl5934.xml"));
-				c.add(new CycleHam("u1060.xml"));
-				c.add(new CycleHam("vm1084.xml"));
-				c.add(new CycleHam("vm1748.xml"));
+				//c.add(new CycleHam("fl3795.xml"));
+				//c.add(new CycleHam("fnl4461.xml"));
+				//c.add(new CycleHam("kroB100.xml"));
+				//c.add(new CycleHam("kroB150.xml"));
+				//c.add(new CycleHam("kroB200.xml"));
+				//c.add(new CycleHam("kroD100.xml"));
+				//c.add(new CycleHam("pla7397.xml"));
+				//c.add(new CycleHam("pr2392.xml"));
+				//c.add(new CycleHam("rl5915.xml"));
+				//c.add(new CycleHam("rl5934.xml"));
+				//c.add(new CycleHam("u1060.xml"));
+				//c.add(new CycleHam("vm1084.xml"));
+				//c.add(new CycleHam("vm1748.xml"));
 				
 				for(CycleHam t : c)
 				{

@@ -55,7 +55,7 @@ public class CycleHam
 			j = 0;
 		}
 		
-		System.out.println("Il y a " + nb + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + (nb * 100) / (i * i) + " %.");
+		System.out.println("Il y a " + (nb-i) + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + ((nb-i) * 100) / (i * i) + " %.");
 	}
 	
 	/**
