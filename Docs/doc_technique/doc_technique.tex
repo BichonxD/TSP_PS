@@ -1,0 +1,51 @@
+\documentclass{article}
+
+% Mise en page
+\usepackage[scale=0.75]{geometry}
+% Pied de page
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+% Interligne après les paragraphes
+\setlength{\parskip}{1.5ex}
+
+% Langues
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usepackage{tabbing}
+
+% Images
+%\usepackage{graphicx}
+%\usepackage{rotating}
+
+\begin{document}
+
+\input{page_de_garde.tex}
+
+\rhead{Programmation Stochastique - Document technique}
+\lfoot{\includegraphics[scale=0.3]{polytech.jpg}}
+\rfoot{BOSOM - CHAUSSY}
+
+\section*{Document technique}
+
+Document technique à remplir
+
+%$\sum_{n=1}^{+\infty}\frac{1}{n^2}=\frac{\pi^2}{6}$
+%\[\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}\]
+
+\begin{tabbing}
+$
+\min\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}//
+s.t.\=\\
+\+
+\sum_{j=1}^{n}x_{ij} = 1, i = 1, ..., n \\
+\sum_{i=1}^{n}x_{ij} = 1, j = 1, ..., n \\
+\sum_{i|v_{i} \in S}\sum_{j|v_{j} \in S}x_{ij} \inf |S|-1
+S \in \{v_{1}, ..., v_{n}\} et S != \empty \\
+x_{ij} \in \{0,1\}, 1 \inf i \inf n
+$
+\end{tabbing}
+
+\end{document}
