@@ -6,13 +6,13 @@ import java.awt.Graphics2D;
 import java.util.Map.Entry;
 import javax.swing.JPanel;
 
-public class Canvas extends JPanel
+public class CanvasTSP extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private final CycleHamMonaLisa c;
+	private final CycleHamTSP c;
 	private static final double ratio = 0.05;
 	
-	public Canvas(CycleHamMonaLisa c)
+	public CanvasTSP(CycleHamTSP c)
 	{
 		super();
 		this.c = c;

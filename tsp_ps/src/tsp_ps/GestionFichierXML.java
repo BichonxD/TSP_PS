@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Lecture du fichier afin de créer toutes les villes
  */
-public class GestionFichier
+public class GestionFichierXML
 {
-	static public double[][] lectureFichier(String nomFichier) throws ErreurFormatFichier, JDOMException, IOException
+	static public double[][] lectureFichier(String nomFichier) throws ErreurFormatXML, JDOMException, IOException
 	{
 		Document document = null;
 		Element racine = null;
@@ -31,12 +31,12 @@ public class GestionFichier
 		// On trouve le graph, remonte une erreur si il n'y a pas exactement un graphe
 		List<Element> graph = racine.getChildren("graph");
 		if (graph.size() != 1)
-			throw new ErreurFormatFichier("Erreur dans le format du fichier (Au niveau Graph).");
+			throw new ErreurFormatXML("Erreur dans le format du fichier (Au niveau Graph).");
 		
 		// On trouve les vertex (sommets du graphe), remonte une erreur s'il n'y a aucun vertex
 		List<Element> vertex = graph.get(0).getChildren("vertex");
 		if (vertex.size() <= 0)
-			throw new ErreurFormatFichier("Erreur dans le format du fichier (Au niveau Vertex).");
+			throw new ErreurFormatXML("Erreur dans le format du fichier (Au niveau Vertex).");
 		
 		// Nous créons notre matrice qui contiendra nos segments
 		double map[][] = new double[vertex.size()][vertex.size()];
@@ -48,7 +48,7 @@ public class GestionFichier
 			// On recupere la liste des edge et vérifie qu'il y en a le bon nombre
 			List<Element> edge = v.getChildren("edge");
 			if (edge.size() != vertex.size() - 1)
-				throw new ErreurFormatFichier("Erreur dans le format du fichier. (Au niveau Edge) edge.size = " + edge.size() + " vertex.size = " + vertex.size());
+				throw new ErreurFormatXML("Erreur dans le format du fichier. (Au niveau Edge) edge.size = " + edge.size() + " vertex.size = " + vertex.size());
 			
 			// Nous récupérons la valeur de tous les edges.
 			// Si la valeure est 0 nous mettons MAX_DOUBLE pour indiquer qu'il y a l'infini entre nos deux
@@ -68,7 +68,6 @@ public class GestionFichier
 						map[i][j] = Double.MAX_VALUE;
 				} catch (DataConversionException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				// System.out.println("map[" + i + "][" + j + "] = " + map[i][j]);

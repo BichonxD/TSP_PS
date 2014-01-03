@@ -15,3 +15,8 @@
 *.synctex.gz
 *.log
 *.aux
+
+# Donnees #
+*.xml
+*.tsp
+

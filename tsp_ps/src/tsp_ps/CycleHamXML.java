@@ -1,35 +1,62 @@
 package tsp_ps;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
-public class CycleHamMonaLisa
+import org.jdom2.JDOMException;
+
+public class CycleHamXML
 {
-	private static ArrayList<Ville> _villes;
-	private static ArrayList<Ville> _villesRestantes;
-	private static HashMap<Ville, Ville> _arretes;
+	private double _villes[][];
+	private static ArrayList<Integer> _villesRestantes;
+	private static HashMap<Integer, Integer> _arretes;
 	private final Random _rand;
-	private Ville _depart;
+	private int _depart;
 	private final int _nbVilles;
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHamMonaLisa()
+	public CycleHamXML(String nomFichier) throws ErreurFormatXML, JDOMException, IOException
 	{
 		// Initialisation des listes
-		_villes = GestionFichierMonaLisa.lectureFichier();
-		_villesRestantes = new ArrayList<Ville>();
-		_arretes = new HashMap<Ville, Ville>();
+		_villes = GestionFichierXML.lectureFichier(nomFichier);
+		_villesRestantes = new ArrayList<Integer>();
+		_arretes = new HashMap<Integer, Integer>();
 		
 		// Initialisation du random
 		_rand = new Random();
 		
-		_nbVilles = _villes.size();
+		_nbVilles = _villes.length;
 		
 		// Lancement de la fonction d'init
-		this.init();
+		//this.init();
+	}
+	
+	public void estComplet()
+	{
+		int nb = 0, i = 0, j = 0, nb_dif = 0;
+		for(double d1[] : _villes)
+		{
+			for(double d : d1)
+			{
+				if(d == Double.MAX_VALUE)
+					nb++;
+				
+				if(j == i && d != Double.MAX_VALUE)
+					System.out.println("Warning : map[" + i + "][" + j + "] = " + _villes[i][j]);
+				if(_villes[i][j] != _villes[j][i])
+					nb_dif++;
+				j++;
+			}
+			i++;
+			j = 0;
+		}
+		
+		System.out.println("Il y a " + (nb-i) + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + ((nb-i) * 100) / (i * i) + " %.");
+		System.out.println("Il y a " + nb_dif + " points qui n'ont pas les mêmes arrêtes.");
 	}
 	
 	/**
@@ -37,17 +64,22 @@ public class CycleHamMonaLisa
 	 */
 	public final void init()
 	{
-		_villesRestantes.addAll(_villes);
+		int i;
+		
+		//On ajoute toutes nos villes aux villes restantes.
+		for(i = 0; i < _villesRestantes.size(); i++)
+		{
+			_villesRestantes.add(i);
+		}
 		_arretes.clear();
 		
 		_distance = 0;
 		
 		// Choix de la ville de depart aléatoirement
-		int pos = _rand.nextInt(_villesRestantes.size());
+		_depart = _rand.nextInt(_villesRestantes.size());
+		// _depart = 42;		
 		// Récupération de la ville
 		
-		_depart = _villesRestantes.get(pos);
-		// _depart = _villesRestantes.get(36473);
 		System.out.println("Départ : " + _depart + "\n");
 		
 		// Retrait de la ville de départ des villes restantes

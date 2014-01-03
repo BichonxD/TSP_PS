@@ -2,7 +2,7 @@ package tsp_ps;
 
 import java.util.ArrayList;
 
-public class Thread_ParcourArray extends Thread
+public class Thread_ParcoursArrayVille extends Thread
 {
 	private Ville v;
 	private ArrayList<Ville> list;
@@ -11,7 +11,7 @@ public class Thread_ParcourArray extends Thread
 	int indice_resultat;
 	double distance;
 	
-	public Thread_ParcourArray(Ville v, ArrayList<Ville> list, int indice_depart, int indice_fin)
+	public Thread_ParcoursArrayVille(Ville v, ArrayList<Ville> list, int indice_depart, int indice_fin)
 	{
 		this.v = v;
 		this.list = list;

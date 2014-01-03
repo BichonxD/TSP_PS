@@ -1,61 +1,35 @@
 package tsp_ps;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import org.jdom2.JDOMException;
-
-public class CycleHam
+public class CycleHamTSP
 {
 	private static ArrayList<Ville> _villes;
 	private static ArrayList<Ville> _villesRestantes;
 	private static HashMap<Ville, Ville> _arretes;
-	private double map[][];
 	private final Random _rand;
 	private Ville _depart;
 	private final int _nbVilles;
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHam(String nomFichier) throws ErreurFormatFichier, JDOMException, IOException
+	public CycleHamTSP()
 	{
 		// Initialisation des listes
-		map = GestionFichier.lectureFichier(nomFichier);
+		_villes = GestionFichierTSP.lectureFichier();
 		_villesRestantes = new ArrayList<Ville>();
 		_arretes = new HashMap<Ville, Ville>();
 		
 		// Initialisation du random
 		_rand = new Random();
 		
-		//_nbVilles = _villes.size();
-		_nbVilles = 0;
+		_nbVilles = _villes.size();
 		
 		// Lancement de la fonction d'init
-		//this.init();
-	}
-	
-	public void estComplet()
-	{
-		int nb = 0, i = 0, j = 0;
-		for(double d1[] : map)
-		{
-			for(double d : d1)
-			{
-				if(d == Double.MAX_VALUE)
-					nb++;
-				
-				if(j == i && d != Double.MAX_VALUE)
-					System.out.println("Warning : map[" + i + "][" + j + "] = " + map[i][j]);
-				j++;
-			}
-			i++;
-			j = 0;
-		}
-		
-		System.out.println("Il y a " + (nb-i) + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + ((nb-i) * 100) / (i * i) + " %.");
+		this.init();
 	}
 	
 	/**
@@ -155,7 +129,7 @@ public class CycleHam
 		Ville v_best = null;
 		double d, d_tmp, d_tmp2;
 		int i, fourchette_val;
-		Thread_ParcourArray p1, p2;
+		Thread_ParcoursArrayVille p1, p2;
 		
 		if (Runtime.getRuntime().availableProcessors() > 1)
 		{
@@ -185,8 +159,8 @@ public class CycleHam
 					// On lance tous les threads sur
 					// une plage de valeur
 					// distincte.
-					p1 = new Thread_ParcourArray(v_enCours, _villesRestantes, 0, fourchette_val - 1);
-					p2 = new Thread_ParcourArray(v_enCours, _villesRestantes, fourchette_val, 2 * fourchette_val - 1);
+					p1 = new Thread_ParcoursArrayVille(v_enCours, _villesRestantes, 0, fourchette_val - 1);
+					p2 = new Thread_ParcoursArrayVille(v_enCours, _villesRestantes, fourchette_val, 2 * fourchette_val - 1);
 					p1.start();
 					p2.start();
 					p1.join();

@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Lecture du fichier mona-lisa100k.tsp afin de créer toutes les villes
  */
-public class GestionFichierMonaLisa
+public class GestionFichierTSP
 {
 	static public ArrayList<Ville> lectureFichier()
 	{
