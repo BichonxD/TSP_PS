@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private final CycleHam c;
+	private final CycleHamMonaLisa c;
 	private static final double ratio = 0.05;
 	
-	public Canvas(CycleHam c)
+	public Canvas(CycleHamMonaLisa c)
 	{
 		super();
 		this.c = c;

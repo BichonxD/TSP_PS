@@ -1,49 +1,61 @@
 package tsp_ps;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import org.jdom2.JDOMException;
+
 public class CycleHam
 {
 	private static ArrayList<Ville> _villes;
-	private static ArrayList<Ville> _map;
 	private static ArrayList<Ville> _villesRestantes;
 	private static HashMap<Ville, Ville> _arretes;
+	private double map[][];
 	private final Random _rand;
 	private Ville _depart;
 	private final int _nbVilles;
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHam(String nomFichier)
+	public CycleHam(String nomFichier) throws ErreurFormatFichier, JDOMException, IOException
 	{
 		// Initialisation des listes
-		// Mona Lisa ne possède pas le même format de données que les autres fichiers.
-		// Nous sommes donc obligé de faire la différence lors de l'initialisation.
-		if (nomFichier.equals("mona-lisa100K.tsp"))
-		{
-			_villes = GestionFichier.lectureFichier(nomFichier);
-			_map = null;
-			_villesRestantes = new ArrayList<Ville>();
-			_arretes = new HashMap<Ville, Ville>();
-		}
-		else
-		{
-			_villes = null;
-			_map = GestionFichier.lectureFichier(nomFichier);
-			_villesRestantes = null;
-			_arretes = null;
-		}
+		map = GestionFichier.lectureFichier(nomFichier);
+		_villesRestantes = new ArrayList<Ville>();
+		_arretes = new HashMap<Ville, Ville>();
 		
 		// Initialisation du random
 		_rand = new Random();
 		
-		_nbVilles = _villes.size();
+		//_nbVilles = _villes.size();
+		_nbVilles = 0;
 		
 		// Lancement de la fonction d'init
-		this.init();
+		//this.init();
+	}
+	
+	public void estComplet()
+	{
+		int nb = 0, i = 0, j = 0;
+		for(double d1[] : map)
+		{
+			for(double d : d1)
+			{
+				if(d == Double.MAX_VALUE)
+					nb++;
+				
+				if(j == i && d != Double.MAX_VALUE)
+					System.out.println("Warning : map[" + i + "][" + j + "] = " + map[i][j]);
+				j++;
+			}
+			i++;
+			j = 0;
+		}
+		
+		System.out.println("Il y a " + nb + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + (nb * 100) / (i * i) + " %.");
 	}
 	
 	/**

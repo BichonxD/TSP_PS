@@ -19,7 +19,7 @@ public class CycleHamMonaLisa
 	public CycleHamMonaLisa()
 	{
 		// Initialisation des listes
-		_villes = GestionFichier.lectureFichier();
+		_villes = GestionFichierMonaLisa.lectureFichier();
 		_villesRestantes = new ArrayList<Ville>();
 		_arretes = new HashMap<Ville, Ville>();
 		

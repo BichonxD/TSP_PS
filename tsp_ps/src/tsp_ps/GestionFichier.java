@@ -1,151 +1,88 @@
 package tsp_ps;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import java.awt.Color;
-import java.io.*;
+import java.io.IOException;
 import org.jdom2.*;
 import org.jdom2.input.*;
 import java.util.List;
-import java.util.Iterator;
 
 /**
  * Lecture du fichier afin de créer toutes les villes
  */
 public class GestionFichier
 {
-	private Document document;
-	private Element racine;
-	
-	
-	/**Le constructeur par défaut choisi l'instance de Mona Lisa*/
-	static public ArrayList<Ville> lectureFichier()
+	static public double[][] lectureFichier(String nomFichier) throws ErreurFormatFichier, JDOMException, IOException
 	{
-		ArrayList<Ville> l = new ArrayList<Ville>();
-		try
+		Document document = null;
+		Element racine = null;
+		
+		// On crée une instance de SAXBuilder
+		SAXBuilder sxb = new SAXBuilder();
+		
+		// On crée un nouveau document JDOM avec en argument le fichier XML		
+		document = sxb.build(new File(System.getProperty("user.dir") + "/" + nomFichier));
+		
+		if (document != null)
 		{
-			Scanner scan = new Scanner(new File("mona-lisa100K.tsp"));
-			// Scan du fichier complet
-			while(scan.hasNextLine())
-			{
-				// Récupère la ligne
-				String line = scan.nextLine();
-				// Découpe la ligne selon les espaces
-				String[] coord = line.split("[ ]+");
-				// Ajoute la ville à la liste
-				l.add(new Ville(Integer.parseInt(coord[0]), Integer.parseInt(coord[1]), Integer.parseInt(coord[2])));
-			}
-		}catch(FileNotFoundException e)
-		{
-			System.err.println("Fichier non trouvé");
+			// On initialise un nouvel élément racine avec l'élément racine du document.
+			racine = document.getRootElement();
 		}
 		
-		System.out.println("Lecture du fichier terminée");
-		return l;
+		// On trouve le graph, remonte une erreur si il n'y a pas exactement un graphe
+		List<Element> graph = racine.getChildren("graph");
+		if (graph.size() != 1)
+			throw new ErreurFormatFichier("Erreur dans le format du fichier (Au niveau Graph).");
+		
+		// On trouve les vertex (sommets du graphe), remonte une erreur s'il n'y a aucun vertex
+		List<Element> vertex = graph.get(0).getChildren("vertex");
+		if (vertex.size() <= 0)
+			throw new ErreurFormatFichier("Erreur dans le format du fichier (Au niveau Vertex).");
+		
+		// Nous créons notre matrice qui contiendra nos segments
+		double map[][] = new double[vertex.size()][vertex.size()];
+		int i = 0, j = 0;
+		
+		// Nous parcourons pour chaque vertex tous ses edge (liaisons entre deux vertex)
+		for (Element v : vertex)
+		{
+			// On recupere la liste des edge et vérifie qu'il y en a le bon nombre
+			List<Element> edge = v.getChildren("edge");
+			if (edge.size() != vertex.size() - 1)
+				throw new ErreurFormatFichier("Erreur dans le format du fichier. (Au niveau Edge) edge.size = " + edge.size() + " vertex.size = " + vertex.size());
+			
+			// Nous récupérons la valeur de tous les edges.
+			// Si la valeure est 0 nous mettons MAX_DOUBLE pour indiquer qu'il y a l'infini entre nos deux
+			// vertex.
+			for (Element e : edge)
+			{
+				if(j == i)
+				{
+					map[i][j] = Double.MAX_VALUE;
+					j++;
+				}
+				
+				try
+				{
+					map[i][j] = e.getAttribute("cost").getDoubleValue();
+					if (map[i][j] == 0)
+						map[i][j] = Double.MAX_VALUE;
+				} catch (DataConversionException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				// System.out.println("map[" + i + "][" + j + "] = " + map[i][j]);
+				j++;
+			}
+			
+			i++;
+			j = 0;
+		}
+		
+		//Le dernier segement n'a pas été mis à MAX_VALUE
+		map[i-1][i-1] = Double.MAX_VALUE;
+		
+		return map;
 	}
 	
-	static public ArrayList<Ville> lectureFichier(String nomFichier)
-	{	
-				//On crée une instance de SAXBuilder
-				SAXBuilder sxb = new SAXBuilder();
-				
-				try
-				{
-					//On crée un nouveau document JDOM avec en argument le fichier XML
-					//Le parsing est terminé ;)
-					document = sxb.build(new File(System.getProperty("user.dir") + "/" + nomFichier));
-				} catch (Exception e)
-				{
-				}
-				
-				if (document != null)
-				{
-					//On initialise un nouvel élément racine avec l'élément racine du document.
-					racine = document.getRootElement();
-				} else
-					racine = null;
-	}
-			
-			public String getTitre()
-			{
-				//On crée une List contenant tous les noeuds "etudiant" de l'Element racine
-				List<Element> titre = racine.getChildren("Title");
-				
-				//On crée un Iterator sur notre liste
-				Iterator<Element> i = titre.iterator();
-				
-				//On crée l'Element courant afin de
-				//pouvoir utiliser les méthodes propres aux Element
-				Element courant = (Element) i.next();
-				
-				return courant.getText();
-			}
-			
-			public Color getCouleurFond()
-			{
-				Color couleur;
-				String hex;
-				
-				try
-				{
-					//Notre couleur
-					hex = racine.getAttribute("style").getValue();
-					couleur = Color.decode(hex.substring(5, 12));
-					
-					return couleur;
-				} catch (NullPointerException e)
-				{
-					return Color.white;
-				}
-			}
-			
-			public ArrayList<MySegment> getSegments() throws DataConversionException
-			{
-				ArrayList<MySegment> segments = new ArrayList<MySegment>();
-				MyPoint pt1, pt2;
-				Color couleur;
-				String hex;
-				
-				//On crée une List contenant tous les noeuds "etudiant" de l'Element racine
-				List<Element> lignes = racine.getChildren("line");
-				
-				//On crée un Iterator sur notre liste
-				Iterator<Element> i = lignes.iterator();
-				try
-				{
-					while (i.hasNext())
-					{
-						//On recrée l'Element courant à chaque tour de boucle afin de
-						//pouvoir utiliser les méthodes propres aux Element comme :
-						//sélectionner un nœud fils, modifier du texte, etc...
-						Element courant = (Element) i.next();
-						
-						//On créé nos nouveaux points
-						pt1 = new MyPoint(courant.getAttribute("x1").getIntValue(), courant.getAttribute("y1").getIntValue(), null, Color.black);
-						pt2 = new MyPoint(courant.getAttribute("x2").getIntValue(), courant.getAttribute("y2").getIntValue(), null, Color.black);
-						if (pt1.equals(pt2))
-							throw new DataConversionException("pt1", "pt2");
-						//Notre couleur
-						hex = courant.getAttribute("style").getValue();
-						couleur = Color.decode(hex.substring(7, 14));
-						//Notre segment
-						segments.add(new MySegment(pt1, pt2, couleur));
-					}
-				} catch (NullPointerException e)
-				{
-					throw new DataConversionException("pt1", "pt2");
-				}
-				
-				return segments;
-			}
-			
-			public Document getDocument()
-			{
-				return document;
-			}
-			
-		}
 }

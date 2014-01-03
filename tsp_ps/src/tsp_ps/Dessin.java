@@ -8,7 +8,7 @@ public class Dessin extends JFrame
 	
 	private static final long serialVersionUID = 1L;
 	
-	public Dessin(CycleHam c)
+	public Dessin(CycleHamMonaLisa c)
 	{
 		super("TSP Mona Lisa");
 		this.setSize(new Dimension(1000, 1000));
