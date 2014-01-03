@@ -1,6 +1,17 @@
 *.class
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
+
+# Others #
+.classpath
+.project
+.metadata/
+*~
+
+# Latex #
+*.synctex.gz
+*.log
+*.aux
