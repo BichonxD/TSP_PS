@@ -12,7 +12,7 @@
 % Langues
 \usepackage[french]{babel}
 \usepackage[utf8]{inputenc}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 
 \usepackage{tabbing}
 
@@ -28,24 +28,85 @@
 \lfoot{\includegraphics[scale=0.3]{polytech.jpg}}
 \rfoot{BOSOM - CHAUSSY}
 
-\section*{Document technique}
+\section*{Presentation du problème}
 
-Document technique à remplir
+Le but de ce projet est de traiter le problème du voyager de commerce, Travelling Salesman Problem en anglais.
+Il s'agit d'un problème de d'optimisation combinatoire qui a été formulé de manière générale en 1930, à l'aide d'un modèle mathématique clair.
 
-%$\sum_{n=1}^{+\infty}\frac{1}{n^2}=\frac{\pi^2}{6}$
-%\[\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}\]
+Considérant un certain nombre de villes, le voyageur de commerce doit parcourir toutes les villes une et une seule fois.
+On chercher le chemin le plus court qui part d'une ville, les parcours toutes et rejoins la ville de départ.
+
+Cela semble simple et ça l'est, si l'on ne considère que des petites instances, c'est à dire une dizaine de villes.
+En effet, si l'on a $n$ villes, il est possible de rejoindre $n-1$ et ainsi de suite.
+On trouve donc un premier chemin en un temps proportionel à $O(n)$.
+Mais pour être sur qu'il s'agit du plus court chemin, il faut examiner les autres chemins possible.
+Si l'on cherche une solution exacte, on remarque que la résolution du problème se fait en un temps $O(n^{n})$
+C'est ce que l'on considère être un problème NP-difficile.
+
+Il semble évident que l'on ne peut pas énumérer toutes les solutions possible lorsque l'on traite 5000 villes par exemple.
+Il faut donc imaginer des méthodes approchées qui permettent de trouver une solution plus proche de la solution optimale.
+Dans ce projet, nous allons utiliser l'algorithme stochastique du recuit simulé que nous présenterons après le modèle mathématique du problème du voyageur de commerce.
+
+\section*{Modèle mathématique}
+
+Nous allons utiliser le jeu de donné suivant :\newline
+\begin{itemize}
+\item{$G = (V, E)$}{un graphe orienté complet de n sommets}
+\item{$c_{ij}$}{le coût de l'arc $(v_{i}, v_{j})$}
+\item{
+$$
+x_{ij} = \lbracs
+\left . \begin{tabular}{l}
+1 si et seulement si l'arc (i, j) est retenu dans le circuit, \\
+0 sinon \\
+\end{tabular}
+\right
+$$
+}
+
+\end{itemize}
+
+Nous cherchons donc à minimiser le coût total du trajet. Cela se traduit par le programme suivant :
 
 \begin{tabbing}
-$
+$$
 \min\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}//
 s.t.\=\\
 \+
-\sum_{j=1}^{n}x_{ij} = 1, i = 1, ..., n \\
-\sum_{i=1}^{n}x_{ij} = 1, j = 1, ..., n \\
-\sum_{i|v_{i} \in S}\sum_{j|v_{j} \in S}x_{ij} \inf |S|-1
-S \in \{v_{1}, ..., v_{n}\} et S != \empty \\
-x_{ij} \in \{0,1\}, 1 \inf i \inf n
-$
+\sum_{j=1}^{n}x_{ij} = 1, i = 1,\dots, n \\
+\sum_{i=1}^{n}x_{ij} = 1, j = 1,\dots, n \\
+\sum_{i|v_{i} \in S}\sum_{j|v_{j} \in S}x_{ij} \leq |S|-1
+S \subset \{v_{1},\dots, v_{n}\} et S \neq \emptyset \\
+x_{ij} \in \{0,1\}, 1 \leq i \leq n
+$$
 \end{tabbing}
+
+La première contrainte décrit le fait qu'il n'y a qu'une et une seule arrête partant d'une ville.
+La seconde contrainte décrit le fait qu'il n'y a qu'une et une seule arrête arrivant dans une ville.
+La dernière contraite est la contrainte dite de sous-tour.
+Elle empêche le fait que l'on passe plusieurs fois par une même ville.
+C'est cette contrainte qui rend le problème du voyageur de commerce NP-difficile.
+En effet, cette contrainte considère toutes les villes du graphe, rendant le calcul extrèmement compliqué, c'est à dire réalisé en un temps en $O(n!)$.
+
+\section*{Recuit simulé}
+
+
+
+\section*{Voisinage considéré}
+
+A remplir
+
+\section*{Réglage de la température du recuit simulé}
+
+Le réglage de la température utilisée pour l'algorithme est quelque de compliqué puisque cela influe sur le resultat final.
+En effet, une température trop haute acceptera trop de changement, rendant le début de l'algorithme inutile.
+Au contraire, une température trop basse n'acceptera que les changements qui réduisent vraiment le coût total, au risque de bloquer dans un minimum local.
+Il faut donc trouver la bonne température qui produira un taux d'acceptation suffisamment grand pour ne pas rendre le début de l'algorithme inutile.
+
+En général, ce taux est fixé à au moins 80\% d'acceptation.
+Nous exécutons donc l'algorithme du recuit simulé avec une température assez basse.
+Au lieu de diminuer la température à la fin des itérations, nous vérifions si le taux est atteind ou non.
+S'il ne l'est pas, nous doublons la température et recommençons.
+Une fois le taux atteind, nous retournons la dernière température et lançons l'algorithme du recuit simulé.
 
 \end{document}
