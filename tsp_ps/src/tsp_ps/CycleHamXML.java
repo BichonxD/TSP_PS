@@ -1,13 +1,9 @@
 package tsp_ps;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
-
-import org.jdom2.JDOMException;
 
 public class CycleHamXML
 {
@@ -160,7 +156,7 @@ public class CycleHamXML
 	{
 		boolean ret = true;
 		
-		int val = _depart;
+		Integer val = _depart;
 		int count = 0;
 		
 		if (!_arretes.isEmpty())
@@ -459,9 +455,9 @@ public class CycleHamXML
 		return l;
 	}
 	
-	public ArrayList<Ville> solutionVoisine(ArrayList<Ville> list)
+	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list)
 	{
-		ArrayList<Ville> res;
+		ArrayList<Integer> res;
 		int i, iplus1, j, jplus1, taille = list.size();
 		
 		do
@@ -470,7 +466,7 @@ public class CycleHamXML
 		} while (i > taille - 4);
 		
 		iplus1 = i + 1;
-		Ville xi = list.get(i), xiplus1 = list.get(iplus1);
+		Integer xi = list.get(i), xiplus1 = list.get(iplus1);
 		
 		/*
 		 * do { j = _rand.nextInt(_nbVilles); } while ((j < iplus1) && (j > (taille - 2)));
@@ -479,11 +475,11 @@ public class CycleHamXML
 		for (j = i + 2; j < (taille - 1); ++j)
 		{
 			jplus1 = j + 1;
-			Ville xj = list.get(j), xjplus1 = list.get(jplus1);
+			Integer xj = list.get(j), xjplus1 = list.get(jplus1);
 			
 			if (xjplus1 != xi)
 			{
-				if (xi.distance(xiplus1) + xj.distance(xjplus1) > xi.distance(xj) + xiplus1.distance(xjplus1))
+				if (_map[xi][xiplus1] + _map[xj][xjplus1] > _map[xi][xj] + _map[xiplus1][xjplus1])
 				{
 					// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par (xi,
 					// xj) et (xi+1, xj+1) dans H
@@ -506,13 +502,13 @@ public class CycleHamXML
 		
 		double temp = Math.round(initRecuit(1000, iteration, 1000, 0.8));
 		System.out.println("température : " + temp);
-		// *
+		
 		// Solution courrant
-		ArrayList<Ville> solCourante = new ArrayList<Ville>();
+		ArrayList<Integer> solCourante = new ArrayList<Integer>();
 		double valCourante;
 		
 		// Initialissation de la solution courante
-		Ville v = _depart;
+		Integer v = _depart;
 		do
 		{
 			solCourante.add(v);
@@ -521,11 +517,11 @@ public class CycleHamXML
 		valCourante = calculDistanceTotal(solCourante);
 		
 		// Solution voisine
-		ArrayList<Ville> solVoisine;
+		ArrayList<Integer> solVoisine;
 		double valVoisine;
 		
 		// Stockage de la meilleure solution trouvée
-		ArrayList<Ville> bestSol = new ArrayList<Ville>();
+		ArrayList<Integer> bestSol = new ArrayList<Integer>();
 		double bestVal;
 		
 		bestSol.addAll(solCourante);
@@ -601,7 +597,7 @@ public class CycleHamXML
 			_arretes.put(bestSol.get(i), bestSol.get(i + 1));
 		}
 		_arretes.put(bestSol.get(i), bestSol.get(0));
-		// */
+		
 	}
 	
 	/**
@@ -638,11 +634,11 @@ public class CycleHamXML
 	public double initRecuit(double temp, int iteration, int nbAcceptations, double taux)
 	{
 		// Solution courrant
-		ArrayList<Ville> solCourante = new ArrayList<Ville>();
+		ArrayList<Integer> solCourante = new ArrayList<Integer>();
 		double valCourante;
 		
 		// Initialissation de la solution courante
-		Ville v = _depart;
+		Integer v = _depart;
 		do
 		{
 			solCourante.add(v);
@@ -652,7 +648,7 @@ public class CycleHamXML
 		valCourante = calculDistanceTotal(solCourante);
 		
 		// Solution voisine
-		ArrayList<Ville> solVoisine;
+		ArrayList<Integer> solVoisine;
 		double valVoisine;
 		
 		// Autre

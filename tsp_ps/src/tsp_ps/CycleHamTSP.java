@@ -46,8 +46,8 @@ public class CycleHamTSP
 		int pos = _rand.nextInt(_villesRestantes.size());
 		// Récupération de la ville
 		
-		_depart = _villesRestantes.get(pos);
-		// _depart = _villesRestantes.get(36473);
+		//_depart = _villesRestantes.get(pos);
+		_depart = _villesRestantes.get(41);
 		System.out.println("Départ : " + _depart + "\n");
 		
 		// Retrait de la ville de départ des villes restantes

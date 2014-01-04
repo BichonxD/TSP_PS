@@ -103,7 +103,8 @@ public class Tsp_ps
 			begin = System.currentTimeMillis();
 			
 			// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
-			c.plusProcheVoisinThreading();
+			//c.plusProcheVoisinThreading();
+			c.plusProcheVoisin();
 			
 			// CHECKPOINT
 			// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
@@ -119,6 +120,7 @@ public class Tsp_ps
 			
 			// Lancement de l'optimisation via le recuit simulé et du chrono
 			begin = System.currentTimeMillis();
+			//c.twoOpt(5*60);
 			c.recuitSim(0.7, 5 * 60);
 			
 			// FIN
@@ -133,7 +135,7 @@ public class Tsp_ps
 			System.out.println("Temps d'execution de l'optimisation : " + time + "\n\n");
 			
 			// Affichage du dessin
-			new DessinTSP(c);
+			//new DessinTSP(c);
 			
 		} else if (args[0].contains(".xml"))
 		{
@@ -142,8 +144,8 @@ public class Tsp_ps
 			begin = System.currentTimeMillis();
 			
 			// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
-			c.plusProcheVoisin();
-			// c.plusProcheInsertion();
+			//c.plusProcheVoisin();
+			c.plusProcheInsertion();
 			
 			// CHECKPOINT
 			// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
@@ -155,12 +157,12 @@ public class Tsp_ps
 				System.out.println("La solution n'est pas un cycle");
 			
 			System.out.println("Distance total avant optimisation : " + Math.round(c.calculDistanceTotal()));
-			System.out.println("Temps d'execution de Plus Proche Voisin Thread : " + time + "\n\n");
+			System.out.println("Temps d'execution de Plus Proche Voisin : " + time + "\n\n");
 			
 			// Lancement de l'optimisation via le recuit simulé et du chrono
 			begin = System.currentTimeMillis();
-			//c.recuitSim(0.7, 15 * 60);
-			c.twoOpt(5*60);
+			c.recuitSim(0.7, 15 * 60);
+			//c.twoOpt(5*60);
 			
 			// FIN
 			// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
