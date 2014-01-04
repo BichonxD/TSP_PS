@@ -1,5 +1,6 @@
 package tsp_ps;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +20,10 @@ public class CycleHamXML
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHamXML(String nomFichier) throws ErreurFormatXML, JDOMException, IOException
+	public CycleHamXML(String nomFichier)
 	{
 		// Initialisation des listes
-		_villes = GestionFichierXML.lectureFichier(nomFichier);
+		_villes = GestionFichierXML.lectureFichierV2(nomFichier);
 		_villesRestantes = new ArrayList<Integer>();
 		_arretes = new HashMap<Integer, Integer>();
 		

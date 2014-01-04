@@ -10,12 +10,13 @@ import java.util.Scanner;
  */
 public class GestionFichierTSP
 {
-	static public ArrayList<Ville> lectureFichier()
+	static public ArrayList<Ville> lectureFichier(String nomFichier)
 	{
 		ArrayList<Ville> l = new ArrayList<Ville>();
+		
 		try
 		{
-			Scanner scan = new Scanner(new File("mona-lisa100K.tsp"));
+			Scanner scan = new Scanner(new File(System.getProperty("user.dir") + "/" + nomFichier));
 			// Scan du fichier complet
 			while (scan.hasNextLine())
 			{
@@ -28,10 +29,10 @@ public class GestionFichierTSP
 			}
 		} catch (FileNotFoundException e)
 		{
-			System.err.println("Fichier non trouvé");
+			System.err.println("Fichier \"" + System.getProperty("user.dir") + "/" + nomFichier + "\" non trouvé.");
 		}
 		
-		System.out.println("Lecture du fichier \"mona-lisa100K.tsp\" terminée");
+		System.out.println("Lecture du fichier \"" + nomFichier + "\" terminée");
 		return l;
 	}
 }

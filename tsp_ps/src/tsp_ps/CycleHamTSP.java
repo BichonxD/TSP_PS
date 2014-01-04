@@ -16,10 +16,10 @@ public class CycleHamTSP
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHamTSP()
+	public CycleHamTSP(String nomFichier)
 	{
 		// Initialisation des listes
-		_villes = GestionFichierTSP.lectureFichier();
+		_villes = GestionFichierTSP.lectureFichier(nomFichier);
 		_villesRestantes = new ArrayList<Ville>();
 		_arretes = new HashMap<Ville, Ville>();
 		

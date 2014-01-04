@@ -1,5 +1,6 @@
 package tsp_ps;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,10 +19,10 @@ public class Tsp_ps
 	 */
 	
 	static int nbIteration = 1000;
-	static boolean TEST_COMPLET = false;
-	static boolean MONA_LISA = false;
+	static boolean TEST_COMPLET = true;
+	static boolean TSP = false;
 	
-	public static void main(String[] args) throws InterruptedException, ErreurFormatXML, JDOMException, IOException
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException 
 	{
 		long begin = 0, end = 0;
 		float time;
@@ -31,10 +32,29 @@ public class Tsp_ps
 		
 		// Le format des jeux de données de Mona Lisa et des autres fichiers sont différents.
 		// Nous avons donc séparé le traitement de Mona Lisa du traitement des autres fichiers.
-		if (MONA_LISA && args[2].equals("mona-lisa100K.tsp"))
+		if (TSP && args[1].contains(".tsp"))
 		{
 			// Création du cycle et départ du chrono.
-			CycleHamTSP c = new CycleHamTSP();
+			//CycleHamTSP c = new CycleHamTSP(args[1]);
+			//BUGGE !! CycleHamTSP c = new CycleHamTSP("a280.tsp");
+			CycleHamTSP c = new CycleHamTSP("att48.tsp");
+			//CycleHamTSP c = new CycleHamTSP("att532.tsp");
+			//CycleHamTSP c = new CycleHamTSP("brazil58.tsp");
+			//CycleHamTSP c = new CycleHamTSP("fl1577.tsp");
+			//CycleHamTSP c = new CycleHamTSP("fl3795.tsp");
+			//CycleHamTSP c = new CycleHamTSP("fnl4461.tsp");
+			//CycleHamTSP c = new CycleHamTSP("kroB100.tsp");
+			//CycleHamTSP c = new CycleHamTSP("kroB150.tsp");
+			//CycleHamTSP c = new CycleHamTSP("kroB200.tsp");
+			//CycleHamTSP c = new CycleHamTSP("kroD100.tsp");
+			//CycleHamTSP c = new CycleHamTSP("mona-lisa100K.tsp");
+			//CycleHamTSP c = new CycleHamTSP("pla7397.tsp");
+			//CycleHamTSP c = new CycleHamTSP("pr2392.tsp");
+			//CycleHamTSP c = new CycleHamTSP("rl5915.tsp");
+			//CycleHamTSP c = new CycleHamTSP("rl5934.tsp");
+			//CycleHamTSP c = new CycleHamTSP("u1060.tsp");
+			//CycleHamTSP c = new CycleHamTSP("vm1084.tsp");
+			//CycleHamTSP c = new CycleHamTSP("vm1748.tsp");
 			begin = System.currentTimeMillis();
 			
 			// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
@@ -75,8 +95,8 @@ public class Tsp_ps
 			if (TEST_COMPLET)
 			{
 				ArrayList<CycleHamXML> c = new ArrayList<CycleHamXML>();
-				//c.add(new CycleHamXML("a280.xml"));
-				c.add(new CycleHamXML("att48.xml"));
+				//BUGGE !! c.add(new CycleHamXML("a280.xml"));
+				//c.add(new CycleHamXML("att48.xml"));
 				//c.add(new CycleHamXML("att532.xml"));
 				//BUGGE !! c.add(new CycleHamXML("br17.xml"));
 				//c.add(new CycleHamXML("brazil58.xml"));
@@ -88,7 +108,7 @@ public class Tsp_ps
 				//c.add(new CycleHamXML("kroB200.xml"));
 				//c.add(new CycleHamXML("kroD100.xml"));
 				//c.add(new CycleHamXML("pla7397.xml"));
-				//c.add(new CycleHamXML("pr2392.xml"));
+				c.add(new CycleHamXML("pr2392.xml"));
 				//c.add(new CycleHamXML("rl5915.xml"));
 				//c.add(new CycleHamXML("rl5934.xml"));
 				//c.add(new CycleHamXML("u1060.xml"));
@@ -102,11 +122,11 @@ public class Tsp_ps
 			} else
 			{
 				// Création du cycle et départ du chrono.
-				//CycleHamXML c = new CycleHamXML(args[2]);
-				//CycleHamXML c = new CycleHamXML("a280.xml");
+				//CycleHamXML c = new CycleHamXML(args[1]);
+				//BUGGE !! CycleHamXML c = new CycleHamXML("a280.xml");
 				CycleHamXML c = new CycleHamXML("att48.xml");
 				//CycleHamXML c = new CycleHamXML("att532.xml");
-				//CycleHamXML c = new CycleHamXML("br17.xml");
+				//BUGGE !! CycleHamXML c = new CycleHamXML("br17.xml");
 				//CycleHamXML c = new CycleHamXML("brazil58.xml");
 				//CycleHamXML c = new CycleHamXML("fl1577.xml");
 				//CycleHamXML c = new CycleHamXML("fl3795.xml");
