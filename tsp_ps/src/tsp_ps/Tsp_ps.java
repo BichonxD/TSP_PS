@@ -77,17 +77,25 @@ public class Tsp_ps
 		if (args[0].equals("-testG"))
 		{
 			// Pour tester si les graphes sont complets ou non.
-			ArrayList<CycleHamXML> c = new ArrayList<CycleHamXML>();
+			ArrayList<CycleHamXML> cXML = new ArrayList<CycleHamXML>();
+			ArrayList<CycleHamTSP> cTSP = new ArrayList<CycleHamTSP>();
 			
 			for (int i = 1; i < args.length; i++)
 			{
-				c.add(new CycleHamXML(args[i]));
+				if(args[i].endsWith(".xml"))
+					cXML.add(new CycleHamXML(args[i]));
+				else if(args[i].endsWith(".tsp"))
+					cTSP.add(new CycleHamTSP(args[i]));
+				else
+					System.err.println("Le format du fichier entrée n'est ni \"XML\" ni \"TSP\".");
 			}
 			
-			for (CycleHamXML t : c)
+			//Pour les graphes XML on fait des tests supplémentaires.
+			for (CycleHamXML c : cXML)
 			{
-				t.estComplet();
+				c.estComplet();
 			}
+			
 		} else if (args[0].contains(".tsp"))
 		{
 			// Création du cycle et départ du chrono.
@@ -167,6 +175,7 @@ public class Tsp_ps
 			
 			// Affichage du dessin
 			// new Dessin(c);
+			
 		} else
 		{
 			System.err.println("Le format du fichier entrée n'est ni \"XML\" ni \"TSP\".");
