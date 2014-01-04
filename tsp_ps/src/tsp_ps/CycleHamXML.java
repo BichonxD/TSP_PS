@@ -11,35 +11,34 @@ import org.jdom2.JDOMException;
 
 public class CycleHamXML
 {
-	private double _villes[][];
+	private double _map[][];
 	private static ArrayList<Integer> _villesRestantes;
 	private static HashMap<Integer, Integer> _arretes;
 	private final Random _rand;
-	private int _depart;
+	private Integer _depart;
 	private final int _nbVilles;
 	private double _distance;
-	private static final int min_thread = 5000;
 	
 	public CycleHamXML(String nomFichier)
 	{
 		// Initialisation des listes
-		_villes = GestionFichierXML.lectureFichierV2(nomFichier);
+		_map = GestionFichierXML.lectureFichierV2(nomFichier);
 		_villesRestantes = new ArrayList<Integer>();
 		_arretes = new HashMap<Integer, Integer>();
 		
 		// Initialisation du random
 		_rand = new Random();
 		
-		_nbVilles = _villes.length;
+		_nbVilles = _map.length;
 		
 		// Lancement de la fonction d'init
-		//this.init();
+		this.init();
 	}
 	
 	public void estComplet()
 	{
 		int nb = 0, i = 0, j = 0, nb_dif = 0;
-		for(double d1[] : _villes)
+		for(double d1[] : _map)
 		{
 			for(double d : d1)
 			{
@@ -47,8 +46,8 @@ public class CycleHamXML
 					nb++;
 				
 				if(j == i && d != Double.MAX_VALUE)
-					System.out.println("Warning : map[" + i + "][" + j + "] = " + _villes[i][j]);
-				if(_villes[i][j] != _villes[j][i])
+					System.out.println("Warning : map[" + i + "][" + j + "] = " + _map[i][j]);
+				if(_map[i][j] != _map[j][i])
 					nb_dif++;
 				j++;
 			}
@@ -68,7 +67,7 @@ public class CycleHamXML
 		int i;
 		
 		//On ajoute toutes nos villes aux villes restantes.
-		for(i = 0; i < _villesRestantes.size(); i++)
+		for(i = 0; i < _nbVilles; i++)
 		{
 			_villesRestantes.add(i);
 		}
@@ -77,8 +76,8 @@ public class CycleHamXML
 		_distance = 0;
 		
 		// Choix de la ville de depart aléatoirement
-		_depart = _rand.nextInt(_villesRestantes.size());
-		// _depart = 42;		
+		//_depart = _rand.nextInt(_villesRestantes.size());
+		_depart = 42;		
 		// Récupération de la ville
 		
 		System.out.println("Départ : " + _depart + "\n");
@@ -92,9 +91,10 @@ public class CycleHamXML
 	 */
 	public void algoAleatoire()
 	{
-		Ville v_enCours = _depart;
-		Ville v_suivante;
+		Integer v_enCours = _depart;
+		Integer v_suivante;
 		int pos;
+		
 		while (!_villesRestantes.isEmpty())
 		{
 			// On récupère une ville
@@ -102,20 +102,19 @@ public class CycleHamXML
 			v_suivante = _villesRestantes.get(pos);
 			
 			// Ajout de la ville au cycle
-			// _arretes.add(new Pair(v_enCours, v_suivante));
 			_arretes.put(v_enCours, v_suivante);
 			
 			// On ajoute la distance
-			_distance += v_enCours.distance(v_suivante);
+			_distance += _map[v_enCours][v_suivante];
 			
 			// On supprime la ville
 			_villesRestantes.remove(v_suivante);
 			v_enCours = v_suivante;
 			v_suivante = null;
 		}
-		// _arretes.add(new Pair(v_enCours, _depart));
+		
 		_arretes.put(v_enCours, _depart);
-		_distance += v_enCours.distance(_depart);
+		_distance += _map[v_enCours][_depart];
 	}
 	
 	/**
@@ -123,16 +122,17 @@ public class CycleHamXML
 	 */
 	public void plusProcheVoisin()
 	{
-		Ville v_enCours = _depart;
-		Ville v_best = null;
+		Integer v_enCours = _depart;
+		Integer v_best = null;
 		double d, d2;
+		
 		while (!_villesRestantes.isEmpty())
 		{
 			d = Double.MAX_VALUE;
 			
-			for (Ville v_test : _villesRestantes)
+			for (Integer v_test : _villesRestantes)
 			{
-				d2 = v_enCours.distanceCarre(v_test);
+				d2 = _map[v_enCours][v_test];
 				if (d2 < d)
 				{
 					d = d2;
@@ -140,96 +140,14 @@ public class CycleHamXML
 				}
 			}
 			
-			_distance += Math.sqrt(d);
+			_distance += d;
 			_arretes.put(v_enCours, v_best);
 			_villesRestantes.remove(v_best);
 			v_enCours = v_best;
 		}
 		
 		_arretes.put(v_enCours, _depart);
-		_distance += v_enCours.distance(_depart);
-	}
-	
-	/**
-	 * Algorithme du plus proche voisin amélioré par du multi-thread. Le nombre de thread dépend du nombre de processeur
-	 * présent sur la machine.
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void plusProcheVoisinThreading() throws InterruptedException
-	{
-		Ville v_enCours = _depart;
-		Ville v_best = null;
-		double d, d_tmp, d_tmp2;
-		int i, fourchette_val;
-		Thread_ParcourArray p1, p2;
-		
-		if (Runtime.getRuntime().availableProcessors() > 1)
-		{
-			i = 0;
-			
-			while (!_villesRestantes.isEmpty())
-			{
-				i++;
-				d = Double.MAX_VALUE;
-				fourchette_val = _villesRestantes.size() / 2;
-				
-				// Pour moins de min_thread points on ne
-				// fait plus de multithread.
-				if (fourchette_val < min_thread)
-				{
-					for (Ville v_test : _villesRestantes)
-					{
-						d_tmp = v_enCours.distanceCarre(v_test);
-						if (d_tmp < d)
-						{
-							v_best = v_test;
-							d = d_tmp;
-						}
-					}
-				} else
-				{
-					// On lance tous les threads sur
-					// une plage de valeur
-					// distincte.
-					p1 = new Thread_ParcourArray(v_enCours, _villesRestantes, 0, fourchette_val - 1);
-					p2 = new Thread_ParcourArray(v_enCours, _villesRestantes, fourchette_val, 2 * fourchette_val - 1);
-					p1.start();
-					p2.start();
-					p1.join();
-					p2.join();
-					
-					d_tmp = p1.getDistance();
-					d_tmp2 = p2.getDistance();
-					
-					if (d_tmp < d_tmp2)
-					{
-						d = d_tmp;
-						v_best = _villesRestantes.get(p1.getIndice_resultat());
-					} else
-					{
-						d = d_tmp2;
-						v_best = _villesRestantes.get(p2.getIndice_resultat());
-					}
-				}
-				
-				d = Math.sqrt(d);
-				_distance += d;
-				_arretes.put(v_enCours, v_best);
-				_villesRestantes.remove(v_best);
-				
-				v_enCours = v_best;
-				v_best = null;
-			}
-			
-			_arretes.put(v_enCours, _depart);
-			_distance += v_enCours.distance(_depart);
-		} else
-		{
-			// On appelle l'algorithme simple s'il n'y a
-			// qu'un seul processeur.
-			plusProcheVoisin();
-		}
+		_distance += _map[(int) v_enCours][(int) _depart];
 	}
 	
 	/**
@@ -242,12 +160,11 @@ public class CycleHamXML
 	{
 		boolean ret = true;
 		
-		Ville val = _depart;
+		int val = _depart;
 		int count = 0;
 		
 		if (!_arretes.isEmpty())
 		{
-			
 			if (_arretes.keySet().containsAll(_arretes.values()))
 			{
 				// Parcours des valeurs;
@@ -312,25 +229,25 @@ public class CycleHamXML
 	{
 		double d = 0;
 		
-		for (Entry<Ville, Ville> entry : _arretes.entrySet())
+		for (Entry<Integer, Integer> entry : _arretes.entrySet())
 		{
-			Ville key = entry.getKey();
-			Ville value = entry.getValue();
-			d += key.distance(value);
+			Integer key = entry.getKey();
+			Integer value = entry.getValue();
+			d += _map[key][value];
 		}
 		
 		return d;
 	}
 	
-	public double calculDistanceTotal(ArrayList<Ville> l)
+	public double calculDistanceTotal(ArrayList<Integer> l)
 	{
 		double d = 0;
 		int i;
 		for (i = 0; i < l.size() - 1; i++)
 		{
-			d += l.get(i).distance(l.get(i + 1));
+			d += _map[l.get(i)][l.get(i + 1)];
 		}
-		d += l.get(i).distance(l.get(0));
+		d += _map[l.get(i)][l.get(0)];
 		
 		return d;
 	}
@@ -340,7 +257,7 @@ public class CycleHamXML
 	 * 
 	 * @return Ville _depart
 	 */
-	public Ville get_depart()
+	public int get_depart()
 	{
 		return _depart;
 	}
@@ -350,7 +267,7 @@ public class CycleHamXML
 	 * 
 	 * @return HashMap<Ville, Ville> _arretes
 	 */
-	public HashMap<Ville, Ville> get_arretes()
+	public HashMap<Integer, Integer> get_arretes()
 	{
 		return _arretes;
 	}
@@ -361,16 +278,16 @@ public class CycleHamXML
 	 */
 	public void plusProcheInsertion()
 	{
-		Ville v_prime, v, w1, w2;
-		ArrayList<Ville> _villesVisitees = new ArrayList<Ville>();
+		Integer v_prime, v, w1, w2;
+		ArrayList<Integer> _villesVisitees = new ArrayList<Integer>();
 		double d, d_tmp;
 		
 		// On ajoute la ville la plus proche pour avoir un cycle.
 		v = null;
 		d = Double.MAX_VALUE;
-		for (Ville vtest : _villesRestantes)
+		for (Integer vtest : _villesRestantes)
 		{
-			d_tmp = vtest.distanceCarre(_depart);
+			d_tmp = _map[vtest][_depart];
 			if (d_tmp < d)
 			{
 				v = vtest;
@@ -393,9 +310,9 @@ public class CycleHamXML
 			d = Double.MAX_VALUE;
 			
 			// On trouve la ville la plus proche
-			for (Ville v_visitee : _villesVisitees)
+			for (Integer v_visitee : _villesVisitees)
 			{
-				d_tmp = v_prime.distanceCarre(v_visitee);
+				d_tmp = _map[v_prime][v_visitee];
 				if (d_tmp < d)
 				{
 					v = v_visitee;
@@ -406,10 +323,10 @@ public class CycleHamXML
 			// Maintenant on trouve qu'elle est la ville voisine qui
 			// se liera à v_prime
 			// Il ne peut y avoir que 2 possibilités.
-			for (Entry<Ville, Ville> entry : _arretes.entrySet())
+			for (Entry<Integer, Integer> entry : _arretes.entrySet())
 			{
-				Ville key = entry.getKey();
-				Ville value = entry.getValue();
+				Integer key = entry.getKey();
+				Integer value = entry.getValue();
 				if (value.equals(v))
 				{
 					w1 = key;
@@ -421,7 +338,7 @@ public class CycleHamXML
 			// Les anciennes arretes sont automatiquement
 			// remplacees.
 			// Si c'est w1 la plus proche
-			if (v.distance(v_prime) + v_prime.distance(w1) - v.distance(w1) < v.distance(v_prime) + v_prime.distance(w2) - v.distance(w2))
+			if (_map[v][v_prime] + _map[v_prime][w1] - _map[v][w1] < _map[v][v_prime] + _map[v_prime][w2] - _map[v][w2])
 			{
 				_arretes.put(w1, v_prime);
 				_arretes.put(v_prime, v);
@@ -445,8 +362,8 @@ public class CycleHamXML
 		int i = 0, iplus1, j, jplus1, taille;
 		long begin = 0, end = 0;
 		float time = 0;
-		Ville v = _depart;
-		ArrayList<Ville> list = new ArrayList<Ville>();
+		Integer v = _depart;
+		ArrayList<Integer> list = new ArrayList<Integer>();
 		
 		do
 		{
@@ -463,23 +380,23 @@ public class CycleHamXML
 			amelioration = false;
 			for (i = 0; i < taille - 4; i++)
 			{
-				Ville xi = list.get(i);
+				Integer xi = list.get(i);
 				
 				iplus1 = i + 1;
-				Ville xiplus1 = list.get(iplus1);
+				Integer xiplus1 = list.get(iplus1);
 				for (j = i + 2; j < taille - 1; j++)
 				{
-					Ville xj = list.get(j);
+					Integer xj = list.get(j);
 					jplus1 = j + 1;
-					Ville xjplus1 = list.get(jplus1);
+					Integer xjplus1 = list.get(jplus1);
 					if (xjplus1 != xi)
 					{
-						if (xi.distance(xiplus1) + xj.distance(xjplus1) > xi.distance(xj) + xiplus1.distance(xjplus1))
+						if (_map[xi][xiplus1] + _map[xj][xjplus1] > _map[xi][xj] + _map[xiplus1][xjplus1])
 						{
 							// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par
 							// (xi, xj) et
 							// (xi+1, xj+1) dans H
-							ArrayList<Ville> res = reverse(list, iplus1, j);
+							ArrayList<Integer> res = reverse(list, iplus1, j);
 							// Calcule la nouvelle distance
 							if (calculDistanceTotal(res) < calculDistanceTotal(list))
 							{
@@ -493,13 +410,13 @@ public class CycleHamXML
 				time = ((float) (end - begin)) / 1000f;
 				if (time > n)
 				{
-					// amelioration = false;
+					amelioration = false;
 					break;
 				}
 			}
 			if (time > n)
 			{
-				// amelioration = false;
+				amelioration = false;
 				break;
 			}
 		}
@@ -525,10 +442,10 @@ public class CycleHamXML
 	 *                Dernier point de la liste à inverser
 	 * @return Nouvelle liste inversée
 	 */
-	public ArrayList<Ville> reverse(ArrayList<Ville> list, int i, int j)
+	public ArrayList<Integer> reverse(ArrayList<Integer> list, int i, int j)
 	{
-		ArrayList<Ville> l = new ArrayList<Ville>();
-		Ville xi, xj;
+		ArrayList<Integer> l = new ArrayList<Integer>();
+		Integer xi, xj;
 		
 		l.addAll(list);
 		for (; i < j; i++, j--)

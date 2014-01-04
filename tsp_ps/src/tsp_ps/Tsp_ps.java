@@ -142,9 +142,8 @@ public class Tsp_ps
 			begin = System.currentTimeMillis();
 			
 			// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
-			c.plusProcheVoisinThreading();
+			c.plusProcheVoisin();
 			// c.plusProcheInsertion();
-			// c.plusProcheVoisin();
 			
 			// CHECKPOINT
 			// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
@@ -160,7 +159,8 @@ public class Tsp_ps
 			
 			// Lancement de l'optimisation via le recuit simulé et du chrono
 			begin = System.currentTimeMillis();
-			c.recuitSim(0.7, 15 * 60);
+			//c.recuitSim(0.7, 15 * 60);
+			c.twoOpt(5*60);
 			
 			// FIN
 			// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
