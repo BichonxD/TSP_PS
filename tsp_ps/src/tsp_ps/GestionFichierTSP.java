@@ -24,9 +24,16 @@ public class GestionFichierTSP
 				String line = scan.nextLine();
 				// Découpe la ligne selon les espaces
 				String[] coord = line.split("[ ]+");
-				// Ajoute la ville à la liste
-				l.add(new Ville(Integer.parseInt(coord[0]), Integer.parseInt(coord[1]), Integer.parseInt(coord[2])));
+				
+				try
+				{
+					// Ajoute la ville à la liste
+					l.add(new Ville(Integer.parseInt(coord[0]), Integer.parseInt(coord[1]), Integer.parseInt(coord[2])));
+				} catch (NumberFormatException e)
+				{
+				}
 			}
+			
 		} catch (FileNotFoundException e)
 		{
 			System.err.println("Fichier \"" + System.getProperty("user.dir") + "/" + nomFichier + "\" non trouvé.");
