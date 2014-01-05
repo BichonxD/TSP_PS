@@ -484,9 +484,7 @@ public class CycleHamXML
 	
 	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list, double tailleDeplacement)
 	{
-		int tmp = (int) tailleDeplacement;
-		
-		//System.out.println("Taille Deplacement = " + tailleDeplacement);
+		/*int tmp = (int) tailleDeplacement;
 		
 		if(tmp > 2)
 		{
@@ -497,7 +495,9 @@ public class CycleHamXML
 		{
 			nb2++;
 			return solutionVoisineVInversionPays(list, 2);
-		}
+		}*/
+		
+		return solutionVoisineV2Opt(list);
 	}
 	
 	public ArrayList<Integer> solutionVoisineVInversionPays(ArrayList<Integer> list, int tailleDeplacement)

@@ -555,7 +555,7 @@ public class CycleHamTSP
 			return solutionVoisineVInversionPays(list, 2);
 		}*/
 		
-		return solutionVoisineVInversionVillesVoisines(list);
+		return solutionVoisineV2OptV2(list);
 	}
 	
 	/** Inverse 2 villes qui sont voisines en choisissant aléatoirement la ville à inverser */
@@ -641,38 +641,22 @@ public class CycleHamTSP
 	}
 	
 	/***/
-	public ArrayList<Ville> solutionVoisineV2Opt(ArrayList<Ville> list)
+	public ArrayList<Ville> solutionVoisineV2OptV2(ArrayList<Ville> list)
 	{
-		ArrayList<Ville> res;
-		int i, iplus1, j, jplus1, taille = list.size();
+		int i, j, taille = list.size();
 		
-		do
+		i = _rand.nextInt(taille - 4);
+		
+		if(i > 3)
 		{
-			i = _rand.nextInt(_nbVilles);
-		} while (i > taille - 4);
-		
-		iplus1 = i + 1;
-		Ville xi = list.get(i), xiplus1 = list.get(iplus1);
-		
-		for (j = i + 2; j < (taille - 1); ++j)
-		{
-			jplus1 = j + 1;
-			Ville xj = list.get(j), xjplus1 = list.get(jplus1);
-			
-			if (xjplus1 != xi)
-			{
-				if (xi.distance(xiplus1) + xj.distance(xjplus1) > xi.distance(xj) + xiplus1.distance(xjplus1))
-				{
-					// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par (xi,
-					// xj) et (xi+1, xj+1) dans H
-					res = reverse(list, iplus1, j);
-					// Calcule la nouvelle distance
-					if (calculDistanceTotal(res) < calculDistanceTotal(list))
-						return res;
-				}
-			}
+			j = _rand.nextInt(i - 2);
+			j += taille - i + 2;
 		}
-		return reverse(list, iplus1, j - 1);
+		else
+			j = taille - i - 1;	
+		
+		return reverse(list, i + 1, j);
+		
 	}
 	
 	/** Lance une optimisation du cycle Hamiltonien via l'algorithme du Recuit Simulé */
