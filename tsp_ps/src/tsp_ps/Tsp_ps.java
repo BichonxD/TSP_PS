@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class Tsp_ps
 {
 	private static int TEMPS_EXEC = 15;
-	private static double TAUX_LIM_ACCEPTATION = 0.7;
-	private static int NB_ITERATION = 3000;
-	private static double TAUX_DECREMENT_TEMP = 0.85;
+	private static double TAUX_LIM_ACCEPTATION = 0.2;
+	private static int NB_ITERATION = 0;
+	private static double TAUX_DECREMENT_TEMP = 0.9;
 	private static boolean DEBUG = false;
 	private static boolean COMPARE = false;
 	private static boolean COMPARE_PREMIERTOUR = false;
@@ -427,6 +427,10 @@ public class Tsp_ps
 				System.out.println("Distance totale avant optimisation : " + Math.round(c.calculDistanceTotal()));
 				if (DEBUG && COMPARE)
 					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
+				
+				// Si aucun nombre d'itération a été donné en paramètre, nous en affectons un
+				if(0 == NB_ITERATION)
+					NB_ITERATION = c.get_nbVilles()*c.get_nbVilles();
 				
 				// Si on est en mode DEBUG on lance le chronomètre.
 				if (DEBUG)

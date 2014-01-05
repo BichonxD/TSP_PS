@@ -122,13 +122,13 @@ Cela s'explique par le fait que l'on ne trouve plus de solution qui améliore r�
 Ci-dessous se trouve l'algorithme tel que nous l'avons implémenté.
 La solution de base est obtenue à l'aide de l'algorithme glouton du Plus Proche Voisin que nous ne détaillerons pas.
 La température $T_0$ est obtenue par réglage automatique, ce qui est détaillé plus tard dans le rapport.
-L'instance de Mona Lisa étant très grande, à savoir 100 000 villes, le nombre d'itération n'est que de l'ordre de $n$, ce qui est déjà très grand comme valeur.
+%L'instance de Mona Lisa étant très grande, à savoir 100 000 villes, le nombre d'itération n'est que de l'ordre de $n$, ce qui est déjà très grand comme valeur.
 Le taux d'acceptation minimal a été fixé à 0.2 et le nombre d'itération par palier est de l'ordre de $n^2$, où $n$ est le nombre de ville par instance.
 
 \begin{algorithm}[H]
 	\SetAlgoLined
 	%\LinesNumbered
-	\Donnees{E le premier cycle généré, $T_0$ la température du recuit, P le nombre d'itération par palier, Tx le taux d'acceptation minimale}
+	\Donnees{\emph{E} le premier cycle généré, \emph{$T_0$} la température du recuit, \emph{P} le nombre d'itération par palier, \emph{Tx} le taux d'acceptation minimale, \emph{Coeff} le coefficient de décroissance de la température }
 	\Res{meilleureSol la meilleure solution retenue }
 	\Deb{
 		\tcp{Initialisation}
@@ -138,7 +138,7 @@ Le taux d'acceptation minimal a été fixé à 0.2 et le nombre d'itération par
 		$compteur \leftarrow 0$\;
 		
 		\tcp{Recuit en lui même}
-		\Repeter{$compteur < 10$}{
+		\Repeter{$compteur < 100$}{
 			$nb\_mouvements \leftarrow 0$\;
 			\tcp{Pallier à température fixe}
 			\Pour{$i \leftarrow 1$ à $P$}{
@@ -147,19 +147,28 @@ Le taux d'acceptation minimal a été fixé à 0.2 et le nombre d'itération par
 				\Si{$\Delta \leq 0 \parallel alea() \leq \exp^{-\Delta / T}$}{
 					$S \leftarrow S'$\;
 					$nb\_mouvements \leftarrow nb\_mouvements + 1$\;
-					\lSi{$distanceTotale(S) < distanceTotale(meilleureSol)$}{$meilleureSol \leftarrow S$}
+					\uSi{$distanceTotale(S) < distanceTotale(meilleureSol)$}{
+						$meilleureSol \leftarrow S$\;
+						$compteur \leftarrow 0;$
+					}
 				}
 			}
 			\tcp{Actualisation des paramètres}
 			$tauxAcceptation \leftarrow i / nb\_mouvements$\;
 			\lSi{$tauxAcceptation < Tx$}{$compteur \leftarrow compteur + 1$}
-			$T \leftarrow T * 0.9$\;
+			$T \leftarrow T * Coeff$\;
 		}
 		\Retour $meilleureSol$\;
 	}
 	\caption{Recuit Simulé}
 \end{algorithm}
 
+Il est possible de passer en paramètre de l'application le taux \emph{$Tx$} d'acceptation minimal,
+le coefficient \emph{Coeff} de décroissance de la température et le nombre \emph{P} d'itération par pallier.
+Si aucun de ces arguments n'est transmis, la valeur de base, décrite plus haut, leur est attribuée.
+Afin d'éviter que notre algorithme ne tourne trop longtemps, nous avons ajouté une limite de temps qui est de 15 minutes, à moins de préciser une autre valeur par passage d'arguments à l'application.
+Le dernier paramètre réglable est l'algorithme utilisé afin de déterminer la solution de base.
+Toutes ces informations sont décrites dans le document utilisateur.
 
 \section{Voisinage considéré}
 
@@ -173,7 +182,7 @@ Au contraire, une température trop basse n'acceptera que les changements qui r�
 Il faut donc trouver la bonne température qui produira un taux d'acceptation suffisamment grand pour ne pas rendre le début de l'algorithme inutile.
 
 En général, ce taux est fixé à au moins 80\% d'acceptation.
-Nous exécutons donc l'algorithme du recuit simulé avec une température assez basse.
+Nous exécutons donc l'algorithme du recuit simulé avec une température assez basse, calculé en fonction du nombre de villes dans l'instance, à savoir $arrondie\big((nbVilles / 100) + 1\big)$.
 Au lieu de diminuer la température à la fin des itérations, nous vérifions si le taux est atteint ou non.
 S'il ne l'est pas, nous doublons la température et recommençons.
 Une fois le taux atteint, nous retournons la dernière température et lançons l'algorithme du recuit simulé.

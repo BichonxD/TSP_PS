@@ -283,6 +283,15 @@ public class CycleHamXML
 	}
 	
 	/**
+	 * Retourne le nombre de ville présentes dans l'instance
+	 *  
+	 * @return Nombre de villes dans l'instance
+	 */
+	public int get_nbVilles() {
+		return _nbVilles;
+	}
+	
+	/**
 	 * Renvoie l'ensemble des arretes formant le chemin trouve
 	 * 
 	 * @return HashMap<Ville, Ville> _arretes
@@ -633,7 +642,7 @@ public class CycleHamXML
 		if (DEBUG)
 			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		double temp = Math.round(initRecuit(10, nbIteration, 1000, 0.8));
+		double temp = Math.round(initRecuit(Math.round(_nbVilles/100)+1, nbIteration, 1000, 0.8));
 		
 		if (DEBUG)
 			System.out.println("Température Initiale : " + temp);
