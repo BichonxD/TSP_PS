@@ -16,6 +16,10 @@
 
 \usepackage{tabbing}
 
+% Affichage pour les algos, numérotation en fonction des chapitres
+\usepackage[ruled,vlined]{algorithm2e}
+\SetAlgorithmName{Algorithme}{Liste des algorithme}
+
 % Images
 %\usepackage{graphicx}
 %\usepackage{rotating}
@@ -66,7 +70,7 @@ $$
 
 \end{itemize}
 
-Nous cherchons donc à minimiser le coût total du trajet. Cela se traduit par le programme suivant :
+Nous cherchons donc à minimiser le coût total du trajet. Cela se traduit par le programme linéaire suivant :
 
 \begin{tabbing}
 $$
@@ -86,10 +90,41 @@ La seconde contrainte décrit le fait qu'il n'y a qu'une et une seule arrête ar
 La dernière contraite est la contrainte dite de sous-tour.
 Elle empêche le fait que l'on passe plusieurs fois par une même ville.
 C'est cette contrainte qui rend le problème du voyageur de commerce NP-difficile.
-En effet, cette contrainte considère toutes les villes du graphe, rendant le calcul extrèmement compliqué, c'est à dire réalisé en un temps en $O(n!)$.
+En effet, cette contrainte vérifie toutes les villes du graphe entres-elles, rendant le calcul extrèmement compliqué, réalisé en un temps en $O(n!)$.
+Il devient évident qu'une recherche exhaustive ne peut être envisagée.
 
 \section*{Recuit simulé}
 
+L'algorithme que nous allons considéré est l'algorithme du recuit simulé.
+Il s'agit d'une métaheuristique inspiré du processus utilisé en métallurgie.
+%Le principe est d'explorer des voisinages.
+
+
+\begin{algorithm}[H]
+\SetAlgoLined
+%\LinesNumbered
+\Donnees{E le premier cycle généré
+T la température du recuit}
+\Res{S cycle hamiltonien }
+\Deb{
+	a complété
+%	$S \leftarrow \emptyset$\;
+%	\tcp{Ajout de la ville de départ}
+%	Sélectionner $vDepart \in V$ aléatoirement\;
+%	$v \leftarrow vDepart$\;
+%	$V \leftarrow V \setminus \{vDepart\}$\;
+%	\tcp{Parcours de toutes les villes pour l'ajout aléatoire}
+%	\Tq{$V \neq \emptyset$}{
+%		Sélectionner $v' \in V$ aléatoirement\;
+%		$S \leftarrow S \cup \{v, v'\}$\;
+%		$V \leftarrow V \setminus \{v\}$\;
+%		$v \leftarrow v'$\;
+%	}
+%	$S \leftarrow S \cup \{v, vDepart\}$\;
+%	\Retour S\;
+}
+\caption{Recuit simulé}
+\end{algorithm}
 
 
 \section*{Voisinage considéré}
