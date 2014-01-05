@@ -22,13 +22,13 @@ public class CycleHamXML
 		_villesRestantes = new ArrayList<Integer>();
 		_arretes = new HashMap<Integer, Integer>();
 		
-		if(_map != null)
+		if (_map != null)
 			_nbVilles = _map.length;
 		else
 			_nbVilles = 0;
 		
 		// Lancement de la fonction d'init
-		if(estValide())
+		if (estValide())
 			this.init(nonRandom);
 	}
 	
@@ -43,31 +43,29 @@ public class CycleHamXML
 			_villesRestantes.add(i);
 		}
 		
-		//On vide le cycle possiblement existant.
+		// On vide le cycle possiblement existant.
 		_arretes.clear();
 		_distance = 0;
 		
 		// Choix de la ville de depart aléatoirement ou non en fonction du boolean en paramètre
-		if(nonRandom)
+		if (nonRandom)
 		{
-			//Si le sommet n'a pas été setté.
-			if(Tsp_ps.getSommetAleatoire() == -1 || Tsp_ps.getSommetAleatoire() >= _nbVilles)
+			// Si le sommet n'a pas été setté.
+			if (Tsp_ps.getSommetAleatoire() == -1 || Tsp_ps.getSommetAleatoire() >= _nbVilles)
 			{
 				_depart = _rand.nextInt(_nbVilles);
 				Tsp_ps.setSommetAleatoire(_depart);
-			}
-			else
+			} else
 			{
 				_depart = Tsp_ps.getSommetAleatoire();
 			}
-		}
-		else
+		} else
 		{
 			_depart = _rand.nextInt(_nbVilles);
 		}
 		
-		//On signale la ville choisie.
-		System.out.println("Ville de départ : " + ( _depart + 1) + " / " + _nbVilles);
+		// On signale la ville choisie.
+		System.out.println("Ville de départ : " + (_depart + 1) + " / " + _nbVilles);
 		
 		// Retrait de la ville de départ des villes restantes
 		_villesRestantes.remove(_depart);
@@ -483,6 +481,39 @@ public class CycleHamXML
 	
 	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list)
 	{
+		return solutionVoisineV2Opt(list);
+	}
+	
+	public ArrayList<Integer> solutionVoisineVAleatoire(ArrayList<Integer> list)
+	{
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		int i, j, k;
+		
+		i = _rand.nextInt(_nbVilles);
+		do
+		{
+			j = _rand.nextInt(_nbVilles);
+		} while (i == j);
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k == i)
+			{
+				res.add(list.get(j));
+			} else if (k == j)
+			{
+				res.add(list.get(i));
+			} else
+			{
+				res.add(list.get(k));
+			}
+		}
+		
+		return res;
+	}
+	
+	public ArrayList<Integer> solutionVoisineV2Opt(ArrayList<Integer> list)
+	{
 		ArrayList<Integer> res;
 		int i, iplus1, j, jplus1, taille = list.size();
 		
@@ -494,10 +525,6 @@ public class CycleHamXML
 		iplus1 = i + 1;
 		Integer xi = list.get(i), xiplus1 = list.get(iplus1);
 		
-		/*
-		 * do { j = _rand.nextInt(_nbVilles); } while ((j < iplus1) && (j > (taille - 2)));
-		 */
-
 		for (j = i + 2; j < (taille - 1); ++j)
 		{
 			jplus1 = j + 1;
@@ -519,21 +546,21 @@ public class CycleHamXML
 		return reverse(list, iplus1, j - 1);
 	}
 	
-	public void recuitSim(double taux, int n)
+	public void recuitSimule(double tauxLimiteAcceptation, int tempsAlloue, int nbIteration, double tauxDecrementT, boolean DEBUG)
 	{
-		System.out.println("Optimisation : Recuit Simulé");
+		if (DEBUG)
+			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		// Initialisation du recuit
-		int iteration = 3000;// _nbVilles;
+		double temp = Math.round(initRecuit(10, nbIteration, 1000, 0.8));
 		
-		double temp = Math.round(initRecuit(1000, iteration, 1000, 0.8));
-		System.out.println("température : " + temp);
+		if (DEBUG)
+			System.out.println("Température Initiale : " + temp);
 		
 		// Solution courrant
 		ArrayList<Integer> solCourante = new ArrayList<Integer>();
 		double valCourante;
 		
-		// Initialissation de la solution courante
+		// Initialisation de la solution courante
 		Integer v = _depart;
 		do
 		{
@@ -567,7 +594,7 @@ public class CycleHamXML
 		{
 			int nbMov = 0;
 			
-			for (i = 0; i < iteration; ++i)
+			for (i = 0; i < nbIteration; ++i)
 			{
 				// Récupération d'une solution voisine
 				solVoisine = solutionVoisine(solCourante);
@@ -585,37 +612,35 @@ public class CycleHamXML
 					{
 						bestSol = solCourante;
 						bestVal = valCourante;
-						// On a améliorer la solution donc on on réinitialise le
-						// compteur de non
+						// On a améliorer la solution donc on on réinitialise le compteur de non
 						// amélioration
 						compteur = 0;
-						// System.out.println("solution amélioree ! distance : "
-						// + bestVal + "(" +
+						// System.out.println("solution amélioree ! distance : " + bestVal + "(" +
 						// valCourante + ")");
 					}
 				}
 			}
 			
 			// Calcul du taux d'acceptation
-			tauxAcceptation = nbMov / (double) iteration;
-			if (tauxAcceptation < taux)
-				compteur++; // La solution ne change pas suffisamment, pour
-			// continuer
-			
+			tauxAcceptation = nbMov / (double) nbIteration;
+			if (tauxAcceptation < tauxLimiteAcceptation)
+				compteur++; // La solution ne change pas suffisamment, pour continuer
+				
 			// Actualise la température
-			// temp *= 0.85;
-			temp *= 0.5;
+			temp *= tauxDecrementT;
 			
+			// Calcul du temps écoulé
 			end = System.currentTimeMillis();
 			time = ((float) (end - begin)) / 1000f;
-			if (time > n)
-				break;
-		} while ((compteur < 10) && (temp > 10));
+		} while ((compteur < 10) && (temp > 10) && (time < tempsAlloue));
 		
-		end = System.currentTimeMillis();
-		time = ((float) (end - begin)) / 1000f;
-		System.out.println("Temps d'execution du recuit : " + time + " ( i = " + i + ")");
-		System.out.println("taux : " + tauxAcceptation + ", température : " + temp + ", compteur : " + compteur);
+		if (DEBUG)
+		{
+			end = System.currentTimeMillis();
+			time = ((float) (end - begin)) / 1000f;
+			System.out.println("Temps d'execution du recuit : " + time);
+			System.out.println("taux : " + tauxAcceptation + ", température : " + temp + ", compteur : " + compteur);
+		}
 		
 		// Stockage de la meilleure solution
 		for (i = 0; i < (bestSol.size() - 1); i++)
@@ -705,10 +730,12 @@ public class CycleHamXML
 			
 			// Calcul du taux d'acceptation pour augmenter ou non la température
 			if ((nbMov / (double) i) < taux)
+			{
 				temp *= 2;
-			else
+			} else
 				continuer = false;
 		}
 		return temp;
 	}
+	
 }

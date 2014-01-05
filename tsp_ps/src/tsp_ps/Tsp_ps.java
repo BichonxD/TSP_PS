@@ -18,7 +18,10 @@ public class Tsp_ps
 	 * vm1084.xml vm1748.xml
 	 */
 
-	private static double TEMPS_EXEC = 15;
+	private static int TEMPS_EXEC = 15;
+	private static double TAUX_LIM_ACCEPTATION = 0.7;
+	private static int NB_ITERATION = 3000;
+	private static double TAUX_DECREMENT_TEMP = 0.85;
 	private static boolean DEBUG = false;
 	private static boolean COMPARE = false;
 	private static boolean COMPARE_PREMIERTOUR = false;
@@ -120,7 +123,47 @@ public class Tsp_ps
 				{
 					try
 					{
-						TEMPS_EXEC = Double.parseDouble(args[i + 1]);
+						TEMPS_EXEC = Integer.parseInt(args[i + 1]);
+						i++;
+					} catch (NumberFormatException e)
+					{
+						System.out.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
+						break;
+					}
+				}
+				// Permet de spécifier le taux d'acceptation du recuit simulé
+				else if (args[i].equals("-tauxAccept"))
+				{
+					try
+					{
+						TAUX_LIM_ACCEPTATION = Double.parseDouble(args[i + 1]);
+						i++;
+					} catch (NumberFormatException e)
+					{
+						System.out.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
+						break;
+					}
+				}
+				// Permet de spécifier le nombre d'itération du recuit simulé
+				else if (args[i].equals("-nbIt"))
+				{
+					try
+					{
+						NB_ITERATION = Integer.parseInt(args[i + 1]);
+						i++;
+					} catch (NumberFormatException e)
+					{
+						System.out.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
+						break;
+					}
+				}
+				// Permet de spécifier le taux de décrémentation de la température du recuit simulé
+				else if (args[i].equals("-tauxDecT"))
+				{
+					try
+					{
+						TAUX_DECREMENT_TEMP = Double.parseDouble(args[i + 1]);
+						i++;
 					} catch (NumberFormatException e)
 					{
 						System.out.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
@@ -142,10 +185,12 @@ public class Tsp_ps
 					PPVT = false;
 					PPV = true;
 					PPI = false;
-
-					listeName = new ArrayList<String>();
-					listeDistances = new ArrayList<Integer>();
-					listeTemps = new ArrayList<Float>();
+					if(listeName == null)
+						listeName = new ArrayList<String>();
+					if(listeDistances == null)
+						listeDistances = new ArrayList<Integer>();
+					if(listeTemps == null)
+						listeTemps = new ArrayList<Float>();
 				}
 				// Permet de préciser si l'utilisateur souhaite utiliser le PPVT, PPV ou le PPI.
 				// Le PPVT n'est pas possible pour les graphs XML.
@@ -181,7 +226,10 @@ public class Tsp_ps
 					System.out.println("Utilisation : [OPTION]... [FILE]");
 					System.out.println("Par défaut le programme dessine si possible le graphe et utilise le PPVT pour les .tsp ou le PPV pour les .xml.");
 					System.out.println("   -lectG [FICHIER]...\t\t\t\t\tEssaie de lire la liste de fichiers");
-					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute. Par défaut ce temps est fixé à 15 minutes.");
+					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute. Par défaut ce temps est fixé à " + TEMPS_EXEC + " minutes.");
+					System.out.println("   -tauxAccept [DECIMAL]\t\t\t\tPermet de spécifier le taux d'acceptation du recuit. Par défaut ce taux est fixé à " + TAUX_LIM_ACCEPTATION + ".");
+					System.out.println("   -nbIt [ENTIER]\t\t\t\t\tPermet de spécifier le nombre d'itération du recuit. Par défaut ce temps est fixé à " + NB_ITERATION + ".");
+					System.out.println("   -tauxDecT [DECIMAL]\t\t\t\t\tPermet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce temps est fixé à " + TAUX_DECREMENT_TEMP + ".");
 					System.out.println("   -debug, -DEBUG, -verbose\t\t\t\tAffiche les messages de débug.");
 					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux. Les options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.");
 					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml execute donc le PPV).");
@@ -261,7 +309,7 @@ public class Tsp_ps
 				if (DEBUG)
 					begin = System.currentTimeMillis();
 				
-				c.recuitSim(0.7, (int) Math.floor(TEMPS_EXEC * 60));
+				c.recuitSimule(TAUX_LIM_ACCEPTATION, TEMPS_EXEC * 60, NB_ITERATION, TAUX_DECREMENT_TEMP, DEBUG);
 				
 				// FIN
 				// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
@@ -290,7 +338,7 @@ public class Tsp_ps
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 				}
 				
-				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()) + "\n");
+				System.out.println("Distance totale finale : " + Math.round(c.calculDistanceTotal()) + "\n");
 				if(COMPARE)
 					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
@@ -385,7 +433,7 @@ public class Tsp_ps
 				if (DEBUG)
 					begin = System.currentTimeMillis();
 				
-				c.recuitSim(0.7, (int) Math.floor(TEMPS_EXEC * 60));
+				c.recuitSimule(TAUX_LIM_ACCEPTATION, TEMPS_EXEC * 60, NB_ITERATION, TAUX_DECREMENT_TEMP, DEBUG);
 				
 				// FIN
 				// Affichage du chrono, du score et vérification que c'est un cycle hamiltonien correct
@@ -414,7 +462,7 @@ public class Tsp_ps
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 				}
 				
-				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()) + "\n");
+				System.out.println("Distance totale finale : " + Math.round(c.calculDistanceTotal()) + "\n");
 				if(COMPARE)
 					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				

@@ -53,14 +53,16 @@ public class GestionFichierXML
 					// tmp2[1] contient le nom du point à l'autre bout de l'arrete.
 					if (j != Integer.parseInt(tmp2[1]))
 						System.out.println("WARNING : Un point est ecrit à un endroit où il ne faut pas. (" + j + " != " + Integer.parseInt(tmp2[1]) + ").");
-					
-					// strCout[1] contient le cout de l'arrete au format exponentiel
-					cout = Double.parseDouble(strCout[1]);
-					
-					// ICI GESTION DU CAS OU LE COUT EST ZERO
-					
-					l[i][j] = cout;
-					j++;
+					else
+					{
+						// strCout[1] contient le cout de l'arrete au format exponentiel
+						cout = Double.parseDouble(strCout[1]);
+						
+						// ICI GESTION DU CAS OU LE COUT EST ZERO
+						
+						l[i][j] = cout;
+						j++;
+					}
 				}
 				
 				// La diagonale de la matrice est mise à Double.MAX_VALUE pour signifier qu'il n'y a pas de
@@ -77,7 +79,7 @@ public class GestionFichierXML
 			error = true;
 		}
 		
-		if(!error)
+		if (!error)
 			System.out.println("Lecture du fichier \"" + nomFichier + "\" terminée.");
 		
 		return l;

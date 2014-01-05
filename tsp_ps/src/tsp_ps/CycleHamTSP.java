@@ -26,7 +26,7 @@ public class CycleHamTSP
 		_nbVilles = _villes.size();
 		
 		// Lancement de la fonction d'init
-		if(estValide())
+		if (estValide())
 			this.init(nonRandom);
 	}
 	
@@ -37,40 +37,39 @@ public class CycleHamTSP
 	{
 		_villesRestantes.addAll(_villes);
 		
-		//On vide le cycle possiblement existant.
+		// On vide le cycle possiblement existant.
 		_arretes.clear();
 		_distance = 0;
 		
 		// Choix de la ville de depart aléatoirement ou non en fonction du boolean en paramètre
-		if(nonRandom)
+		if (nonRandom)
 		{
-			//Si le sommet n'a pas été setté.
-			if(Tsp_ps.getSommetAleatoire() == -1)
+			// Si le sommet n'a pas été setté.
+			if (Tsp_ps.getSommetAleatoire() == -1)
 			{
 				int pos = _rand.nextInt(_nbVilles);
 				_depart = _villes.get(pos);
-				Tsp_ps.setSommetAleatoire(_depart.getNumber()-1);
-			}
-			else
+				Tsp_ps.setSommetAleatoire(_depart.getNumber() - 1);
+			} else
 			{
-				//On vérifie que le sommet est bien dans les bornes. Si ce n'est pas le cas, tant pis nous settons un nouveau sommet.
-				if(Tsp_ps.getSommetAleatoire() < _villes.size())
+				// On vérifie que le sommet est bien dans les bornes. Si ce n'est pas le cas, tant pis nous
+				// settons un nouveau sommet.
+				if (Tsp_ps.getSommetAleatoire() < _villes.size())
 					_depart = _villes.get(Tsp_ps.getSommetAleatoire());
 				else
 				{
 					int pos = _rand.nextInt(_nbVilles);
 					_depart = _villes.get(pos);
-					Tsp_ps.setSommetAleatoire(_depart.getNumber()-1);
+					Tsp_ps.setSommetAleatoire(_depart.getNumber() - 1);
 				}
 			}
-		}
-		else
+		} else
 		{
 			int pos = _rand.nextInt(_nbVilles);
 			_depart = _villesRestantes.get(pos);
 		}
-
-		//On signale la ville choisie.
+		
+		// On signale la ville choisie.
 		System.out.println("Ville de départ : " + _depart.getNumber() + " / " + _nbVilles);
 		
 		// Retrait de la ville de départ des villes restantes
@@ -542,6 +541,39 @@ public class CycleHamTSP
 	
 	public ArrayList<Ville> solutionVoisine(ArrayList<Ville> list)
 	{
+		return solutionVoisineV2Opt(list);
+	}
+	
+	public ArrayList<Ville> solutionVoisineVAleatoire(ArrayList<Ville> list)
+	{
+		ArrayList<Ville> res = new ArrayList<Ville>();
+		int i, j, k;
+		
+		i = _rand.nextInt(_nbVilles);
+		do
+		{
+			j = _rand.nextInt(_nbVilles);
+		} while (i == j);
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k == i)
+			{
+				res.add(list.get(j));
+			} else if (k == j)
+			{
+				res.add(list.get(i));
+			} else
+			{
+				res.add(list.get(k));
+			}
+		}
+		
+		return res;
+	}
+	
+	public ArrayList<Ville> solutionVoisineV2Opt(ArrayList<Ville> list)
+	{
 		ArrayList<Ville> res;
 		int i, iplus1, j, jplus1, taille = list.size();
 		
@@ -553,10 +585,6 @@ public class CycleHamTSP
 		iplus1 = i + 1;
 		Ville xi = list.get(i), xiplus1 = list.get(iplus1);
 		
-		/*
-		 * do { j = _rand.nextInt(_nbVilles); } while ((j < iplus1) && (j > (taille - 2)));
-		 */
-
 		for (j = i + 2; j < (taille - 1); ++j)
 		{
 			jplus1 = j + 1;
@@ -578,21 +606,21 @@ public class CycleHamTSP
 		return reverse(list, iplus1, j - 1);
 	}
 	
-	public void recuitSim(double taux, int n)
+	public void recuitSimule(double tauxLimiteAcceptation, int tempsAlloue, int nbIteration, double tauxDecrementT, boolean DEBUG)
 	{
-		System.out.println("Optimisation : Recuit Simulé");
+		if (DEBUG)
+			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		// Initialisation du recuit
-		int iteration = 3000;// _nbVilles;
+		double temp = Math.round(initRecuit(10, nbIteration, 1000, 0.8));
 		
-		double temp = Math.round(initRecuit(1000, iteration, 1000, 0.8));
-		System.out.println("température : " + temp);
-		// *
-		// Solution courrant
+		if (DEBUG)
+			System.out.println("Température Initiale : " + temp);
+		
+		// Solution courante
 		ArrayList<Ville> solCourante = new ArrayList<Ville>();
 		double valCourante;
 		
-		// Initialissation de la solution courante
+		// Initialisation de la solution courante
 		Ville v = _depart;
 		do
 		{
@@ -626,7 +654,7 @@ public class CycleHamTSP
 		{
 			int nbMov = 0;
 			
-			for (i = 0; i < iteration; ++i)
+			for (i = 0; i < nbIteration; ++i)
 			{
 				// Récupération d'une solution voisine
 				solVoisine = solutionVoisine(solCourante);
@@ -644,37 +672,35 @@ public class CycleHamTSP
 					{
 						bestSol = solCourante;
 						bestVal = valCourante;
-						// On a améliorer la solution donc on on réinitialise le
-						// compteur de non
+						// On a amélioré la solution donc on on réinitialise le compteur de non
 						// amélioration
 						compteur = 0;
-						// System.out.println("solution amélioree ! distance : "
-						// + bestVal + "(" +
+						// System.out.println("solution amélioree ! distance : " + bestVal + "(" +
 						// valCourante + ")");
 					}
 				}
 			}
 			
 			// Calcul du taux d'acceptation
-			tauxAcceptation = nbMov / (double) iteration;
-			if (tauxAcceptation < taux)
-				compteur++; // La solution ne change pas suffisamment, pour
-			// continuer
-			
+			tauxAcceptation = nbMov / (double) nbIteration;
+			if (tauxAcceptation < tauxLimiteAcceptation)
+				compteur++; // La solution ne change pas suffisamment, pour continuer
+				
 			// Actualise la température
-			// temp *= 0.85;
-			temp *= 0.5;
+			temp *= tauxDecrementT;
 			
+			// Calcul du temps écoulé
 			end = System.currentTimeMillis();
 			time = ((float) (end - begin)) / 1000f;
-			if (time > n)
-				break;
-		} while ((compteur < 10) && (temp > 10));
+		} while ((compteur < 10) && (temp > 10) && (time < tempsAlloue));
 		
-		end = System.currentTimeMillis();
-		time = ((float) (end - begin)) / 1000f;
-		System.out.println("Temps d'execution du recuit : " + time + " ( i = " + i + ")");
-		System.out.println("taux : " + tauxAcceptation + ", température : " + temp + ", compteur : " + compteur);
+		if (DEBUG)
+		{
+			end = System.currentTimeMillis();
+			time = ((float) (end - begin)) / 1000f;
+			System.out.println("Temps d'execution du recuit : " + time);
+			System.out.println("taux : " + tauxAcceptation + ", température : " + temp + ", compteur : " + compteur);
+		}
 		
 		// Stockage de la meilleure solution
 		for (i = 0; i < (bestSol.size() - 1); i++)
@@ -682,7 +708,7 @@ public class CycleHamTSP
 			_arretes.put(bestSol.get(i), bestSol.get(i + 1));
 		}
 		_arretes.put(bestSol.get(i), bestSol.get(0));
-		// */
+		
 	}
 	
 	/**
@@ -764,10 +790,12 @@ public class CycleHamTSP
 			
 			// Calcul du taux d'acceptation pour augmenter ou non la température
 			if ((nbMov / (double) i) < taux)
+			{
 				temp *= 2;
-			else
+			} else
 				continuer = false;
 		}
 		return temp;
 	}
+	
 }
