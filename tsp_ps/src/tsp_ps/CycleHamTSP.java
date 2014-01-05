@@ -53,21 +53,14 @@ public class CycleHamTSP
 			}
 			else
 			{
-				if(Tsp_ps.getSommetAleatoire()+1 == _villes.get(Tsp_ps.getSommetAleatoire()).getNumber())
-				{
+				//On vérifie que le sommet est bien dans les bornes. Si ce n'est pas le cas, tant pis nous settons un nouveau sommet.
+				if(Tsp_ps.getSommetAleatoire() < _villes.size())
 					_depart = _villes.get(Tsp_ps.getSommetAleatoire());
-					System.out.println("A ENLEVER : Les deux villes ont bien le même num.");
-				}
 				else
 				{
-					for(Ville v : _villes)
-					{
-						if(Tsp_ps.getSommetAleatoire()+1 == v.getNumber())
-						{
-							_depart = v;
-							System.out.println("A ENLEVER : pas coool.");
-						}
-					}
+					int pos = _rand.nextInt(_nbVilles);
+					_depart = _villes.get(pos);
+					Tsp_ps.setSommetAleatoire(_depart.getNumber()-1);
 				}
 			}
 		}
@@ -78,7 +71,7 @@ public class CycleHamTSP
 		}
 
 		//On signale la ville choisie.
-		System.out.println("Ville de départ : " + ( _depart.getNumber() + 1) + " / " + _nbVilles);
+		System.out.println("Ville de départ : " + _depart.getNumber() + " / " + _nbVilles);
 		
 		// Retrait de la ville de départ des villes restantes
 		_villesRestantes.remove(_depart);

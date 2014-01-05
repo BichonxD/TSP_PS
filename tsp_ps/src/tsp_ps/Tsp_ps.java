@@ -54,7 +54,7 @@ public class Tsp_ps
 		long begin = 0, end = 0;
 		float time;
 		ArrayList<String> listeName = null;
-		ArrayList<Double> listeDistances = null;
+		ArrayList<Integer> listeDistances = null;
 		ArrayList<Float> listeTemps = null;
 		
 		if (args.length < 1)
@@ -83,12 +83,20 @@ public class Tsp_ps
 					for (i++; i < args.length; i++)
 					{
 						if (args[i].endsWith(".xml"))
-							cXML.add(new CycleHamXML(args[i], false));
+						{
+							CycleHamXML cx = new CycleHamXML(args[i], false);
+							if(cx.estValide())
+								cXML.add(cx);
+						}
 						else if (args[i].endsWith(".tsp"))
-							cTSP.add(new CycleHamTSP(args[i], false));
+						{
+							CycleHamTSP ct = new CycleHamTSP(args[i], false);
+							if(ct.estValide())
+								cTSP.add(ct);
+						}
 						else
 						{
-							System.err.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
+							System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
 							BREAK = true;
 							break;
 						}
@@ -115,17 +123,20 @@ public class Tsp_ps
 						TEMPS_EXEC = Double.parseDouble(args[i + 1]);
 					} catch (NumberFormatException e)
 					{
-						System.err.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
+						System.out.println("ERREUR : Argument non valide ou manquant après l'option \"-t\"");
 						break;
 					}
 				}
 				// Active le mode DEBUG.
-				else if (args[i].equals("-debug") || args[i].equals("-DEBUG") || args[i].equals("-verbose"))
+				else if ((args[i].equals("-debug") || args[i].equals("-DEBUG") || args[i].equals("-verbose")) && !COMPARE)
 					DEBUG = true;
 				// Permet de comparer les résultats entre deux fichiers.
 				// Par défaut la comparaison se fait avec comme algo le PPV.
 				else if (args[i].equals("-compare"))
 				{
+					if(i+2 >= args.length)
+						System.out.println("ERREUR : Argument manquant après l'option \"-t\"");
+						
 					COMPARE = true;
 					COMPARE_PREMIERTOUR = false;
 					PPVT = false;
@@ -133,7 +144,7 @@ public class Tsp_ps
 					PPI = false;
 
 					listeName = new ArrayList<String>();
-					listeDistances = new ArrayList<Double>();
+					listeDistances = new ArrayList<Integer>();
 					listeTemps = new ArrayList<Float>();
 				}
 				// Permet de préciser si l'utilisateur souhaite utiliser le PPVT, PPV ou le PPI.
@@ -159,18 +170,28 @@ public class Tsp_ps
 				// dessine.
 				else if (args[i].equals("-NDraw"))
 				{
-					DRAW = true;
+					DRAW = false;
 				} else if (args[i].equals("-Draw"))
 				{
-					DRAW = false;
+					DRAW = true;
 				}
 				// Affiche l'aide
-				else if (args[i].equals("--help"))
+				else if (args[i].equals("--help") || args[i].equals("-?"))
 				{
-					System.out.println("Aide pas encore faîtes :P");
+					System.out.println("Utilisation : [OPTION]... [FILE]");
+					System.out.println("Par défaut le programme dessine si possible le graphe et utilise le PPVT pour les .tsp ou le PPV pour les .xml.");
+					System.out.println("   -lectG [FICHIER]...\t\t\t\t\tEssaie de lire la liste de fichiers");
+					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute. Par défaut ce temps est fixé à 15 minutes.");
+					System.out.println("   -debug, -DEBUG, -verbose\t\t\t\tAffiche les messages de débug.");
+					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux. Les options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.");
+					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml execute donc le PPV).");
+					System.out.println("   -ppv\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin.");
+					System.out.println("   -ppi\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme de la Plus Proche Insertion.");
+					System.out.println("   -Draw\t\t\t\t\t\tSpécifie l'affichage du dessin.");
+					System.out.println("   --help, -?\t\t\t\t\t\tAffiche cette aide.");
 				} else
 				{
-					System.err.println("ERREUR : Option non reconnue.");
+					System.out.println("ERREUR : Option non reconnue.");
 					break;
 				}
 			}
@@ -213,7 +234,7 @@ public class Tsp_ps
 					time = ((float) (end - begin)) / 1000f;
 					
 					if (c.estCycle())
-						System.out.println("La solution est un cycle;");
+						System.out.println("La solution est un cycle.");
 					else
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 					
@@ -234,7 +255,7 @@ public class Tsp_ps
 				}
 				System.out.println("Distance totale avant optimisation : " + Math.round(c.calculDistanceTotal()));
 				if(DEBUG && COMPARE)
-					listeDistances.add(c.calculDistanceTotal());
+					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
 				// Si on est en mode DEBUG on lance le chronomètre.
 				if (DEBUG)
@@ -249,7 +270,7 @@ public class Tsp_ps
 					end = System.currentTimeMillis();
 					time = ((float) (end - begin)) / 1000f;
 					if (c.estCycle())
-						System.out.println("La solution est un cycle;");
+						System.out.println("La solution est un cycle.");
 					else
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 					
@@ -269,9 +290,9 @@ public class Tsp_ps
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 				}
 				
-				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()));
+				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()) + "\n");
 				if(COMPARE)
-					listeDistances.add(c.calculDistanceTotal());
+					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
 				if(COMPARE && !COMPARE_PREMIERTOUR)
 					COMPARE_PREMIERTOUR = true;
@@ -281,17 +302,20 @@ public class Tsp_ps
 					COMPARE_PREMIERTOUR = false;
 					
 					//Affichage du résultat de la comparaison
+					System.out.println("\nRésumé de la comparaison :");
 					for(int m = 0; m < listeName.size(); m++)
 					{
 						System.out.println("-" + listeName.get(m));
 						if(DEBUG)
 						{
-							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " min, d = " + listeTemps.get(2 * m));
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeTemps.get(2 * m + 1));
+							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " s, d = " + listeDistances.get(2 * m));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeDistances.get(2 * m + 1));
 						}
 						else
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " min, d = " + listeTemps.get(m));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " s, d = " + listeDistances.get(m));
 					}
+					
+					setSommetAleatoire(-1);
 				}
 				
 				// Affichage du dessin
@@ -317,9 +341,9 @@ public class Tsp_ps
 					break;
 				
 				// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
-				if (PPV)
+				if (PPV || PPVT)
 					c.plusProcheVoisin();
-				else if (PPI || PPVT)
+				else if (PPI)
 					c.plusProcheInsertion();
 				// Au cas où si tous les booleen sont à faux.
 				else
@@ -336,13 +360,13 @@ public class Tsp_ps
 					time = ((float) (end - begin)) / 1000f;
 					
 					if (c.estCycle())
-						System.out.println("La solution est un cycle;");
+						System.out.println("La solution est un cycle.");
 					else
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 					
-					if (PPV)
+					if (PPV || PPVT)
 						System.out.println("Temps d'execution de l'algorithme du Plus Proche Voisin (PPV) : " + time);
-					else if (PPI || PPVT)
+					else if (PPI)
 						System.out.println("Temps d'execution de l'algorithme de la Plus Proche Insertion (PPI) : " + time);
 					
 					if(COMPARE)
@@ -355,7 +379,7 @@ public class Tsp_ps
 				}
 				System.out.println("Distance totale avant optimisation : " + Math.round(c.calculDistanceTotal()));
 				if(DEBUG && COMPARE)
-					listeDistances.add(c.calculDistanceTotal());
+					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
 				// Si on est en mode DEBUG on lance le chronomètre.
 				if (DEBUG)
@@ -370,7 +394,7 @@ public class Tsp_ps
 					end = System.currentTimeMillis();
 					time = ((float) (end - begin)) / 1000f;
 					if (c.estCycle())
-						System.out.println("La solution est un cycle;");
+						System.out.println("La solution est un cycle.");
 					else
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 					
@@ -390,9 +414,9 @@ public class Tsp_ps
 						System.out.println("WARNING : La solution obtenue n'est pas un cycle !");
 				}
 				
-				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()));
+				System.out.println("Distance total finale : " + Math.round(c.calculDistanceTotal()) + "\n");
 				if(COMPARE)
-					listeDistances.add(c.calculDistanceTotal());
+					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
 				if(COMPARE && !COMPARE_PREMIERTOUR)
 					COMPARE_PREMIERTOUR = true;
@@ -402,17 +426,20 @@ public class Tsp_ps
 					COMPARE_PREMIERTOUR = false;
 					
 					//Affichage du résultat de la comparaison
+					System.out.println("\nRésumé de la comparaison :");
 					for(int m = 0; m < listeName.size(); m++)
 					{
 						System.out.println("-" + listeName.get(m));
 						if(DEBUG)
 						{
-							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " min, d = " + listeTemps.get(2 * m));
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeTemps.get(2 * m + 1));
+							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " s, d = " + listeDistances.get(2 * m));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeDistances.get(2 * m + 1));
 						}
 						else
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " min, d = " + listeTemps.get(m));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " s, d = " + listeDistances.get(m));
 					}
+					
+					setSommetAleatoire(-1);
 				}
 				
 			} else

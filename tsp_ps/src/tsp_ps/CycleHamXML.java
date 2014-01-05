@@ -51,7 +51,7 @@ public class CycleHamXML
 		if(nonRandom)
 		{
 			//Si le sommet n'a pas été setté.
-			if(Tsp_ps.getSommetAleatoire() == -1)
+			if(Tsp_ps.getSommetAleatoire() == -1 || Tsp_ps.getSommetAleatoire() >= _nbVilles)
 			{
 				_depart = _rand.nextInt(_nbVilles);
 				Tsp_ps.setSommetAleatoire(_depart);
