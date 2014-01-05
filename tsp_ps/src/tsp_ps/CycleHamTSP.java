@@ -545,21 +545,15 @@ public class CycleHamTSP
 		/*int tmp = (int) tailleDeplacement;
 		
 		if(tmp > 2)
-		{
-			if(tmp > max)
-				max = tmp;
-			return solutionVoisineVInversionPays(list, 2);//(int) tailleDeplacement);
-		} else
-		{
-			nb2++;
-			return solutionVoisineVInversionPays(list, 2);
-		}*/
+			return solutionVoisineVInversionPays(list, (int) tailleDeplacement);
+		else
+			return solutionVoisineVInversionPays(list, 2);*/
 		
-		return solutionVoisineVInversionVillesVoisines(list);
+		return solutionVoisine2Opt(list);
 	}
 	
 	/** Inverse 2 villes qui sont voisines en choisissant aléatoirement la ville à inverser */
-	public ArrayList<Ville> solutionVoisineVInversionVillesVoisines(ArrayList<Ville> list)
+	public ArrayList<Ville> solutionVoisineInversionVillesVoisines(ArrayList<Ville> list)
 	{
 		ArrayList<Ville> res = new ArrayList<Ville>();
 		int i, j, k;
@@ -588,7 +582,7 @@ public class CycleHamTSP
 	}
 	
 	/**Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.*/
-	public ArrayList<Ville> solutionVoisineVInversionPays(ArrayList<Ville> list, int tailleDeplacement)
+	public ArrayList<Ville> solutionVoisineInversionPays(ArrayList<Ville> list, int tailleDeplacement)
 	{
 		ArrayList<Ville> res = new ArrayList<Ville>();
 		int i, k;
@@ -612,7 +606,7 @@ public class CycleHamTSP
 	}
 	
 	/** Inverse deux villes toutes deux choisient aléatoirement. */
-	public ArrayList<Ville> solutionVoisineVAleatoire(ArrayList<Ville> list)
+	public ArrayList<Ville> solutionVoisineAleatoire(ArrayList<Ville> list)
 	{
 		ArrayList<Ville> res = new ArrayList<Ville>();
 		int i, j, k;
@@ -640,8 +634,8 @@ public class CycleHamTSP
 		return res;
 	}
 	
-	/***/
-	public ArrayList<Ville> solutionVoisineV2Opt(ArrayList<Ville> list)
+	/** Solution voisine obtenue via un algo proche du 2-opt (1ère version) */
+	public ArrayList<Ville> solutionVoisine2Opt(ArrayList<Ville> list)
 	{
 		ArrayList<Ville> res;
 		int i, iplus1, j, jplus1, taille = list.size();
@@ -674,6 +668,25 @@ public class CycleHamTSP
 		}
 		return reverse(list, iplus1, j - 1);
 	}
+
+	/** Solution voisine obtenue via un algo proche du 2-opt (2de version) */
+	public ArrayList<Ville> solutionVoisine2OptV2(ArrayList<Ville> list)
+	{
+		int i, j, taille = list.size();
+		
+		i = _rand.nextInt(taille - 4);
+		
+		if(i > 3)
+		{
+			j = _rand.nextInt(i - 2);
+			j += taille - i + 2;
+		}
+		else
+			j = taille - i - 1;	
+		
+		return reverse(list, i + 1, j);
+		
+	}
 	
 	/** Lance une optimisation du cycle Hamiltonien via l'algorithme du Recuit Simulé */
 	public void recuitSimule(double tauxLimiteAcceptation, int tempsAlloue, int nbIteration, double tauxDecrementT, boolean DEBUG)
@@ -681,7 +694,7 @@ public class CycleHamTSP
 		if (DEBUG)
 			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		double temp = Math.round(initRecuit(10, nbIteration, 1000, 0.8));
+		double temp = Math.round(initRecuit(1000, nbIteration, 1000, 0.8));
 		
 		if (DEBUG)
 			System.out.println("Température Initiale : " + temp);

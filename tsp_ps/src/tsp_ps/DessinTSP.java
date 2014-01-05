@@ -10,9 +10,9 @@ public class DessinTSP extends JFrame
 	
 	public DessinTSP(CycleHamTSP c)
 	{
-		super("TSP Mona Lisa");
+		super("TSP - Projet PS");
 		this.setSize(new Dimension(1000, 1000));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		// Dessin pan = new Dessin(c);
 		CanvasTSP pan = new CanvasTSP(c);

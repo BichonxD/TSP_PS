@@ -478,29 +478,51 @@ public class CycleHamXML
 		}
 		return l;
 	}
-	
-	private static int nb2 = 0;
-	private static int max = 0;
-	
+
+	/** Fourni une solution voisine de celle donnée en paramètre en appelant l'un des algorithmes. */
 	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list, double tailleDeplacement)
 	{
-		int tmp = (int) tailleDeplacement;
-		
-		//System.out.println("Taille Deplacement = " + tailleDeplacement);
+		/*int tmp = (int) tailleDeplacement;
 		
 		if(tmp > 2)
-		{
-			if(tmp > max)
-				max = tmp;
 			return solutionVoisineVInversionPays(list, (int) tailleDeplacement);
-		} else
-		{
-			nb2++;
-			return solutionVoisineVInversionPays(list, 2);
-		}
+		else
+			return solutionVoisineVInversionPays(list, 2);*/
+		
+		return solutionVoisine2Opt(list);
 	}
 	
-	public ArrayList<Integer> solutionVoisineVInversionPays(ArrayList<Integer> list, int tailleDeplacement)
+	/** Inverse 2 villes qui sont voisines en choisissant aléatoirement la ville à inverser */
+	public ArrayList<Integer> solutionVoisineInversionVillesVoisines(ArrayList<Integer> list)
+	{
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		int i, j, k;
+		
+		i = _rand.nextInt(_nbVilles);
+		if(i + 1 < _nbVilles)
+			j = i +1;
+		else
+			j = 0;
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k == i)
+			{
+				res.add(list.get(j));
+			} else if (k == j)
+			{
+				res.add(list.get(i));
+			} else
+			{
+				res.add(list.get(k));
+			}
+		}
+		
+		return res;
+	}
+
+	/**Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.*/
+	public ArrayList<Integer> solutionVoisineInversionPays(ArrayList<Integer> list, int tailleDeplacement)
 	{
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		int i, k;
@@ -522,8 +544,9 @@ public class CycleHamXML
 		
 		return res;
 	}
-	
-	public ArrayList<Integer> solutionVoisineVAleatoire(ArrayList<Integer> list)
+
+	/** Inverse deux villes toutes deux choisient aléatoirement. */
+	public ArrayList<Integer> solutionVoisineAleatoire(ArrayList<Integer> list)
 	{
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		int i, j, k;
@@ -551,7 +574,8 @@ public class CycleHamXML
 		return res;
 	}
 	
-	public ArrayList<Integer> solutionVoisineV2Opt(ArrayList<Integer> list)
+	/** Solution voisine obtenue via un algo proche du 2-opt (1ère version) */
+	public ArrayList<Integer> solutionVoisine2Opt(ArrayList<Integer> list)
 	{
 		ArrayList<Integer> res;
 		int i, iplus1, j, jplus1, taille = list.size();
@@ -583,6 +607,25 @@ public class CycleHamXML
 			}
 		}
 		return reverse(list, iplus1, j - 1);
+	}
+	
+	/** Solution voisine obtenue via un algo proche du 2-opt (2de version) */
+	public ArrayList<Integer> solutionVoisine2OptV2(ArrayList<Integer> list)
+	{
+		int i, j, taille = list.size();
+		
+		i = _rand.nextInt(taille - 4);
+		
+		if(i > 3)
+		{
+			j = _rand.nextInt(i - 2);
+			j += taille - i + 2;
+		}
+		else
+			j = taille - i - 1;	
+		
+		return reverse(list, i + 1, j);
+		
 	}
 	
 	public void recuitSimule(double tauxLimiteAcceptation, int tempsAlloue, int nbIteration, double tauxDecrementT, boolean DEBUG)
@@ -688,7 +731,6 @@ public class CycleHamXML
 		}
 		_arretes.put(bestSol.get(i), bestSol.get(0));
 		
-		System.out.println("NB de 2 = " + nb2 + ", MAX = " + max);
 	}
 	
 	/**
