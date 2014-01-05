@@ -258,7 +258,10 @@ public class Tsp_ps
 				// Création du cycle.
 				CycleHamTSP c = new CycleHamTSP(args[i], COMPARE);
 				if (!c.estValide())
+				{
+					System.out.println("ERREUR : Lors de la création du cycle.");
 					break;
+				}
 				
 				// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
 				if (PPVT)
@@ -386,7 +389,10 @@ public class Tsp_ps
 				// Création du cycle.
 				CycleHamXML c = new CycleHamXML(args[i], COMPARE);
 				if (!c.estValide())
+				{
+					System.out.println("ERREUR : Lors de la création du cycle.");
 					break;
+				}
 				
 				// Lancement de l'algo pour obtenir un cycle Hamiltonien de départ.
 				if (PPV || PPVT)
