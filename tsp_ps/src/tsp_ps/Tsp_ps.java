@@ -62,7 +62,7 @@ public class Tsp_ps
 				// Permet de tester si une liste de graph est reconnues par le programme.
 				if (args[i].equals("-lectG"))
 				{
-					if (args[i + 1].equals("-DEBUG"))
+					if ((i + 1 < args.length) && ((args[i+1].equals("-debug") || args[i+1].equals("-DEBUG") || args[i+1].equals("-verbose"))))
 					{
 						DEBUG = true;
 						i++;
@@ -86,7 +86,7 @@ public class Tsp_ps
 								cTSP.add(ct);
 						} else
 						{
-							System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
+							System.out.println("ERREUR : Le format du fichier en entrée (\"" + args[i] + "\") n'est ni \"XML\" ni \"TSP\".");
 							BREAK = true;
 							break;
 						}
@@ -212,14 +212,14 @@ public class Tsp_ps
 				{
 					System.out.println("Utilisation : [OPTION]... [FILE]...");
 					System.out.println("Par défaut le programme dessine si possible le graphe et utilise le PPVT pour les .tsp ou le PPV pour les .xml.");
-					System.out.println("   -lectG [FICHIER]...\t\t\t\t\tEssaie de lire la liste de fichiers");
-					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute. Par défaut ce temps est fixé à " + TEMPS_EXEC + " minutes.");
+					System.out.println("   -lectG [-DEBUG] [FICHIER]...\t\t\t\tEssaie de lire la liste de fichiers");
+					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute.\n\t\t\t\t\t\t\tPar défaut ce temps est fixé à " + TEMPS_EXEC + " minutes.");
 					System.out.println("   -tauxAccept [DECIMAL]\t\t\t\tPermet de spécifier le taux d'acceptation du recuit. Par défaut ce taux est fixé à " + TAUX_LIM_ACCEPTATION + ".");
-					System.out.println("   -nbIt [ENTIER]\t\t\t\t\tPermet de spécifier le nombre d'itération du recuit. Par défaut ce temps est fixé à " + NB_ITERATION + ".");
-					System.out.println("   -tauxDecT [DECIMAL]\t\t\t\t\tPermet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce temps est fixé à " + TAUX_DECREMENT_TEMP + ".");
+					System.out.println("   -nbIt [ENTIER]\t\t\t\t\tPermet de spécifier le nombre d'itération du recuit. Par défaut ce nombre est fixé à " + NB_ITERATION + ".");
+					System.out.println("   -tauxDecT [DECIMAL]\t\t\t\t\tPermet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce taux est fixé à " + TAUX_DECREMENT_TEMP + ".");
 					System.out.println("   -debug, -DEBUG, -verbose\t\t\t\tAffiche les messages de débug.");
-					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux. Les options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.");
-					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml execute donc le PPV).");
+					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux.\n\t\t\t\t\t\t\tLes options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.");
+					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible\n\t\t\t\t\t\t\t(impossible pour les fichiers xml execute donc le PPV).");
 					System.out.println("   -ppv\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin.");
 					System.out.println("   -ppi\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme de la Plus Proche Insertion.");
 					System.out.println("   -Draw\t\t\t\t\t\tSpécifie l'affichage du dessin.");
