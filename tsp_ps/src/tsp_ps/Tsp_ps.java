@@ -306,6 +306,9 @@ public class Tsp_ps
 				if (DEBUG)
 					begin = System.currentTimeMillis();
 				
+				if(0 == NB_ITERATION)
+					NB_ITERATION = c.get_nbVilles()*c.get_nbVilles();
+				
 				c.recuitSimule(TAUX_LIM_ACCEPTATION, TEMPS_EXEC * 60, NB_ITERATION, TAUX_DECREMENT_TEMP, DEBUG);
 				
 				// FIN
