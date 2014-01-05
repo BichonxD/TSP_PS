@@ -28,6 +28,27 @@
 
 \section*{Document utilisateur}
 
-Document utilisateur à remplir
+Le programme fourni est un jar executable. Celui-ci s'execute via la commande \textbf{java -jar projetPS_BOSOMCHAUSSY.jar} suivi possiblement d'une des options indiquées dans la liste ci-après puis de la liste des fichiers contenant les graphes à optimiser.
+
+\section*{Format des Fichiers}
+
+Le programme ne prend en entrée que les fichiers de la forme "*.xml" et "*.tsp". Les fichiers doivent impérativement être formatés selon les conventions données par la TSPLIB.
+De plus, les fichiers "*.tsp" doivent être formatés selon le format de données "EUC_2D" ou "CEIL_2D". Notre programme ne gère pas les autres formats de données.
+
+\section*{Options}
+
+Les options possibles sont :
+-lectG 											Cette option lance uniquement la lecture des fichiers passés en paramètre. Elle est utile pour savoir si un fichier peut être reconnu par notre programme.
+-t [ENTIER]										Cette option permet de spécifier le temps d'execution de l'algorithme du recuit simulé. Par défaut, ce temps est fixé à 15 minutes.
+-tauxAccept [DECIMAL]							Cette option permet de spécifier le taux d'acceptation du recuit. C'est à dire le taux en dessous duquel le recuit considérera que les solutions obtenues ne sont plus satisfaisante. Par défaut ce taux est fixé à 0.7.
+-nbIt [ENTIER]									Cette option permet de spécifier le nombre d'itération que fera le recuit avant d'évaluer le résultat. Par défaut ce nombre est fixé au nombre de villes du graphe.
+-tauxDecT [DECIMAL]								Cette option permet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce taux est fixé à 0.85.
+-debug, -DEBUG, -verbose						Affiche les messages de débug.
+-compare [FICHIER] [OPTION]... [FICHIER]		Permet de comparer des fichiers entre eux. L'option fixe le sommet de départ pour qu'il soit identique, si possible,pour tous les graphes. De plus, elle fixe aussi l'utilisation de l'algorithme du Plus Proche Voisin pour les graphiques (ceux-ci est modifiable grâce aux options suivantes). lLes options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.
+   -ppvt						Spécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml execute donc le PPV).
+   -ppv							Spécifie l'utilisation de l'algorithme du Plus Proche Voisin.
+   -ppi							Spécifie l'utilisation de l'algorithme de la Plus Proche Insertion.
+   -Draw						Spécifie l'affichage du dessin.
+   --help, -?						Affiche cette aide.
 
 \end{document}
