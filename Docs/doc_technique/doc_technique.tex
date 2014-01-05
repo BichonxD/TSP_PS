@@ -14,25 +14,24 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
-\usepackage{tabbing}
-
 % Affichage pour les algos, numérotation en fonction des chapitres
 \usepackage[ruled,vlined]{algorithm2e}
 \SetAlgorithmName{Algorithme}{Liste des algorithme}
+% http://www.tug.org/texlive/Contents/live/texmf-dist/doc/latex/algorithm2e/algorithm2e.pdf
 
 % Images
-%\usepackage{graphicx}
-%\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{rotating}
 
 \begin{document}
 
 \input{page_de_garde.tex}
 
 \rhead{Programmation Stochastique - Document technique}
-\lfoot{\includegraphics[scale=0.3]{polytech.jpg}}
+\lfoot{\includegraphics[scale=0.3]{../polytech.jpg}}
 \rfoot{BOSOM - CHAUSSY}
 
-\section*{Presentation du problème}
+\section{Présentation du problème}
 
 Le but de ce projet est de traiter le problème du voyager de commerce, Travelling Salesman Problem en anglais.
 Il s'agit d'un problème de d'optimisation combinatoire qui a été formulé de manière générale en 1930, à l'aide d'un modèle mathématique clair.
@@ -51,97 +50,132 @@ Il semble évident que l'on ne peut pas énumérer toutes les solutions possible
 Il faut donc imaginer des méthodes approchées qui permettent de trouver une solution plus proche de la solution optimale.
 Dans ce projet, nous allons utiliser l'algorithme stochastique du recuit simulé que nous présenterons après le modèle mathématique du problème du voyageur de commerce.
 
-\section*{Modèle mathématique}
+\section{Modèle mathématique}
 
 Nous allons utiliser le jeu de donné suivant :\newline
 \begin{itemize}
 \item{$G = (V, E)$}{un graphe orienté complet de n sommets}
 \item{$c_{ij}$}{le coût de l'arc $(v_{i}, v_{j})$}
-\item{
-$$
-x_{ij} = \lbracs
-\left . \begin{tabular}{l}
-1 si et seulement si l'arc (i, j) est retenu dans le circuit, \\
-0 sinon \\
-\end{tabular}
-\right
-$$
-}
-
+%\item{
+%	$x_{ij} = $
+%	$\{$ \left . \begin{tabular}{r}
+%	$1 si et seulement si l'arc (i, j) est retenu dans le circuit,$\\
+%	$0 sinon$\\
+%	\end{tabular}
+%	\right}
 \end{itemize}
+
+\[ x_{ij} = \left\{
+\begin{array}{l l}
+	1 \quad $ si et seulement si l'arc (i, j) est retenu dans le circuit,$\\
+	0 \quad $sinon$
+\end{array} \right.\]
 
 Nous cherchons donc à minimiser le coût total du trajet. Cela se traduit par le programme linéaire suivant :
 
 \begin{tabbing}
-$$
-\min\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}//
-s.t.\=\\
-\+
-\sum_{j=1}^{n}x_{ij} = 1, i = 1,\dots, n \\
-\sum_{i=1}^{n}x_{ij} = 1, j = 1,\dots, n \\
-\sum_{i|v_{i} \in S}\sum_{j|v_{j} \in S}x_{ij} \leq |S|-1
-S \subset \{v_{1},\dots, v_{n}\} et S \neq \emptyset \\
-x_{ij} \in \{0,1\}, 1 \leq i \leq n
-$$
+$\min\sum_{i=1}^{n}\sum_{j=1}^{n}c_{ij}x_{ij}$\\
+$s.t.$\=
+\+\\
+$\sum_{j=1}^{n}x_{ij} = 1, i = 1,\dots, n$\\
+$\sum_{i=1}^{n}x_{ij} = 1, j = 1,\dots, n$\\
+$\sum_{i|v_{i} \in S}\sum_{j|v_{j} \in S}x_{ij} \leq |S| - 1$ , $S \subset \{v_{1},\dots, v_{n}\}$ et $S \neq \emptyset$\\
+$x_{ij} \in \{0,1\}, 1 \leq i \leq n$
 \end{tabbing}
 
 La première contrainte décrit le fait qu'il n'y a qu'une et une seule arrête partant d'une ville.
 La seconde contrainte décrit le fait qu'il n'y a qu'une et une seule arrête arrivant dans une ville.
-La dernière contraite est la contrainte dite de sous-tour.
+La dernière contrainte est la contrainte dite de sous-tour.
 Elle empêche le fait que l'on passe plusieurs fois par une même ville.
 C'est cette contrainte qui rend le problème du voyageur de commerce NP-difficile.
-En effet, cette contrainte vérifie toutes les villes du graphe entres-elles, rendant le calcul extrèmement compliqué, réalisé en un temps en $O(n!)$.
+En effet, cette contrainte vérifie toutes les villes du graphe entres-elles, rendant le calcul extrêmement compliqué, réalisé en un temps en $O(n!)$.
 Il devient évident qu'une recherche exhaustive ne peut être envisagée.
 
-\section*{Recuit simulé}
+\section{Relaxation continue}
 
-L'algorithme que nous allons considéré est l'algorithme du recuit simulé.
-Il s'agit d'une métaheuristique inspiré du processus utilisé en métallurgie.
-%Le principe est d'explorer des voisinages.
+à remplir
 
+\section{Recuit simulé}
+
+L'algorithme que nous allons implémenter est l'algorithme du recuit simulé.
+Il s'agit d'une méta-heuristique inspiré du processus utilisé en métallurgie.
+Une phase de refroidissement lent du matériau est alterne avec une phase de réchauffage, aussi appelé recuit.
+Cet alternance a pour effet de minimiser l'énergie total du matériaux.
+Il a été constaté que le refroidissement naturel de certains métaux ne permet pas aux atomes de se placer dans la configuration la plus solide.
+Il faut donc contrôler le refroidissement à l'aide d'une forte chaleur afin de trouver la meilleure configuration possible.
+Cette méthode a alors été appliquée en optimisation afin de trouver les extrema d'une fonction.
+
+Le principe est d'explorer le voisinage d'une solution, ce qui sera présenté ultérieurement, qui sera accepté ou non.
+Il est possible d'accepter des solutions qui augmentent le coût total de la solution, afin de ne pas être bloqué dans un minimum local.\newline
+Une fois ce voisin généré, nous calculons la différence $\Delta$ de coût entre cette solution et la solution précédente.
+Si le coût de celle-ci est inférieur ou égale, nous gardons cette solution.
+Sinon, nous acceptons la solution avec une probabilité dépendant de la température $T$ : $\exp^{\Delta / T}$.\newline
+La température est un paramètre important de l'algorithme car c'est celle-ci qui détermine la probabilité avec laquelle on accepte une solution qui dégrade le résultat.
+
+Cette exploration de voisinage est exécutée un certain nombre de fois, ce que l'on appelle un palier.
+Une fois le palier terminé, nous diminuons la température et nous recommençons un palier.
+Dans notre implémentation, la température suit une décroissance géographique d'un coefficient de $0.9$.
+La condition d'arrêt de notre recuit simulé tiens compte du taux d'acceptation des solutions.
+En effet, si ce taux n'est pas atteint un certain nombre de fois, l'algorithme s'arrête.
+Cela s'explique par le fait que l'on ne trouve plus de solution qui améliore réellement le résultat et que l'on stagne. Il faut alors s'arrêter et renvoyer la meilleurs solutions trouvée.
+
+Ci-dessous se trouve l'algorithme tel que nous l'avons implémenté.
+La solution de base est obtenue à l'aide de l'algorithme glouton du Plus Proche Voisin que nous ne détaillerons pas.
+La température $T_0$ est obtenue par réglage automatique, ce qui est détaillé plus tard dans le rapport.
+L'instance de Mona Lisa étant très grande, à savoir 100 000 villes, le nombre d'itération n'est que de l'ordre de $n$, ce qui est déjà très grand comme valeur.
+Le taux d'acceptation minimal a été fixé à 0.2 et le nombre d'itération par palier est de l'ordre de $n^2$, où $n$ est le nombre de ville par instance.
 
 \begin{algorithm}[H]
-\SetAlgoLined
-%\LinesNumbered
-\Donnees{E le premier cycle généré
-T la température du recuit}
-\Res{S cycle hamiltonien }
-\Deb{
-	a complété
-%	$S \leftarrow \emptyset$\;
-%	\tcp{Ajout de la ville de départ}
-%	Sélectionner $vDepart \in V$ aléatoirement\;
-%	$v \leftarrow vDepart$\;
-%	$V \leftarrow V \setminus \{vDepart\}$\;
-%	\tcp{Parcours de toutes les villes pour l'ajout aléatoire}
-%	\Tq{$V \neq \emptyset$}{
-%		Sélectionner $v' \in V$ aléatoirement\;
-%		$S \leftarrow S \cup \{v, v'\}$\;
-%		$V \leftarrow V \setminus \{v\}$\;
-%		$v \leftarrow v'$\;
-%	}
-%	$S \leftarrow S \cup \{v, vDepart\}$\;
-%	\Retour S\;
-}
-\caption{Recuit simulé}
+	\SetAlgoLined
+	%\LinesNumbered
+	\Donnees{E le premier cycle généré, $T_0$ la température du recuit, P le nombre d'itération par palier, Tx le taux d'acceptation minimale}
+	\Res{meilleureSol la meilleure solution retenue }
+	\Deb{
+		\tcp{Initialisation}
+		$T \leftarrow T_0$\;
+		$S \leftarrow E$\;
+		$meilleureSol \leftarrow S$\;
+		$compteur \leftarrow 0$\;
+		
+		\tcp{Recuit en lui même}
+		\Repeter{$compteur < 10$}{
+			$nb\_mouvements \leftarrow 0$\;
+			\tcp{Pallier à température fixe}
+			\Pour{$i \leftarrow 1$ à $P$}{
+				$S' \leftarrow engendrerVoisinDe(S)$\;
+				$\Delta \leftarrow distanceTotale(S') - distanceTotale(S)$\;
+				\Si{$\Delta \leq 0 \parallel alea() \leq \exp^{-\Delta / T}$}{
+					$S \leftarrow S'$\;
+					$nb\_mouvements \leftarrow nb\_mouvements + 1$\;
+					\lSi{$distanceTotale(S) < distanceTotale(meilleureSol)$}{$meilleureSol \leftarrow S$}
+				}
+			}
+			\tcp{Actualisation des paramètres}
+			$tauxAcceptation \leftarrow i / nb\_mouvements$\;
+			\lSi{$tauxAcceptation < Tx$}{$compteur \leftarrow compteur + 1$}
+			$T \leftarrow T * 0.9$\;
+		}
+		\Retour $meilleureSol$\;
+	}
+	\caption{Recuit Simulé}
 \end{algorithm}
 
 
-\section*{Voisinage considéré}
+\section{Voisinage considéré}
 
 A remplir
 
-\section*{Réglage de la température du recuit simulé}
+\section{Réglage de la température du recuit simulé}
 
-Le réglage de la température utilisée pour l'algorithme est quelque de compliqué puisque cela influe sur le resultat final.
+Le réglage de la température utilisée pour l'algorithme est quelque de compliqué puisque cela influe sur le résultat final.
 En effet, une température trop haute acceptera trop de changement, rendant le début de l'algorithme inutile.
 Au contraire, une température trop basse n'acceptera que les changements qui réduisent vraiment le coût total, au risque de bloquer dans un minimum local.
 Il faut donc trouver la bonne température qui produira un taux d'acceptation suffisamment grand pour ne pas rendre le début de l'algorithme inutile.
 
 En général, ce taux est fixé à au moins 80\% d'acceptation.
 Nous exécutons donc l'algorithme du recuit simulé avec une température assez basse.
-Au lieu de diminuer la température à la fin des itérations, nous vérifions si le taux est atteind ou non.
+Au lieu de diminuer la température à la fin des itérations, nous vérifions si le taux est atteint ou non.
 S'il ne l'est pas, nous doublons la température et recommençons.
-Une fois le taux atteind, nous retournons la dernière température et lançons l'algorithme du recuit simulé.
+Une fois le taux atteint, nous retournons la dernière température et lançons l'algorithme du recuit simulé.
 
 \end{document}
