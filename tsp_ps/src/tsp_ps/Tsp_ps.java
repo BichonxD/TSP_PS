@@ -357,7 +357,7 @@ public class Tsp_ps
 						if(DEBUG)
 						{
 							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " s, d = " + listeDistances.get(2 * m));
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeDistances.get(2 * m + 1));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " s, d = " + listeDistances.get(2 * m + 1));
 						}
 						else
 							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " s, d = " + listeDistances.get(m));
@@ -481,7 +481,7 @@ public class Tsp_ps
 						if(DEBUG)
 						{
 							System.out.println("\t- Cycle de base : t = " + listeTemps.get(2 * m) + " s, d = " + listeDistances.get(2 * m));
-							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " min, d = " + listeDistances.get(2 * m + 1));
+							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(2 * m + 1) + " s, d = " + listeDistances.get(2 * m + 1));
 						}
 						else
 							System.out.println("\t- Cycle optimisé : t = " + listeTemps.get(m) + " s, d = " + listeDistances.get(m));

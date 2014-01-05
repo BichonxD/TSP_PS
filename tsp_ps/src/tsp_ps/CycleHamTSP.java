@@ -539,11 +539,79 @@ public class CycleHamTSP
 		return l;
 	}
 	
-	public ArrayList<Ville> solutionVoisine(ArrayList<Ville> list)
+	/** Fourni une solution voisine de celle donnée en paramètre en appelant l'un des algorithmes. */
+	public ArrayList<Ville> solutionVoisine(ArrayList<Ville> list, double tailleDeplacement)
 	{
-		return solutionVoisineV2Opt(list);
+		/*int tmp = (int) tailleDeplacement;
+		
+		if(tmp > 2)
+		{
+			if(tmp > max)
+				max = tmp;
+			return solutionVoisineVInversionPays(list, 2);//(int) tailleDeplacement);
+		} else
+		{
+			nb2++;
+			return solutionVoisineVInversionPays(list, 2);
+		}*/
+		
+		return solutionVoisineVInversionVillesVoisines(list);
 	}
 	
+	/** Inverse 2 villes qui sont voisines en choisissant aléatoirement la ville à inverser */
+	public ArrayList<Ville> solutionVoisineVInversionVillesVoisines(ArrayList<Ville> list)
+	{
+		ArrayList<Ville> res = new ArrayList<Ville>();
+		int i, j, k;
+		
+		i = _rand.nextInt(_nbVilles);
+		if(i + 1 < _nbVilles)
+			j = i +1;
+		else
+			j = 0;
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k == i)
+			{
+				res.add(list.get(j));
+			} else if (k == j)
+			{
+				res.add(list.get(i));
+			} else
+			{
+				res.add(list.get(k));
+			}
+		}
+		
+		return res;
+	}
+	
+	/**Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.*/
+	public ArrayList<Ville> solutionVoisineVInversionPays(ArrayList<Ville> list, int tailleDeplacement)
+	{
+		ArrayList<Ville> res = new ArrayList<Ville>();
+		int i, k;
+		
+		i = _rand.nextInt(_nbVilles - tailleDeplacement * 2);
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k - i < 0)
+				res.add(list.get(k));
+			else if ((k - i >= 0) && (k < _nbVilles - tailleDeplacement))
+				res.add(list.get(tailleDeplacement + k));
+			else if(k >= _nbVilles - tailleDeplacement)
+			{
+				res.add(list.get(i));
+				i++;
+			}
+		}
+		
+		return res;
+	}
+	
+	/** Inverse deux villes toutes deux choisient aléatoirement. */
 	public ArrayList<Ville> solutionVoisineVAleatoire(ArrayList<Ville> list)
 	{
 		ArrayList<Ville> res = new ArrayList<Ville>();
@@ -572,6 +640,7 @@ public class CycleHamTSP
 		return res;
 	}
 	
+	/***/
 	public ArrayList<Ville> solutionVoisineV2Opt(ArrayList<Ville> list)
 	{
 		ArrayList<Ville> res;
@@ -606,6 +675,7 @@ public class CycleHamTSP
 		return reverse(list, iplus1, j - 1);
 	}
 	
+	/** Lance une optimisation du cycle Hamiltonien via l'algorithme du Recuit Simulé */
 	public void recuitSimule(double tauxLimiteAcceptation, int tempsAlloue, int nbIteration, double tauxDecrementT, boolean DEBUG)
 	{
 		if (DEBUG)
@@ -657,7 +727,7 @@ public class CycleHamTSP
 			for (i = 0; i < nbIteration; ++i)
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante);
+				solVoisine = solutionVoisine(solCourante, temp*10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution
@@ -692,7 +762,7 @@ public class CycleHamTSP
 			// Calcul du temps écoulé
 			end = System.currentTimeMillis();
 			time = ((float) (end - begin)) / 1000f;
-		} while ((compteur < 10) && (temp > 10) && (time < tempsAlloue));
+		} while ((compteur < 100) && (temp > 10) && (time < tempsAlloue));
 		
 		if (DEBUG)
 		{
@@ -775,7 +845,7 @@ public class CycleHamTSP
 			while ((i < iteration) && (nbMov < nbAcceptations))
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante);
+				solVoisine = solutionVoisine(solCourante, temp*10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution

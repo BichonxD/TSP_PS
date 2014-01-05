@@ -479,9 +479,48 @@ public class CycleHamXML
 		return l;
 	}
 	
-	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list)
+	private static int nb2 = 0;
+	private static int max = 0;
+	
+	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list, double tailleDeplacement)
 	{
-		return solutionVoisineV2Opt(list);
+		int tmp = (int) tailleDeplacement;
+		
+		//System.out.println("Taille Deplacement = " + tailleDeplacement);
+		
+		if(tmp > 2)
+		{
+			if(tmp > max)
+				max = tmp;
+			return solutionVoisineVInversionPays(list, (int) tailleDeplacement);
+		} else
+		{
+			nb2++;
+			return solutionVoisineVInversionPays(list, 2);
+		}
+	}
+	
+	public ArrayList<Integer> solutionVoisineVInversionPays(ArrayList<Integer> list, int tailleDeplacement)
+	{
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		int i, k;
+		
+		i = _rand.nextInt(_nbVilles - tailleDeplacement * 2);
+		
+		for (k = 0; k < _nbVilles; k++)
+		{
+			if (k - i < 0)
+				res.add(list.get(k));
+			else if ((k - i >= 0) && (k < _nbVilles - tailleDeplacement))
+				res.add(list.get(tailleDeplacement + k));
+			else if(k >= _nbVilles - tailleDeplacement)
+			{
+				res.add(list.get(i));
+				i++;
+			}
+		}
+		
+		return res;
 	}
 	
 	public ArrayList<Integer> solutionVoisineVAleatoire(ArrayList<Integer> list)
@@ -597,7 +636,7 @@ public class CycleHamXML
 			for (i = 0; i < nbIteration; ++i)
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante);
+				solVoisine = solutionVoisine(solCourante, temp * 10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution
@@ -632,7 +671,7 @@ public class CycleHamXML
 			// Calcul du temps écoulé
 			end = System.currentTimeMillis();
 			time = ((float) (end - begin)) / 1000f;
-		} while ((compteur < 10) && (temp > 10) && (time < tempsAlloue));
+		} while ((compteur < 100) && (temp > 10) && (time < tempsAlloue));
 		
 		if (DEBUG)
 		{
@@ -649,6 +688,7 @@ public class CycleHamXML
 		}
 		_arretes.put(bestSol.get(i), bestSol.get(0));
 		
+		System.out.println("NB de 2 = " + nb2 + ", MAX = " + max);
 	}
 	
 	/**
@@ -715,7 +755,7 @@ public class CycleHamXML
 			while ((i < iteration) && (nbMov < nbAcceptations))
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante);
+				solVoisine = solutionVoisine(solCourante, temp * 10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution
