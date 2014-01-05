@@ -7,43 +7,88 @@ import java.util.Map.Entry;
 
 public class CycleHamXML
 {
-	private double _map[][];
-	private static ArrayList<Integer> _villesRestantes;
-	private static HashMap<Integer, Integer> _arretes;
-	private final Random _rand;
+	private final double _map[][];
+	private ArrayList<Integer> _villesRestantes;
+	private HashMap<Integer, Integer> _arretes;
+	private static final Random _rand = new Random();
 	private Integer _depart;
 	private final int _nbVilles;
 	private double _distance;
 	
-	public CycleHamXML(String nomFichier)
+	public CycleHamXML(String nomFichier, boolean nonRandom)
 	{
 		// Initialisation des listes
 		_map = GestionFichierXML.lectureFichierV2(nomFichier);
 		_villesRestantes = new ArrayList<Integer>();
 		_arretes = new HashMap<Integer, Integer>();
 		
-		// Initialisation du random
-		_rand = new Random();
-		
-		_nbVilles = _map.length;
+		if(_map != null)
+			_nbVilles = _map.length;
+		else
+			_nbVilles = 0;
 		
 		// Lancement de la fonction d'init
-		this.init();
+		if(estValide())
+			this.init(nonRandom);
 	}
 	
+	/**
+	 * Fonction d'initialisation du cycle.
+	 */
+	public final void init(boolean nonRandom)
+	{
+		// On ajoute toutes nos villes aux villes restantes.
+		for (int i = 0; i < _nbVilles; i++)
+		{
+			_villesRestantes.add(i);
+		}
+		
+		//On vide le cycle possiblement existant.
+		_arretes.clear();
+		_distance = 0;
+		
+		// Choix de la ville de depart aléatoirement ou non en fonction du boolean en paramètre
+		if(nonRandom)
+		{
+			//Si le sommet n'a pas été setté.
+			if(Tsp_ps.getSommetAleatoire() == -1)
+			{
+				_depart = _rand.nextInt(_nbVilles);
+				Tsp_ps.setSommetAleatoire(_depart);
+			}
+			else
+			{
+				_depart = Tsp_ps.getSommetAleatoire();
+			}
+		}
+		else
+		{
+			_depart = _rand.nextInt(_nbVilles);
+		}
+		
+		//On signale la ville choisie.
+		System.out.println("Ville de départ : " + ( _depart + 1) + " / " + _nbVilles);
+		
+		// Retrait de la ville de départ des villes restantes
+		_villesRestantes.remove(_depart);
+	}
+	
+	/**
+	 * Fonction servant pour le DEBUG afin d'avoir quelques informations sur le graph en question.
+	 * */
 	public void estComplet()
 	{
 		int nb = 0, i = 0, j = 0, nb_dif = 0;
-		for(double d1[] : _map)
+		for (double d1[] : _map)
 		{
-			for(double d : d1)
+			for (double d : d1)
 			{
-				if(d == Double.MAX_VALUE)
+				if (d == Double.MAX_VALUE)
 					nb++;
 				
-				if(j == i && d != Double.MAX_VALUE)
+				if (j == i && d != Double.MAX_VALUE)
 					System.out.println("Warning : map[" + i + "][" + j + "] = " + _map[i][j]);
-				if(_map[i][j] != _map[j][i])
+				if (_map[i][j] != _map[j][i])
 					nb_dif++;
 				j++;
 			}
@@ -51,35 +96,16 @@ public class CycleHamXML
 			j = 0;
 		}
 		
-		System.out.println("Il y a " + (nb-i) + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + ((nb-i) * 100) / (i * i) + " %.");
+		System.out.println("Il y a " + (nb - i) + " cases vides sur " + i * i + " dans la map (" + i + " points). Soit environ " + ((nb - i) * 100) / (i * i) + " %.");
 		System.out.println("Il y a " + nb_dif + " points qui n'ont pas les mêmes arrêtes.");
 	}
 	
 	/**
-	 * Fonction d'initialisation du cycle.
-	 */
-	public final void init()
+	 * Permet de savoir si le graph est valide ou non.
+	 * */
+	public boolean estValide()
 	{
-		int i;
-		
-		//On ajoute toutes nos villes aux villes restantes.
-		for(i = 0; i < _nbVilles; i++)
-		{
-			_villesRestantes.add(i);
-		}
-		_arretes.clear();
-		
-		_distance = 0;
-		
-		// Choix de la ville de depart aléatoirement
-		//_depart = _rand.nextInt(_villesRestantes.size());
-		_depart = 42;		
-		// Récupération de la ville
-		
-		System.out.println("Départ : " + _depart + "\n");
-		
-		// Retrait de la ville de départ des villes restantes
-		_villesRestantes.remove(_depart);
+		return _nbVilles > 0;
 	}
 	
 	/**

@@ -10,7 +10,7 @@ public class CanvasTSP extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private final CycleHamTSP c;
-	private static final double ratio = 0.05;
+	private static final double ratio = 1;
 	
 	public CanvasTSP(CycleHamTSP c)
 	{

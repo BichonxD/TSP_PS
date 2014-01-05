@@ -15,6 +15,7 @@ public class GestionFichierXML
 		int tailleMatrice;
 		double cout;
 		double l[][] = null;
+		boolean error = false;
 		
 		try
 		{
@@ -51,7 +52,7 @@ public class GestionFichierXML
 					
 					// tmp2[1] contient le nom du point à l'autre bout de l'arrete.
 					if (j != Integer.parseInt(tmp2[1]))
-						System.out.println("Warning : Un point est ecrit à un endroit où il ne faut pas. (" + j + " != " + Integer.parseInt(tmp2[1]) + ").");
+						System.out.println("WARNING : Un point est ecrit à un endroit où il ne faut pas. (" + j + " != " + Integer.parseInt(tmp2[1]) + ").");
 					
 					// strCout[1] contient le cout de l'arrete au format exponentiel
 					cout = Double.parseDouble(strCout[1]);
@@ -72,10 +73,13 @@ public class GestionFichierXML
 			}
 		} catch (FileNotFoundException e)
 		{
-			System.err.println("Fichier \"" + System.getProperty("user.dir") + "/" + nomFichier + "\" non trouvé.");
+			System.out.println("ERREUR : Fichier \"" + System.getProperty("user.dir") + "/" + nomFichier + "\" non trouvé.");
+			error = true;
 		}
 		
-		System.out.println("Lecture du fichier \"" + nomFichier + "\" terminée");
+		if(!error)
+			System.out.println("Lecture du fichier \"" + nomFichier + "\" terminée.");
+		
 		return l;
 	}
 }

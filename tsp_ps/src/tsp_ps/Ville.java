@@ -6,9 +6,10 @@ package tsp_ps;
  */
 public class Ville
 {
-	int _n, _x, _y;
+	int _n;
+	double _x, _y;
 	
-	Ville(int n, int x, int y)
+	Ville(int n, double x, double y)
 	{
 		_n = n;
 		_x = x;
@@ -46,12 +47,12 @@ public class Ville
 		return _n;
 	}
 	
-	int getX()
+	double getX()
 	{
 		return _x;
 	}
 	
-	int getY()
+	double getY()
 	{
 		return _y;
 	}

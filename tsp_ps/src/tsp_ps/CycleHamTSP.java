@@ -7,51 +7,89 @@ import java.util.Map.Entry;
 
 public class CycleHamTSP
 {
-	private static ArrayList<Ville> _villes;
-	private static ArrayList<Ville> _villesRestantes;
-	private static HashMap<Ville, Ville> _arretes;
-	private final Random _rand;
+	private final ArrayList<Ville> _villes;
+	private ArrayList<Ville> _villesRestantes;
+	private HashMap<Ville, Ville> _arretes;
+	private static final Random _rand = new Random();
 	private Ville _depart;
 	private final int _nbVilles;
 	private double _distance;
 	private static final int min_thread = 5000;
 	
-	public CycleHamTSP(String nomFichier)
+	public CycleHamTSP(String nomFichier, boolean nonRandom)
 	{
 		// Initialisation des listes
 		_villes = GestionFichierTSP.lectureFichier(nomFichier);
 		_villesRestantes = new ArrayList<Ville>();
 		_arretes = new HashMap<Ville, Ville>();
 		
-		// Initialisation du random
-		_rand = new Random();
-		
 		_nbVilles = _villes.size();
 		
 		// Lancement de la fonction d'init
-		this.init();
+		if(estValide())
+			this.init(nonRandom);
 	}
 	
 	/**
 	 * Fonction d'initialisation du cycle.
 	 */
-	public final void init()
+	public final void init(boolean nonRandom)
 	{
 		_villesRestantes.addAll(_villes);
-		_arretes.clear();
 		
+		//On vide le cycle possiblement existant.
+		_arretes.clear();
 		_distance = 0;
 		
-		// Choix de la ville de depart aléatoirement
-		int pos = _rand.nextInt(_villesRestantes.size());
-		// Récupération de la ville
-		
-		//_depart = _villesRestantes.get(pos);
-		_depart = _villesRestantes.get(41);
-		System.out.println("Départ : " + _depart + "\n");
+		// Choix de la ville de depart aléatoirement ou non en fonction du boolean en paramètre
+		if(nonRandom)
+		{
+			//Si le sommet n'a pas été setté.
+			if(Tsp_ps.getSommetAleatoire() == -1)
+			{
+				int pos = _rand.nextInt(_nbVilles);
+				_depart = _villes.get(pos);
+				Tsp_ps.setSommetAleatoire(_depart.getNumber()-1);
+			}
+			else
+			{
+				if(Tsp_ps.getSommetAleatoire()+1 == _villes.get(Tsp_ps.getSommetAleatoire()).getNumber())
+				{
+					_depart = _villes.get(Tsp_ps.getSommetAleatoire());
+					System.out.println("A ENLEVER : Les deux villes ont bien le même num.");
+				}
+				else
+				{
+					for(Ville v : _villes)
+					{
+						if(Tsp_ps.getSommetAleatoire()+1 == v.getNumber())
+						{
+							_depart = v;
+							System.out.println("A ENLEVER : pas coool.");
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			int pos = _rand.nextInt(_nbVilles);
+			_depart = _villesRestantes.get(pos);
+		}
+
+		//On signale la ville choisie.
+		System.out.println("Ville de départ : " + ( _depart.getNumber() + 1) + " / " + _nbVilles);
 		
 		// Retrait de la ville de départ des villes restantes
 		_villesRestantes.remove(_depart);
+	}
+	
+	/**
+	 * Permet de savoir si le graph est valide ou non.
+	 * */
+	public boolean estValide()
+	{
+		return _nbVilles > 0;
 	}
 	
 	/**
