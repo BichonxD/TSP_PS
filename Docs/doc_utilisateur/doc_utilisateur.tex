@@ -28,7 +28,7 @@
 
 \section{Document utilisateur}
 
-Le programme fourni est un jar executable. Celui-ci s'execute via la commande \textbf{java -jar projetPS\_BOSOMCHAUSSY.jar} suivi possiblement d'une des options indiquées dans la liste ci-après puis de la liste des fichiers contenant les graphes à optimiser.
+Le programme fourni est un jar exécutable. Celui-ci s'exécute via la commande \textbf{java -jar projetPS\_BOSOMCHAUSSY.jar} suivi possiblement d'une des options indiquées dans la liste ci-après puis de la liste des fichiers contenant les graphes à optimiser.
 
 \section*{Format des Fichiers}
 
@@ -38,17 +38,22 @@ De plus, les fichiers "*.tsp" doivent être formatés selon le format de donnée
 \section*{Options}
 
 Les options possibles sont :
--lectG 											Cette option lance uniquement la lecture des fichiers passés en paramètre. Elle est utile pour savoir si un fichier peut être reconnu par notre programme.
--t [ENTIER]										Cette option permet de spécifier le temps d'execution de l'algorithme du recuit simulé. Par défaut, ce temps est fixé à 15 minutes.
--tauxAccept [DECIMAL]							Cette option permet de spécifier le taux d'acceptation du recuit. C'est à dire le taux en dessous duquel le recuit considérera que les solutions obtenues ne sont plus satisfaisante. Par défaut ce taux est fixé à 0.7.
--nbIt [ENTIER]									Cette option permet de spécifier le nombre d'itération que fera le recuit avant d'évaluer le résultat. Par défaut ce nombre est fixé au nombre de villes du graphe.
--tauxDecT [DECIMAL]								Cette option permet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce taux est fixé à 0.85.
--debug, -DEBUG, -verbose						Affiche les messages de débug.
--compare [FICHIER] [OPTION]... [FICHIER]		Permet de comparer des fichiers entre eux. L'option fixe le sommet de départ pour qu'il soit identique, si possible,pour tous les graphes. De plus, elle fixe aussi l'utilisation de l'algorithme du Plus Proche Voisin pour les graphiques (ceux-ci est modifiable grâce aux options suivantes). lLes options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.
-   -ppvt						Spécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml execute donc le PPV).
-   -ppv							Spécifie l'utilisation de l'algorithme du Plus Proche Voisin.
-   -ppi							Spécifie l'utilisation de l'algorithme de la Plus Proche Insertion.
-   -Draw						Spécifie l'affichage du dessin.
-   --help, -?						Affiche cette aide.
-
+\begin{itemize}
+\item{-lectG}{Cette option lance uniquement la lecture des fichiers passés en paramètre. Elle est utile pour savoir si un fichier peut être reconnu par notre programme.}
+\item{-t [ENTIER]}{Cette option permet de spécifier le temps d'exécution de l'algorithme du recuit simulé. Par défaut, ce temps est fixé à 15 minutes.}
+\item{-tauxAccept [DECIMAL]}{Cette option permet de spécifier le taux d'acceptation du recuit. C'est à dire le taux en dessous duquel le recuit considérera que les solutions obtenues ne sont plus satisfaisante. Par défaut ce taux est fixé à $0.2$.}
+\item{-nbIt [ENTIER]}{Cette option permet de spécifier le nombre d'itération que fera le recuit avant d'évaluer le résultat. Par défaut ce nombre est fixé au nombre de villes du graphe au carré.}
+\item{-tauxDecT [DECIMAL]}{Cette option permet de spécifier le taux de décroissance de la température du recuit. Par défaut ce taux est fixé à $0.9$.}
+\item{-debug, -DEBUG, -verbose}{Affiche les messages de debug.}
+\item{-compare [FICHIER] [OPTION]... [FICHIER]}{
+Permet de comparer des fichiers entre eux. L'option fixe le sommet de départ pour qu'il soit identique, si possible, pour tous les graphes.
+De plus, elle fixe aussi l'utilisation de l'algorithme du Plus Proche Voisin pour les graphiques (ceux-ci est modifiable grâce aux options suivantes).
+Les options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.}
+\item{-ppvt}{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml exécute donc le PPV).}
+\item{-ppv}{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin.}
+\item{-ppi}{Spécifie l'utilisation de l'algorithme de la Plus Proche Insertion.}
+\item{-Draw}{Spécifie l'affichage du dessin.}
+\item{--help, -?}{Affiche cette aide.}
+\end{itemize}															
+							
 \end{document}
