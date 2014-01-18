@@ -12,7 +12,7 @@ public class GestionFichierXML
 	static public double[][] lectureFichierV2(String nomFichier)
 	{
 		int i = -1, j = 0;
-		int tailleMatrice;
+		int tailleMatrice = 0;
 		double cout;
 		double l[][] = null;
 		boolean error = false;
@@ -22,7 +22,7 @@ public class GestionFichierXML
 			Scanner scan = new Scanner(new File(System.getProperty("user.dir") + "/" + nomFichier));
 			
 			// Scan du fichier complet
-			while (scan.hasNextLine())
+			while (!error && scan.hasNextLine())
 			{
 				// Récupère la ligne
 				String line = scan.nextLine();
@@ -51,32 +51,35 @@ public class GestionFichierXML
 					String[] strCout = tmp2[0].split("\"");
 					
 					// tmp2[1] contient le nom du point à l'autre bout de l'arrete.
-					if (j != Integer.parseInt(tmp2[1]))
-						System.out.println("WARNING : Un point est ecrit à un endroit où il ne faut pas. (" + j + " != " + Integer.parseInt(tmp2[1]) + ").");
-					else
+					// strCout[1] contient le cout de l'arrete au format exponentiel
+					cout = Double.parseDouble(strCout[1]);
+					
+					j = Integer.parseInt(tmp2[1]);
+					if (i == j)
+						continue;
+					else if (j >= tailleMatrice)
 					{
-						// strCout[1] contient le cout de l'arrete au format exponentiel
-						cout = Double.parseDouble(strCout[1]);
-						
-						// ICI GESTION DU CAS OU LE COUT EST ZERO
-						
+						System.out.println("ERREUR : Mauvais formatage du fichier.");
+						l = null;
+						tailleMatrice = 0;
+						error = true;
+					} else
 						l[i][j] = cout;
-						j++;
-					}
-				}
-				
-				// La diagonale de la matrice est mise à Double.MAX_VALUE pour signifier qu'il n'y a pas de
-				// liaisons entre un point et lui-même.
-				if (l != null && i == j)
-				{
-					l[i][j] = Double.MAX_VALUE;
-					j++;
 				}
 			}
 		} catch (FileNotFoundException e)
 		{
 			System.out.println("ERREUR : Fichier \"" + System.getProperty("user.dir") + "/" + nomFichier + "\" non trouvé.");
+			l = null;
+			tailleMatrice = 0;
 			error = true;
+		}
+		
+		// La diagonale de la matrice est mise à Double.MAX_VALUE pour signifier qu'il n'y a pas de
+		// liaisons entre un point et lui-même.
+		for (i = 0; i < tailleMatrice; i++)
+		{
+			l[i][i] = Double.MAX_VALUE;
 		}
 		
 		if (!error)

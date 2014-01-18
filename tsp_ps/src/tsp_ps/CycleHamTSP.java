@@ -554,9 +554,9 @@ public class CycleHamTSP
 		/*int tmp = (int) tailleDeplacement;
 		
 		if(tmp > 2)
-			return solutionVoisineVInversionPays(list, (int) tailleDeplacement);
+			return solutionVoisineInversionPays(list, (int) tailleDeplacement);
 		else
-			return solutionVoisineVInversionPays(list, 2);*/
+			return solutionVoisineInversionPays(list, 2);*/
 		
 		return solutionVoisine2Opt(list);
 	}
