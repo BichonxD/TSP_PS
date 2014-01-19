@@ -43,7 +43,6 @@ public class Tsp_ps
 	public static void main(String[] args)
 	{
 		int i;
-		long begin0 = 0, end0 = 0;
 		long begin = 0, end = 0;
 		float time;
 		ArrayList<String> listeName = null;
@@ -235,7 +234,6 @@ public class Tsp_ps
 			// mode compare)
 			else if (args[i].endsWith(".tsp"))
 			{
-				begin0 = System.currentTimeMillis();
 				// Sauvegarde du nom pour plus de commodités si on est en mode compare
 				if (COMPARE)
 					listeName.add(args[i]);
@@ -373,16 +371,11 @@ public class Tsp_ps
 				if (DRAW)
 					new DessinTSP(c);
 				
-				end0 = System.currentTimeMillis();
-				time = ((float) (end0 - begin0)) / 1000f;
-				System.out.println("Temps total d'execution : " + time);
-				
 			}
 			// Si le graph est un XML et qu'il est bien le dernier argument en paramètre (sauf si nous sommes en
 			// mode compare)
 			else if (args[i].endsWith(".xml"))
 			{
-				begin0 = System.currentTimeMillis();
 				// Sauvegarde du nom pour plus de commodit si on est en mode compare
 				if (COMPARE)
 					listeName.add(args[i]);
@@ -503,11 +496,6 @@ public class Tsp_ps
 					
 					setSommetAleatoire(-1);
 				}
-				
-				end0 = System.currentTimeMillis();
-				time = ((float) (end0 - begin0)) / 1000f;
-				System.out.println("Temps total d'execution : " + time);
-				
 			} else
 			{
 				System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
