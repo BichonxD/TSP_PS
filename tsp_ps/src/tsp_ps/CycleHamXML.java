@@ -653,7 +653,7 @@ public class CycleHamXML
 			// Calcul du temps écoulé
 			end = System.currentTimeMillis();
 			time = ((float) (end - begin)) / 1000f;
-		} while ((compteur < 100) && (temp > 10) && (time < tempsAlloue));
+		} while ((compteur < 100) && (time < tempsAlloue));
 		
 		if (DEBUG)
 		{
