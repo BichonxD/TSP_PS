@@ -170,9 +170,29 @@ Afin d'éviter que notre algorithme ne tourne trop longtemps, nous avons ajouté
 Le dernier paramètre réglable est l'algorithme utilisé afin de déterminer la solution de base.
 Toutes ces informations sont décrites dans le document utilisateur.
 
-\section{Voisinage considéré}
+\section{Voisinages considérés}
 
-A remplir
+Nous avons condisérés plusieurs manières de trouver une solution voisine à celle actuelle. Néanmoins, peu d'entre elles se sont révelées concluante. Nous avons donc choisi d'utiliser, après de nombreux tests, un algorithme proche du 2-Opt.
+
+\subsection{Aleatoire}
+
+Le premier algorithme que nous avons implémenté est un algorithme inversant deux villes toutes deux choisient aléatoirement. Mais les résultats n'étaient pas très concluants.
+
+\subsection{Inversion de deux villes voisines}
+
+Dans un deuxième temps, nous avons essayé d'inverser deux villes voisines en choisissant aléatoirement la ville à inverser. Mais ici aussi notre algorthme n'étaient pas très concluant.
+
+\subsection{Déplacement d'un groupe de ville}
+
+Nous avons suppposé que notre algorithme n'était pas efficace car il inter-changeait un trop petit nombre de ville. ALors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle. Mais cet algorithme ne nous as pas apporté les résultats espérés.
+
+\subsection{2-Opt}
+
+Nous en sommes donc venu à implémenter un algorithme proche de celui du 2-opt pour trouver une solution voisine. Cela permet de voir émerger un grand nombre de solutions corrrectes et donc d'améliorer significativement notre solution. Le principe est d'essayer d'échanger deux extrimités d'arrêtes puis d'inverser le sous-tour formé entre ces deux extrémités. C'est cet algorithme que nous utilisons pour trouver une solution voisine.
+
+\subsection{2-Opt simplifié}
+
+Nous avons essayé d'implémenter un algorithme proche du 2-opt mais un peu plus simplifié qui se contenterait d'inverser extrémités d'arrêtes et le sous-tour associé en prenant ces extrémités au hasard. Mais cela n'a pas donné les résultats attendus.
 
 \section{Réglage de la température du recuit simulé}
 

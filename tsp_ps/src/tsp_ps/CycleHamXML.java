@@ -47,7 +47,8 @@ public class CycleHamXML
 		_arretes.clear();
 		_distance = 0;
 		
-		// Choix de la ville de depart aléatoirement ou non en fonction du boolean en paramètre
+		// Choix de la ville de depart aléatoirement ou non en fonction du
+		// boolean en paramètre
 		if (nonRandom)
 		{
 			// Si le sommet n'a pas été setté.
@@ -259,6 +260,11 @@ public class CycleHamXML
 		return d;
 	}
 	
+	/**
+	 * Calcul la distance totale de la liste fournie en parametre.
+	 * 
+	 * @return distance totale du chemin
+	 */
 	public double calculDistanceTotal(ArrayList<Integer> l)
 	{
 		double d = 0;
@@ -284,10 +290,11 @@ public class CycleHamXML
 	
 	/**
 	 * Retourne le nombre de ville présentes dans l'instance
-	 *  
+	 * 
 	 * @return Nombre de villes dans l'instance
 	 */
-	public int get_nbVilles() {
+	public int get_nbVilles()
+	{
 		return _nbVilles;
 	}
 	
@@ -302,8 +309,8 @@ public class CycleHamXML
 	}
 	
 	/**
-	 * Algortihme de la Plus Proche Insertion. A ete abandonne car beaucoup plus long et moins performant que le plus
-	 * proche voisin.
+	 * Algortihme de la Plus Proche Insertion. A ete abandonne car beaucoup plus long et moins performant que le plus proche
+	 * voisin.
 	 */
 	public void plusProcheInsertion()
 	{
@@ -385,90 +392,15 @@ public class CycleHamXML
 		}
 	}
 	
-	public void twoOpt(int n)
-	{
-		System.out.println("Optimisation : 2-Opt");
-		int i = 0, iplus1, j, jplus1, taille;
-		long begin = 0, end = 0;
-		float time = 0;
-		Integer v = _depart;
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		
-		do
-		{
-			list.add(v);
-			v = _arretes.get(v);
-		} while (v != _depart);
-		
-		taille = list.size();
-		begin = System.currentTimeMillis();
-		boolean amelioration = true;
-		
-		while (amelioration)
-		{
-			amelioration = false;
-			for (i = 0; i < taille - 4; i++)
-			{
-				Integer xi = list.get(i);
-				
-				iplus1 = i + 1;
-				Integer xiplus1 = list.get(iplus1);
-				for (j = i + 2; j < taille - 1; j++)
-				{
-					Integer xj = list.get(j);
-					jplus1 = j + 1;
-					Integer xjplus1 = list.get(jplus1);
-					if (xjplus1 != xi)
-					{
-						if (_map[xi][xiplus1] + _map[xj][xjplus1] > _map[xi][xj] + _map[xiplus1][xjplus1])
-						{
-							// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par
-							// (xi, xj) et
-							// (xi+1, xj+1) dans H
-							ArrayList<Integer> res = reverse(list, iplus1, j);
-							// Calcule la nouvelle distance
-							if (calculDistanceTotal(res) < calculDistanceTotal(list))
-							{
-								list = res;
-								amelioration = true;
-							}
-						}
-					}
-				}
-				end = System.currentTimeMillis();
-				time = ((float) (end - begin)) / 1000f;
-				if (time > n)
-				{
-					amelioration = false;
-					break;
-				}
-			}
-			if (time > n)
-			{
-				amelioration = false;
-				break;
-			}
-		}
-		end = System.currentTimeMillis();
-		time = ((float) (end - begin)) / 1000f;
-		System.out.println("Temps d'execution de 2-opt : " + time + " ( i = " + i + ")");
-		
-		for (i = 0; i < list.size() - 1; i++)
-		{
-			_arretes.put(list.get(i), list.get(i + 1));
-		}
-		_arretes.put(list.get(i), list.get(0));
-	}
-	
 	/**
 	 * Inverse la liste entre les bornes i et j, i doit être inférieur à j
 	 * 
 	 * @param list
-	 *                La liste à inverser
+	 *            La liste à inverser
 	 * @param i
-	 *                Premier point de la liste à inverser
+	 *            Premier point de la liste à inverser
 	 * @param j
-	 *                Dernier point de la liste à inverser
+	 *            Dernier point de la liste à inverser
 	 * @return Nouvelle liste inversée
 	 */
 	public ArrayList<Integer> reverse(ArrayList<Integer> list, int i, int j)
@@ -487,17 +419,17 @@ public class CycleHamXML
 		}
 		return l;
 	}
-
+	
 	/** Fourni une solution voisine de celle donnée en paramètre en appelant l'un des algorithmes. */
 	public ArrayList<Integer> solutionVoisine(ArrayList<Integer> list, double tailleDeplacement)
 	{
-		/*int tmp = (int) tailleDeplacement;
-		
-		if(tmp > 2)
-			return solutionVoisineInversionPays(list, (int) tailleDeplacement);
-		else
-			return solutionVoisineInversionPays(list, 2);*/
-		
+		/*
+		 * int tmp = (int) tailleDeplacement;
+		 * 
+		 * if(tmp > 2) return solutionVoisineInversionPays(list, (int) tailleDeplacement); else return
+		 * solutionVoisineInversionPays(list, 2);
+		 */
+
 		return solutionVoisine2Opt(list);
 	}
 	
@@ -508,8 +440,8 @@ public class CycleHamXML
 		int i, j, k;
 		
 		i = _rand.nextInt(_nbVilles);
-		if(i + 1 < _nbVilles)
-			j = i +1;
+		if (i + 1 < _nbVilles)
+			j = i + 1;
 		else
 			j = 0;
 		
@@ -529,8 +461,8 @@ public class CycleHamXML
 		
 		return res;
 	}
-
-	/**Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.*/
+	
+	/** Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument. */
 	public ArrayList<Integer> solutionVoisineInversionPays(ArrayList<Integer> list, int tailleDeplacement)
 	{
 		ArrayList<Integer> res = new ArrayList<Integer>();
@@ -544,7 +476,7 @@ public class CycleHamXML
 				res.add(list.get(k));
 			else if ((k - i >= 0) && (k < _nbVilles - tailleDeplacement))
 				res.add(list.get(tailleDeplacement + k));
-			else if(k >= _nbVilles - tailleDeplacement)
+			else if (k >= _nbVilles - tailleDeplacement)
 			{
 				res.add(list.get(i));
 				i++;
@@ -553,7 +485,7 @@ public class CycleHamXML
 		
 		return res;
 	}
-
+	
 	/** Inverse deux villes toutes deux choisient aléatoirement. */
 	public ArrayList<Integer> solutionVoisineAleatoire(ArrayList<Integer> list)
 	{
@@ -606,8 +538,7 @@ public class CycleHamXML
 			{
 				if (_map[xi][xiplus1] + _map[xj][xjplus1] > _map[xi][xj] + _map[xiplus1][xjplus1])
 				{
-					// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par (xi,
-					// xj) et (xi+1, xj+1) dans H
+					// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par (xi, xj) et (xi+1, xj+1) dans H
 					res = reverse(list, iplus1, j);
 					// Calcule la nouvelle distance
 					if (calculDistanceTotal(res) < calculDistanceTotal(list))
@@ -625,13 +556,12 @@ public class CycleHamXML
 		
 		i = _rand.nextInt(taille - 4);
 		
-		if(i > 3)
+		if (i > 3)
 		{
 			j = _rand.nextInt(i - 2);
 			j += taille - i + 2;
-		}
-		else
-			j = taille - i - 1;	
+		} else
+			j = taille - i - 1;
 		
 		return reverse(list, i + 1, j);
 		
@@ -642,7 +572,7 @@ public class CycleHamXML
 		if (DEBUG)
 			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		double temp = Math.round(initRecuit(Math.round(_nbVilles/100)+1, nbIteration, 1000, 0.8));
+		double temp = Math.round(initRecuit(Math.round(_nbVilles / 100) + 1, nbIteration, 1000, 0.8));
 		
 		if (DEBUG)
 			System.out.println("Température Initiale : " + temp);
@@ -703,11 +633,11 @@ public class CycleHamXML
 					{
 						bestSol = solCourante;
 						bestVal = valCourante;
-						// On a améliorer la solution donc on on réinitialise le compteur de non
+						// On a améliorer la solution donc on on réinitialise le
+						// compteur de non
 						// amélioration
 						compteur = 0;
-						// System.out.println("solution amélioree ! distance : " + bestVal + "(" +
-						// valCourante + ")");
+						// System.out.println("solution amélioree ! distance : " + bestVal + "(" + valCourante + ")");
 					}
 				}
 			}
@@ -716,7 +646,7 @@ public class CycleHamXML
 			tauxAcceptation = nbMov / (double) nbIteration;
 			if (tauxAcceptation < tauxLimiteAcceptation)
 				compteur++; // La solution ne change pas suffisamment, pour continuer
-				
+			
 			// Actualise la température
 			temp *= tauxDecrementT;
 			
@@ -743,13 +673,13 @@ public class CycleHamXML
 	}
 	
 	/**
-	 * Calcule la réponse au critère de Métropolis si val < 0, on améliore la solution donc on accepte sinon, on calcule
-	 * la probabilité d'acceptation par rapport à exp(-val/temp)
+	 * Calcule la réponse au critère de Métropolis si val < 0, on améliore la solution donc on accepte sinon, on calcule la
+	 * probabilité d'acceptation par rapport à exp(-val/temp)
 	 * 
 	 * @param val
-	 *                Valeur à considérer
+	 *            Valeur à considérer
 	 * @param temp
-	 *                Température à prendre en compte
+	 *            Température à prendre en compte
 	 * @return Booléen si l'on répond au critère de Metropolis ou non.
 	 */
 	public boolean critereMetropolis(double val, double temp)
@@ -764,13 +694,13 @@ public class CycleHamXML
 	 * Initialise la température pour le recuit
 	 * 
 	 * @param temp
-	 *                Température initiale à tester
+	 *            Température initiale à tester
 	 * @param iteration
-	 *                Nombre d'itération pour chaque palier
+	 *            Nombre d'itération pour chaque palier
 	 * @param nbAcceptations
-	 *                Nombre d'acceptation pour chaque palier
+	 *            Nombre d'acceptation pour chaque palier
 	 * @param taux
-	 *                Taux d'acceptation que l'on veut considérer
+	 *            Taux d'acceptation que l'on veut considérer
 	 * @return La température de base du recuit.
 	 */
 	public double initRecuit(double temp, int iteration, int nbAcceptations, double taux)

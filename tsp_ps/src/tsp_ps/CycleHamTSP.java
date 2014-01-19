@@ -344,10 +344,11 @@ public class CycleHamTSP
 	
 	/**
 	 * Retourne le nombre de ville présentes dans l'instance
-	 *  
+	 * 
 	 * @return Nombre de villes dans l'instance
 	 */
-	public int get_nbVilles() {
+	public int get_nbVilles()
+	{
 		return _nbVilles;
 	}
 	
@@ -362,8 +363,8 @@ public class CycleHamTSP
 	}
 	
 	/**
-	 * Algortihme de la Plus Proche Insertion. A ete abandonne car beaucoup plus long et moins performant que le plus
-	 * proche voisin.
+	 * Algortihme de la Plus Proche Insertion. A ete abandonne car beaucoup plus long et moins performant que le plus proche
+	 * voisin.
 	 */
 	public void plusProcheInsertion()
 	{
@@ -445,90 +446,15 @@ public class CycleHamTSP
 		}
 	}
 	
-	public void twoOpt(int n)
-	{
-		System.out.println("Optimisation : 2-Opt");
-		int i = 0, iplus1, j, jplus1, taille;
-		long begin = 0, end = 0;
-		float time = 0;
-		Ville v = _depart;
-		ArrayList<Ville> list = new ArrayList<Ville>();
-		
-		do
-		{
-			list.add(v);
-			v = _arretes.get(v);
-		} while (v != _depart);
-		
-		taille = list.size();
-		begin = System.currentTimeMillis();
-		boolean amelioration = true;
-		
-		while (amelioration)
-		{
-			amelioration = false;
-			for (i = 0; i < taille - 4; i++)
-			{
-				Ville xi = list.get(i);
-				
-				iplus1 = i + 1;
-				Ville xiplus1 = list.get(iplus1);
-				for (j = i + 2; j < taille - 1; j++)
-				{
-					Ville xj = list.get(j);
-					jplus1 = j + 1;
-					Ville xjplus1 = list.get(jplus1);
-					if (xjplus1 != xi)
-					{
-						if (xi.distance(xiplus1) + xj.distance(xjplus1) > xi.distance(xj) + xiplus1.distance(xjplus1))
-						{
-							// Remplacer les arêtes (xi, xi+1) et (xj, xj+1) par
-							// (xi, xj) et
-							// (xi+1, xj+1) dans H
-							ArrayList<Ville> res = reverse(list, iplus1, j);
-							// Calcule la nouvelle distance
-							if (calculDistanceTotal(res) < calculDistanceTotal(list))
-							{
-								list = res;
-								amelioration = true;
-							}
-						}
-					}
-				}
-				end = System.currentTimeMillis();
-				time = ((float) (end - begin)) / 1000f;
-				if (time > n)
-				{
-					// amelioration = false;
-					break;
-				}
-			}
-			if (time > n)
-			{
-				// amelioration = false;
-				break;
-			}
-		}
-		end = System.currentTimeMillis();
-		time = ((float) (end - begin)) / 1000f;
-		System.out.println("Temps d'execution de 2-opt : " + time + " ( i = " + i + ")");
-		
-		for (i = 0; i < list.size() - 1; i++)
-		{
-			_arretes.put(list.get(i), list.get(i + 1));
-		}
-		_arretes.put(list.get(i), list.get(0));
-	}
-	
 	/**
 	 * Inverse la liste entre les bornes i et j, i doit être inférieur à j
 	 * 
 	 * @param list
-	 *                La liste à inverser
+	 *            La liste à inverser
 	 * @param i
-	 *                Premier point de la liste à inverser
+	 *            Premier point de la liste à inverser
 	 * @param j
-	 *                Dernier point de la liste à inverser
+	 *            Dernier point de la liste à inverser
 	 * @return Nouvelle liste inversée
 	 */
 	public ArrayList<Ville> reverse(ArrayList<Ville> list, int i, int j)
@@ -551,13 +477,13 @@ public class CycleHamTSP
 	/** Fourni une solution voisine de celle donnée en paramètre en appelant l'un des algorithmes. */
 	public ArrayList<Ville> solutionVoisine(ArrayList<Ville> list, double tailleDeplacement)
 	{
-		/*int tmp = (int) tailleDeplacement;
-		
-		if(tmp > 2)
-			return solutionVoisineInversionPays(list, (int) tailleDeplacement);
-		else
-			return solutionVoisineInversionPays(list, 2);*/
-		
+		/*
+		 * int tmp = (int) tailleDeplacement;
+		 * 
+		 * if(tmp > 2) return solutionVoisineInversionPays(list, (int) tailleDeplacement); else return
+		 * solutionVoisineInversionPays(list, 2);
+		 */
+
 		return solutionVoisine2Opt(list);
 	}
 	
@@ -568,8 +494,8 @@ public class CycleHamTSP
 		int i, j, k;
 		
 		i = _rand.nextInt(_nbVilles);
-		if(i + 1 < _nbVilles)
-			j = i +1;
+		if (i + 1 < _nbVilles)
+			j = i + 1;
 		else
 			j = 0;
 		
@@ -590,7 +516,9 @@ public class CycleHamTSP
 		return res;
 	}
 	
-	/**Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.*/
+	/**
+	 * Met un groupe de villes choisit aléatoirement en fin de liste. La taille du groupe a déplacer est fournie en argument.
+	 */
 	public ArrayList<Ville> solutionVoisineInversionPays(ArrayList<Ville> list, int tailleDeplacement)
 	{
 		ArrayList<Ville> res = new ArrayList<Ville>();
@@ -604,7 +532,7 @@ public class CycleHamTSP
 				res.add(list.get(k));
 			else if ((k - i >= 0) && (k < _nbVilles - tailleDeplacement))
 				res.add(list.get(tailleDeplacement + k));
-			else if(k >= _nbVilles - tailleDeplacement)
+			else if (k >= _nbVilles - tailleDeplacement)
 			{
 				res.add(list.get(i));
 				i++;
@@ -677,7 +605,7 @@ public class CycleHamTSP
 		}
 		return reverse(list, iplus1, j - 1);
 	}
-
+	
 	/** Solution voisine obtenue via un algo proche du 2-opt (2de version) */
 	public ArrayList<Ville> solutionVoisine2OptV2(ArrayList<Ville> list)
 	{
@@ -685,13 +613,12 @@ public class CycleHamTSP
 		
 		i = _rand.nextInt(taille - 4);
 		
-		if(i > 3)
+		if (i > 3)
 		{
 			j = _rand.nextInt(i - 2);
 			j += taille - i + 2;
-		}
-		else
-			j = taille - i - 1;	
+		} else
+			j = taille - i - 1;
 		
 		return reverse(list, i + 1, j);
 		
@@ -703,7 +630,7 @@ public class CycleHamTSP
 		if (DEBUG)
 			System.out.println("Optimisation : Recuit Simulé(" + tauxLimiteAcceptation + ", " + tempsAlloue / 60 + ", " + nbIteration + ", " + tauxDecrementT + ")");
 		
-		double temp = Math.round(initRecuit(Math.round(_nbVilles/100)+1, nbIteration, 1000, 0.8));
+		double temp = Math.round(initRecuit(Math.round(_nbVilles / 100) + 1, nbIteration, 1000, 0.8));
 		
 		if (DEBUG)
 			System.out.println("Température Initiale : " + temp);
@@ -749,7 +676,7 @@ public class CycleHamTSP
 			for (i = 0; i < nbIteration; ++i)
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante, temp*10 / _nbVilles);
+				solVoisine = solutionVoisine(solCourante, temp * 10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution
@@ -804,13 +731,13 @@ public class CycleHamTSP
 	}
 	
 	/**
-	 * Calcule la réponse au critère de Métropolis si val < 0, on améliore la solution donc on accepte sinon, on calcule
-	 * la probabilité d'acceptation par rapport à exp(-val/temp)
+	 * Calcule la réponse au critère de Métropolis si val < 0, on améliore la solution donc on accepte sinon, on calcule la
+	 * probabilité d'acceptation par rapport à exp(-val/temp)
 	 * 
 	 * @param val
-	 *                Valeur à considérer
+	 *            Valeur à considérer
 	 * @param temp
-	 *                Température à prendre en compte
+	 *            Température à prendre en compte
 	 * @return Booléen si l'on répond au critère de Metropolis ou non.
 	 */
 	public boolean critereMetropolis(double val, double temp)
@@ -825,13 +752,13 @@ public class CycleHamTSP
 	 * Initialise la température pour le recuit
 	 * 
 	 * @param temp
-	 *                Température initiale à tester
+	 *            Température initiale à tester
 	 * @param iteration
-	 *                Nombre d'itération pour chaque palier
+	 *            Nombre d'itération pour chaque palier
 	 * @param nbAcceptations
-	 *                Nombre d'acceptation pour chaque palier
+	 *            Nombre d'acceptation pour chaque palier
 	 * @param taux
-	 *                Taux d'acceptation que l'on veut considérer
+	 *            Taux d'acceptation que l'on veut considérer
 	 * @return La température de base du recuit.
 	 */
 	public double initRecuit(double temp, int iteration, int nbAcceptations, double taux)
@@ -867,7 +794,7 @@ public class CycleHamTSP
 			while ((i < iteration) && (nbMov < nbAcceptations))
 			{
 				// Récupération d'une solution voisine
-				solVoisine = solutionVoisine(solCourante, temp*10 / _nbVilles);
+				solVoisine = solutionVoisine(solCourante, temp * 10 / _nbVilles);
 				valVoisine = calculDistanceTotal(solVoisine);
 				
 				// Acceptation ou non de cette solution

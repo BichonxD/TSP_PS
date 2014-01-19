@@ -38,7 +38,7 @@ public class Tsp_ps
 	
 	/**
 	 * @param args
-	 *                the command line arguments
+	 *            the command line arguments
 	 */
 	public static void main(String[] args)
 	{
@@ -62,7 +62,7 @@ public class Tsp_ps
 				// Permet de tester si une liste de graph est reconnues par le programme.
 				if (args[i].equals("-lectG"))
 				{
-					if ((i + 1 < args.length) && ((args[i+1].equals("-debug") || args[i+1].equals("-DEBUG") || args[i+1].equals("-verbose"))))
+					if ((i + 1 < args.length) && ((args[i + 1].equals("-debug") || args[i + 1].equals("-DEBUG") || args[i + 1].equals("-verbose"))))
 					{
 						DEBUG = true;
 						i++;
@@ -215,10 +215,10 @@ public class Tsp_ps
 					System.out.println("   -lectG [-DEBUG] [FICHIER]...\t\t\t\tEssaie de lire la liste de fichiers");
 					System.out.println("   -t [ENTIER]\t\t\t\t\t\tPermet de spécifier le temps d'execution de l'optimisation d'un graphe en minute.\n\t\t\t\t\t\t\tPar défaut ce temps est fixé à " + TEMPS_EXEC + " minutes.");
 					System.out.println("   -tauxAccept [DECIMAL]\t\t\t\tPermet de spécifier le taux d'acceptation du recuit. Par défaut ce taux est fixé à " + TAUX_LIM_ACCEPTATION + ".");
-					System.out.println("   -nbIt [ENTIER]\t\t\t\t\tPermet de spécifier le nombre d'itération du recuit. Par défaut ce nombre est fixé à " + NB_ITERATION + ".");
+					System.out.println("   -nbIt [ENTIER]\t\t\t\t\tPermet de spécifier le nombre d'itération du recuit. Par défaut ce nombre est fixé au nombre de villes.");
 					System.out.println("   -tauxDecT [DECIMAL]\t\t\t\t\tPermet de spécifier le taux de décrémentation de la température du recuit. Par défaut ce taux est fixé à " + TAUX_DECREMENT_TEMP + ".");
 					System.out.println("   -debug, -DEBUG, -verbose\t\t\t\tAffiche les messages de débug.");
-					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux.\n\t\t\t\t\t\t\tLes options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.");
+					System.out.println("   -compare [FICHIER] [OPTION]... [FICHIER]\t\tPermet de comparer deux ou plus fichiers entre eux.\n\t\t\t\t\t\t\tLes options disponibles entre deux fichiers ne peuvent inclure -DEBUG.");
 					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible\n\t\t\t\t\t\t\t(impossible pour les fichiers xml execute donc le PPV).");
 					System.out.println("   -ppv\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin.");
 					System.out.println("   -ppi\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme de la Plus Proche Insertion.");
@@ -234,7 +234,7 @@ public class Tsp_ps
 			// mode compare)
 			else if (args[i].endsWith(".tsp"))
 			{
-				// Sauvegarde du nom pour plus de commodit si on est en mode compare
+				// Sauvegarde du nom pour plus de commodités si on est en mode compare
 				if (COMPARE)
 					listeName.add(args[i]);
 				
@@ -306,8 +306,10 @@ public class Tsp_ps
 				if (DEBUG)
 					begin = System.currentTimeMillis();
 				
-				if(0 == NB_ITERATION)
-					NB_ITERATION = c.get_nbVilles()*c.get_nbVilles();
+				if (args[i].contains("mona-lisa"))
+					NB_ITERATION = c.get_nbVilles();
+				else if (0 == NB_ITERATION)
+					NB_ITERATION = c.get_nbVilles() * c.get_nbVilles();
 				
 				c.recuitSimule(TAUX_LIM_ACCEPTATION, TEMPS_EXEC * 60, NB_ITERATION, TAUX_DECREMENT_TEMP, DEBUG);
 				
@@ -432,8 +434,8 @@ public class Tsp_ps
 					listeDistances.add((int) Math.round(c.calculDistanceTotal()));
 				
 				// Si aucun nombre d'itération a été donné en paramètre, nous en affectons un
-				if(0 == NB_ITERATION)
-					NB_ITERATION = c.get_nbVilles()*c.get_nbVilles();
+				if (0 == NB_ITERATION)
+					NB_ITERATION = c.get_nbVilles() * c.get_nbVilles();
 				
 				// Si on est en mode DEBUG on lance le chronomètre.
 				if (DEBUG)
