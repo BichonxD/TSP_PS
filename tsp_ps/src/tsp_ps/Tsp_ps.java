@@ -43,6 +43,7 @@ public class Tsp_ps
 	public static void main(String[] args)
 	{
 		int i;
+		long begin0 = 0, end0 = 0;
 		long begin = 0, end = 0;
 		float time;
 		ArrayList<String> listeName = null;
@@ -51,6 +52,8 @@ public class Tsp_ps
 		
 		if (args.length < 1)
 			System.out.println("ERREUR : Argument manquant. Pour l'aide utilisez l'option --help.");
+		
+		begin0 = System.currentTimeMillis();
 		
 		// Le format des jeux de données peut être XML ou TSP.
 		// Nous avons donc séparé le traitement des XML et TSP.
@@ -502,5 +505,9 @@ public class Tsp_ps
 				System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
 			}
 		}
+		
+		end0 = System.currentTimeMillis();
+		time = ((float) (end0 - begin0)) / 1000f;
+		System.out.println("Temps total d'execution : " + time);
 	}
 }
