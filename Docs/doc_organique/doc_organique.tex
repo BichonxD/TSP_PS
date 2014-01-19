@@ -125,7 +125,7 @@ Elle contient trois méthodes pour former un cycle hamiltonien de base :
 \begin{itemize}
 \item Le Plus Proche Voisin (PPV) : \emph{Cette méthode créer un cycle hamiltonien en reliant le point actuellement étudié à son plus proche voisin.}\smallskip
 
-\item La Plus Proche Insertion (PPI) : \emph{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}\smallskip
+\item La Plus Proche Insertion (PPI) : \emph{Cette méthode part d'un cycle hamiltonien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}\smallskip
 
 \item Le Plus Proche Voisin Threadé (PPVT) : \emph{Cette méthode est exactement la même que celle du Plus Proche Voisin, à la différence près que pour trouver le plus proche voisin du point étudié nous utilisons deux threads. Cela permet de gagner du temps à l'exécution sur les grosses instances, telle que celle de Mona Lisa. C'est cette méthode que nous utilisons par défaut.}
 \end{itemize}

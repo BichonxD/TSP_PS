@@ -165,21 +165,21 @@ Toutes ces informations sont décrites dans le document utilisateur.
 
 \section{Voisinages considérés}
 
-Nous avons condisérés plusieurs manières de trouver une solution voisine à celle actuelle. Néanmoins, peu d'entre elles se sont révelées concluantes. Nous avons donc choisi d'utiliser, après de nombreux tests, un algorithme proche du 2-Opt.
+Nous avons considérés plusieurs manières de trouver une solution voisine à celle actuelle. Néanmoins, peu d'entre elles se sont révelées concluantes. Nous avons donc choisi d'utiliser, après de nombreux tests, un algorithme proche du 2-Opt.
 
 \subsection{Aleatoire}
 
-Le premier algorithme que nous avons implémenté est un algorithme inversant deux villes toutes deux choisient aléatoirement.
+Le premier algorithme que nous avons implémenté est un algorithme inversant deux villes, toutes deux choisis aléatoirement.
 Mais les résultats n'étaient pas très concluants.
 
 \subsection{Inversion de deux villes voisines}
 
 Dans un deuxième temps, nous avons essayé d'inverser deux villes voisines en choisissant aléatoirement la ville à inverser.
-Mais ici aussi notre algorithme n'était pas très concluant.
+Mais ici aussi, notre algorithme n'était pas très concluant.
 
 \subsection{Déplacement d'un groupe de ville}
 
-Nous avons suppposé que nos algorithmes n'étaient pas efficaces car ils inter-changeaient un trop petit nombre de ville.
+Nous avons supposé que nos algorithmes n'étaient pas efficaces car ils inter-changeaient un trop petit nombre de ville.
 Alors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle.
 Nous avons aussi essayé de déplacer un nombre de ville dépendant de la température du recuit.
 Mais ces deux solutions ne nous ont pas apporté les résultats espérés.
@@ -187,13 +187,13 @@ Mais ces deux solutions ne nous ont pas apporté les résultats espérés.
 \subsection{2-Opt}
 
 Nous en sommes donc venus à implémenter un algorithme proche de celui du 2-opt pour trouver une solution voisine.
-Cela permet de voir émerger un grand nombre de solutions corrrectes et donc d'améliorer significativement notre solution.
-Le principe est d'essayer d'échanger deux extrémités d'arrêtes puis d'inverser le sous-tour formé entre ces deux extrémités.
+Cela permet de voir émerger un grand nombre de solutions correctes et donc d'améliorer significativement notre solution.
+Le principe est d'essayer d'échanger deux extrémités d'arêtes puis d'inverser le sous-tour formé entre ces deux extrémités.
 C'est cet algorithme que nous utilisons pour trouver une solution voisine.
 
 \subsection{2-Opt simplifié}
 
-Nous avons essayé d'implémenter un algorithme proche du 2-opt mais un peu plus simplifié qui se contenterait d'inverser les extrémités d'arrêtes et le sous-tour associé en prenant ces extrémités au hasard. Mais cela n'a pas donné les résultats attendus.
+Nous avons essayé d'implémenter un algorithme proche du 2-opt mais un peu plus simplifié qui se contenterait d'inverser les extrémités d'arêtes et le sous-tour associé en prenant ces extrémités au hasard. Mais cela n'a pas donné les résultats attendus.
 
 \section{Réglage de la température du recuit simulé}
 
