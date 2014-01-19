@@ -26,8 +26,41 @@
 \lfoot{\includegraphics[scale=0.3]{../polytech.jpg}}
 \rfoot{BOSOM - CHAUSSY}
 
-\section{Document de synthèse}
+\section{Problématique}
 
-Document de synthèse à remplir
+Nous avons eu plusieurs problèmes pour améliorer nos résultats lors de ce projet.
+C'est pour ça que nous avons implémentés des options afin de pouvoir tester plus facilement les différentes possibilités que nous avions.
+La première question que nous nous sommes posés fut de savoir s'il valait mieux utiliser l'algorithme du Plus Proche Voisin ou de la Plus Proche Insertion.
+Après avoir répondu à cette question, nous nous sommes demandés quel était l'influence de notre algorithme pour trouver une solution voisine sur les résultats du recuit simulé.
+Enfin nous nous sommes intérrogés sur l'influence des paramètres du recuit sur nos solutions.
+
+Ce document a pour but de retracer notre réflexion sur comment améliorer notre algorithme et les résultats que nous avons obtenus.
+
+\section{PPV ou PPI}
+
+Nous avons implémentés les algorithmes du Plus Proche Voisin et de la Plus Proche Insertion que nous abrégerons respectivement PPV et PPI.
+Nous pensions, de prime abord, que la PPI nous permettrait d'obtenir un cycle de base plus optimisé que le PPV.
+Néanmoins, après plusieurs tests donnés ci-dessous, il c'est avéré que ce n'est pas le cas.
+Non seulement la PPI est plus gourmande au niveau temps que le PPV mais en plus la PPI obtient des résultats qui sont sensiblement moins bon que le PPV. C'est pourquoi nous avons décidé d'utiliser le PPV.
+Afin d'améliorer le PPV nous avons décidé d'essayer d'utiliser du multi-thread.
+Ainsi nous avons implémenté le Plus Proche Voisin Threadé, abrégé PPVT, qui fait du multi-thread pour trouver le point le plus proche du point actuellement étudié.
+Nous avons ainsi réussi à accélerer l'acquisition d'un cycle de base.
+
+\section{Influence de l'algorithme pour trouver une solution voisine}
+
+Nous avons choisi d'utiliser un algorithme proche de celui du 2-opt pour trouver une solution voisine pour la simple raison qu'avec les autres algorithmes que nous avons implémentés nous n'avions aucune amélioration.
+Vu le peu d'intérêt de ces résultats nous ne les montrerons pas ici.
+Néanmoins, nous avons laissé les algorithmes que nous avons implémentés dans notre code source.
+Pour voir les résultats qu'ils permettent il suffit de lancer le programme en mode debuggage avec l'option "-verbose" en ayant changé l'appel à ces fonctions.
+
+\section{Influence des paramètres du recuit simulé}
+
+Lors de nos premiers essais les paramètres n'étaient pas du tout optimaux.
+Nous obtenions des résultats très proches de ceux donnés par le PPVT ou le PPV.
+Avoir la possiblité de modifier ces réglages grâce aux options que nous avions écrites nous fut très pratique.
+
+\section{Résultats finaux}
+
+Voici les résultats que nous avons obtenus et les pourcentages d'erreur par rapport aux valeurs optimales.
 
 \end{document}
