@@ -14,6 +14,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
+\renewcommand{\Frlabelitemi}{\textbullet}
+
 % Affichage pour les algos, numérotation en fonction des chapitres
 \usepackage[ruled,vlined]{algorithm2e}
 \SetAlgorithmName{Algorithme}{Liste des algorithme}
@@ -52,17 +54,11 @@ Dans ce projet, nous allons utiliser l'algorithme stochastique du recuit simulé
 
 \section{Modèle mathématique}
 
-Nous allons utiliser le jeu de donné suivant :\newline
+Nous allons utiliser le jeu de donné suivant :
+\medskip
 \begin{itemize}
-\item{$G = (V, E)$}{un graphe orienté complet de n sommets}
+\item{$G = (V, E)$}{un graphe orienté complet de n sommets}\smallskip
 \item{$c_{ij}$}{le coût de l'arc $(v_{i}, v_{j})$}
-%\item{
-%	$x_{ij} = $
-%	$\{$ \left . \begin{tabular}{r}
-%	$1 si et seulement si l'arc (i, j) est retenu dans le circuit,$\\
-%	$0 sinon$\\
-%	\end{tabular}
-%	\right}
 \end{itemize}
 
 \[ x_{ij} = \left\{
@@ -91,10 +87,6 @@ C'est cette contrainte qui rend le problème du voyageur de commerce NP-difficil
 En effet, cette contrainte vérifie toutes les villes du graphe entres-elles, rendant le calcul extrêmement compliqué, réalisé en un temps en $O(n!)$.
 Il devient évident qu'une recherche exhaustive ne peut être envisagée.
 
-\section{Relaxation continue}
-
-à remplir
-
 \section{Recuit simulé}
 
 L'algorithme que nous allons implémenter est l'algorithme du recuit simulé.
@@ -114,7 +106,7 @@ La température est un paramètre important de l'algorithme car c'est celle-ci q
 
 Cette exploration de voisinage est exécutée un certain nombre de fois, ce que l'on appelle un palier.
 Une fois le palier terminé, nous diminuons la température et nous recommençons un palier.
-Dans notre implémentation, la température suit une décroissance géographique d'un coefficient de $0.9$.
+Dans notre implémentation, la température suit une décroissance géographique d'un coefficient de $0,9$.
 La condition d'arrêt de notre recuit simulé tiens compte du taux d'acceptation des solutions.
 En effet, si ce taux n'est pas atteint un certain nombre de fois, l'algorithme s'arrête.
 Cela s'explique par le fait que l'on ne trouve plus de solution qui améliore réellement le résultat et que l'on stagne. Il faut alors s'arrêter et renvoyer la meilleurs solutions trouvée.
@@ -123,7 +115,8 @@ Ci-dessous se trouve l'algorithme tel que nous l'avons implémenté.
 La solution de base est obtenue à l'aide de l'algorithme glouton du Plus Proche Voisin que nous ne détaillerons pas.
 La température $T_0$ est obtenue par réglage automatique, ce qui est détaillé plus tard dans le rapport.
 %L'instance de Mona Lisa étant très grande, à savoir 100 000 villes, le nombre d'itération n'est que de l'ordre de $n$, ce qui est déjà très grand comme valeur.
-Le taux d'acceptation minimal a été fixé à 0.2 et le nombre d'itération par palier est de l'ordre de $n^2$, où $n$ est le nombre de ville par instance.
+Le taux d'acceptation minimal a été fixé à $0,2$.
+Le nombre d'itération par palier est de l'ordre de $n^2$, $n$ étant le nombre de ville par instance, si l'instance possède moins de 300 villes, $n*2$ sinon.
 
 \begin{algorithm}[H]
 	\SetAlgoLined

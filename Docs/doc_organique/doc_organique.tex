@@ -15,9 +15,20 @@
 \usepackage[T1]{fontenc}
 \usepackage{eurosym}
 
+\renewcommand{\Frlabelitemi}{\textbullet}
+
 % Images
 \usepackage{graphicx}
 \usepackage{rotating}
+\newcommand{\img}[3][0.75]
+{%
+\begin{center}% Centre l'image
+	\includegraphics[scale=#1]{#2}% Ajoute l'image
+	\begin{figure}[ht]% Permet d'ajouter une légende
+		\caption{#3}% Ajoute la légende
+	\end{figure}%
+\end{center}%
+}
 
 % Code source
 \usepackage{listings}
@@ -69,70 +80,96 @@
 \lfoot{\includegraphics[scale=0.3]{../polytech.jpg}}
 \rfoot{BOSOM - CHAUSSY}
 
-\section{Note}
-
-Pour inclure un fichier avec coloration syntaxique de la forme :\newline
-../src/nomDuFichier.java\newline
-utiliser le code suivant en commentaire dans le fichier
+%\section{Note}
+%Pour inclure un fichier avec coloration syntaxique de la forme :\newline
+%../src/nomDuFichier.java\newline
+%utiliser le code suivant en commentaire dans le fichier
 %\code{nomDuFichier}
 
 \section{Présentation générale de la structure du programme}
 
-Pour ce projet nous avons repris comme base le projet codé pour la Programmation en Nombre Entier. Néanmoins, nous avons eu beaucoup de modifications a effectuer car nous n'avions pas implémenté le recuit simulé et que nous ne gérions que la lecture des fichiers ".tsp" et formattés selon le format EUC_2D.
-Nous avons donc modifié notre programme de façon à ce que nous puissions lire les fichiers ".xml" tout en gardant la compatibilité avec les fichiers ".tsp" formattés au format EUC_2D ou CEIL_2D (la différence entre les deux formats étant minime).
+Pour ce projet nous avons repris comme base le projet codé en cours de Programmation en Nombre Entier.
+Néanmoins, nous avons eu beaucoup de modifications à effectuer car nous n'avions pas implémenté le recuit simulé et que nous ne gérions que la lecture des fichiers ".tsp" formatés selon le format EUC\_2D.
+Nous avons donc modifié notre programme de façon à ce que nous puissions lire les fichiers ".xml", tout en gardant la compatibilité avec les fichiers ".tsp" formatés au format EUC\_2D ou CEIL\_2D, la différence entre les deux formats étant minime.
 Voici notre code sous forme de diagramme UML.
 
-\section{GestionFichierTSP}
+\img[0.25]{class_diag.png}{Diagramme UML des classes de notre programme}
 
-Cette classe permet de lire un fichier ".tsp". Elle contient uniquement une méthode statique qui à partir du nom de fichier donné en paramètre renvoie une arraylist du type Ville. Si il y a une erreur l'arraylist renvoyée est vide.
-Les fichiers lu doivent être formatés selon le format de données de la TSPLIB et le jeu de donnée doit être au format EUC_2D ou CEIL_2D.
+\section{Présentation des différentes classes}
+\subsection{GestionFichierTSP}
 
-\section{GestionFichierXML}
+Cette classe permet de lire un fichier au format ".tsp".
+Elle contient uniquement une méthode statique qui, à partir du nom de fichier donné en paramètre, renvoie une arraylist de type Ville.
+Si il y a une erreur, l'arraylist renvoyée est vide.
+Les fichiers lu doivent être formatés selon le format de données de la TSPLIB et le jeu de donnée doit être au format EUC\_2D ou CEIL\_2D.
 
-Cette classe permet de lire un fichier ".xml". Elle contient uniquement une méthode statique qui à partir du nom de fichier donné en paramètre renvoie une matrice d'Integer. Si il y a une erreur la matrice renvoyée est vide.
+\subsection{GestionFichierXML}
+
+Cette classe permet de lire un fichier au format ".xml".
+Elle contient uniquement une méthode statique qui, à partir du nom de fichier donné en paramètre, renvoie une matrice d'Integer.
+Si il y a une erreur la matrice renvoyée est vide.
 Les fichiers lu doivent être formatés selon le format de données de la TSPLIB.
 
-\section{Ville}
+\subsection{Ville}
 
-Cette classe permet de stocker une ville pour les fichiers ".tsp". Elle comprend des méthodes d'accès à ces différents éléments et une fonction pour calculer la distance entre elle-même et une ville voisine.
+Cette classe permet de stocker une ville pour les fichiers ".tsp".
+Elle comprend les méthodes d'accès à ses différents éléments et une fonction qui calcule la distance euclidienne avec une ville voisine.
 
-\section{CycleHamTSP}
+\subsection{CycleHamTSP}
 
 Cette classe permet de construire et d'optimiser un cycle Hamiltonien.
-Elle appelle la méthode statique fournie par GestionFichierTSP pour lire le document voulu et initialise le cycle hamiltonien.
+Elle appelle la méthode statique fournie par GestionFichierTSP afin de lire le document voulu et initialise le cycle hamiltonien.
 Elle contient trois méthodes pour former un cycle hamiltonien de base :
-\begin{itemize}
-\item{Le Plus Proche Voisin (PPV)}{Cette méthode donne un cycle hamiltonien de base en reliant le point actuellement étudié à son plus proche voisin.}
-\item{La Plus Proche Insertion (PPI)}{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci en trouvant le point le plus proche appartenant au cycle.}
-\item{Le Plus Proche Voisin Threadé (PPVT)}{Cette méthode est exactement la même que celle du Plus Proche Voisin à la différence que pour trouver le plus proche voisin du point étudié nous utilisons deux threads. Cela permet de gagner du temps d'execution sur les grosses instances telles que celle de Mona Lisa. C'est cette méthode que nous utilisons par défault.}
-\end{itemize}
-Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé. Le calcul de la température est automatique. Nous utilisons un algorithme proche de celui du 2-opt pour tourver une solution voisine.
 
-\section{CycleHamXML}
+\begin{itemize}
+\item Le Plus Proche Voisin (PPV) : \emph{Cette méthode créer un cycle hamiltonien en reliant le point actuellement étudié à son plus proche voisin.}\smallskip
+
+\item La Plus Proche Insertion (PPI) : \emph{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}\smallskip
+
+\item Le Plus Proche Voisin Threadé (PPVT) : \emph{Cette méthode est exactement la même que celle du Plus Proche Voisin, à la différence près que pour trouver le plus proche voisin du point étudié nous utilisons deux threads. Cela permet de gagner du temps à l'exécution sur les grosses instances, telle que celle de Mona Lisa. C'est cette méthode que nous utilisons par défaut.}
+\end{itemize}
+
+Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé.
+Le calcul de la température est automatique.
+Nous utilisons un algorithme proche de celui du 2-opt pour trouver une solution voisine.
+
+\subsection{CycleHamXML}
 
 Cette classe, tout comme la classe CycleHamTSP, permet de construire et d'optimiser un cycle Hamiltonien.
 Elle appelle la méthode statique fournie par GestionFichierXML pour lire le document voulu et initialise le cycle hamiltonien.
-À la différence de CycleHamTSP elle ne contient que deux méthodes pour former un cycle hamiltonien de base :
+À la différence de CycleHamTSP, elle ne contient que deux méthodes pour former un cycle hamiltonien de base :
+
 \begin{itemize}
-\item{Le Plus Proche Voisin (PPV)}{Cette méthode donne un cycle hamiltonien de base en reliant le point actuellement étudié à son plus proche voisin. Nous utilisons cette méthode par défault.}
-\item{La Plus Proche Insertion (PPI)}{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci en trouvant le point le plus proche appartenant au cycle.}
+\item Le Plus Proche Voisin (PPV) \emph{Cette méthode créer un cycle hamiltonien en reliant le point actuellement étudié à son plus proche voisin. Nous utilisons cette méthode par défaut.}\smallskip
+
+\item La Plus Proche Insertion (PPI) \emph{Cette méthode part d'un cycle hamiltonien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}
 \end{itemize}
-Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé. Le calcul de la température est automatique. Nous utilisons un algorithme proche de celui du 2-opt pour tourver une solution voisine.
 
-\section{Thread_ParcoursArrayVille}
+Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé.
+Le calcul de la température est automatique.
+Nous utilisons un algorithme proche de celui du 2-opt pour trouver une solution voisine.
 
-Cette classe a pour simple objectif la parallelisation de la recherche du plus proche voisin d'un point. Elle sert uniquement à l'algorithme du Plus Proche Voisin Threadé de la classe CycleHamTSP. Elle hérite de la classe Thread.
+\subsection{Thread\_ParcoursArrayVille}
 
-\section{DessinTSP}
+Cette classe a pour simple objectif la parallélisation de la recherche du plus proche voisin d'un point.
+Elle sert uniquement à l'algorithme du Plus Proche Voisin Threadé de la classe CycleHamTSP.
+Elle hérite de la classe Thread.
 
-Une fois le cycle construit il est agréable de voir le dessin obtenue par nos algorithmes. Cette classe a pour objectif de dessiner le cycle hamiltonien obtenue pour les fichiers ".tsp". Elle hérite de la classe JFrame puis appelle la classe CanvasTSP pour dessiner le cycle.
+\subsection{DessinTSP}
 
-\section{CanvasTSP}
+Une fois le cycle hamiltonien construit, il est agréable de voir le dessin obtenue par nos algorithmes.
+Cette classe a pour objectif de dessiner le cycle hamiltonien obtenue pour les fichiers ".tsp".
+Elle hérite de la classe JFrame puis appelle la classe CanvasTSP pour dessiner le chemin du voyageur de commerce.
 
-Cette classe dessine le cycle hamiltonien donné en paramètre. Elle hérite de la classe JPanel.
+\subsection{CanvasTSP}
 
-\section{Tsp_ps}
+Cette classe dessine le cycle hamiltonien donné en paramètre.
+Elle hérite de la classe JPanel.
 
-Cette classe contient le main. Elle gère les options que nous avons implémentées et qui sont décrites dans le document d'utilisateur. Elle permet, entre autre, de spécifier des options pour tester l'influence des paramètres sur le recuit simulé, de comparer des fichiers entre eux et de tester si les fichiers peuvent être lus.
+\subsection{Tsp\_ps}
+
+Cette classe contient la fonction principale \emph{main}.
+Elle gère les options que nous avons implémentées et qui sont décrites dans le document utilisateur.
+Elle permet, entre autre, de spécifier des options pour tester l'influence des paramètres sur le recuit simulé, de comparer des fichiers entre eux et de tester si les fichiers peuvent être lus.
 
 \end{document}
