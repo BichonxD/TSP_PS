@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.4" icons="false" automaticImage="PNG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" language="java" name="tsp_ps.DessinTSP" project="tsp_ps" file="/tsp_ps/src/tsp_ps/DessinTSP.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="812" y="80" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="tsp_ps.GestionFichierTSP" project="tsp_ps" 
+    file="/tsp_ps/src/tsp_ps/GestionFichierTSP.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="1245" y="251" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="tsp_ps.GestionFichierXML" project="tsp_ps" 
+    file="/tsp_ps/src/tsp_ps/GestionFichierXML.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="192" y="93" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="tsp_ps.Thread_ParcoursArrayVille" project="tsp_ps" 
+    file="/tsp_ps/src/tsp_ps/Thread_ParcoursArrayVille.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="1323" y="795" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="tsp_ps.CanvasTSP" project="tsp_ps" file="/tsp_ps/src/tsp_ps/CanvasTSP.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="1133" y="67" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="tsp_ps.CycleHamTSP" project="tsp_ps" file="/tsp_ps/src/tsp_ps/CycleHamTSP.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="942" y="633" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="tsp_ps.CycleHamXML" project="tsp_ps" file="/tsp_ps/src/tsp_ps/CycleHamXML.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="212" y="473" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="tsp_ps.Tsp_ps" project="tsp_ps" file="/tsp_ps/src/tsp_ps/Tsp_ps.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="603" y="468" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="tsp_ps.Ville" project="tsp_ps" file="/tsp_ps/src/tsp_ps/Ville.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="1382" y="563" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="javax.swing.JFrame" project="tsp_ps" 
+    file="/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position x="474" y="61" width="166" height="37"/>    
+    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="java.lang.Thread" project="tsp_ps" 
+    file="/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position x="1484" y="644" width="153" height="37"/>    
+    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="javax.swing.JPanel" project="tsp_ps" 
+    file="/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position x="1486" y="33" width="152" height="38"/>    
+    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </generalization>  
+  <dependency id="14">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="16">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="17" name="v"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <bendpoint x="1250" y="672"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="20" name="_villes"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <bendpoint x="1546" y="603"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="23" name="threadQ"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="25">    
+    <bendpoint x="1332" y="29"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="26">    
+    <bendpoint x="1552" y="720"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="27" name="me"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="29">    
+    <bendpoint x="1380" y="64"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="31">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="32">    
+    <bendpoint x="1194" y="629"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="33" name="_villesRestantes"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="36" name="c"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <bendpoint x="1201" y="534"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="39" name="_arretes"/>      
+      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="41">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="42">    
+    <bendpoint x="1429" y="688"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="43" name="list"/>      
+      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="45">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="46">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <association id="47">    
+    <bendpoint x="1208" y="457"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="48" name="_depart"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="50">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="51">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+    accessors="true" visibility="false">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

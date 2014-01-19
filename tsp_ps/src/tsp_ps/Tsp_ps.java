@@ -499,7 +499,6 @@ public class Tsp_ps
 					
 					setSommetAleatoire(-1);
 				}
-				
 			} else
 			{
 				System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
