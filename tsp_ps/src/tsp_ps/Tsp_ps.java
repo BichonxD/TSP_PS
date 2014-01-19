@@ -309,7 +309,10 @@ public class Tsp_ps
 				if (args[i].contains("mona-lisa"))
 					NB_ITERATION = c.get_nbVilles();
 				else if (0 == NB_ITERATION)
-					NB_ITERATION = c.get_nbVilles() * c.get_nbVilles();
+					if(c.get_nbVilles() <= 300)
+						NB_ITERATION = c.get_nbVilles() * c.get_nbVilles();
+					else
+						NB_ITERATION = c.get_nbVilles() * 2;
 				
 				c.recuitSimule(TAUX_LIM_ACCEPTATION, TEMPS_EXEC * 60, NB_ITERATION, TAUX_DECREMENT_TEMP, DEBUG);
 				
