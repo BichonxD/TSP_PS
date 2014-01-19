@@ -165,7 +165,7 @@ Toutes ces informations sont décrites dans le document utilisateur.
 
 \section{Voisinages considérés}
 
-Nous avons condisérés plusieurs manières de trouver une solution voisine à celle actuelle. Néanmoins, peu d'entre elles se sont révelées concluante. Nous avons donc choisi d'utiliser, après de nombreux tests, un algorithme proche du 2-Opt.
+Nous avons condisérés plusieurs manières de trouver une solution voisine à celle actuelle. Néanmoins, peu d'entre elles se sont révelées concluantes. Nous avons donc choisi d'utiliser, après de nombreux tests, un algorithme proche du 2-Opt.
 
 \subsection{Aleatoire}
 
@@ -177,7 +177,7 @@ Dans un deuxième temps, nous avons essayé d'inverser deux villes voisines en c
 
 \subsection{Déplacement d'un groupe de ville}
 
-Nous avons suppposé que notre algorithme n'était pas efficace car il inter-changeait un trop petit nombre de ville. ALors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle. Mais cet algorithme ne nous as pas apporté les résultats espérés.
+Nous avons suppposé que nos algorithmes n'étaient pas efficace car ils inter-changeaient un trop petit nombre de ville. Alors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle. Mais cet algorithme ne nous a pas apporté les résultats espérés.
 
 \subsection{2-Opt}
 
@@ -185,11 +185,11 @@ Nous en sommes donc venu à implémenter un algorithme proche de celui du 2-opt 
 
 \subsection{2-Opt simplifié}
 
-Nous avons essayé d'implémenter un algorithme proche du 2-opt mais un peu plus simplifié qui se contenterait d'inverser extrémités d'arrêtes et le sous-tour associé en prenant ces extrémités au hasard. Mais cela n'a pas donné les résultats attendus.
+Nous avons essayé d'implémenter un algorithme proche du 2-opt mais un peu plus simplifié qui se contenterait d'inverser les extrémités d'arrêtes et le sous-tour associé en prenant ces extrémités au hasard. Mais cela n'a pas donné les résultats attendus.
 
 \section{Réglage de la température du recuit simulé}
 
-Le réglage de la température utilisée pour l'algorithme est quelque de compliqué puisque cela influe sur le résultat final.
+Le réglage de la température utilisée pour l'algorithme est quelque peu compliqué puisque cela influe sur le résultat final.
 En effet, une température trop haute acceptera trop de changement, rendant le début de l'algorithme inutile.
 Au contraire, une température trop basse n'acceptera que les changements qui réduisent vraiment le coût total, au risque de bloquer dans un minimum local.
 Il faut donc trouver la bonne température qui produira un taux d'acceptation suffisamment grand pour ne pas rendre le début de l'algorithme inutile.
