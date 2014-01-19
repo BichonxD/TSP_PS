@@ -76,8 +76,63 @@ Pour inclure un fichier avec coloration syntaxique de la forme :\newline
 utiliser le code suivant en commentaire dans le fichier
 %\code{nomDuFichier}
 
+\section{Présentation générale de la structure du programme}
+
+Pour ce projet nous avons repris comme base le projet codé pour la Programmation en Nombre Entier. Néanmoins, nous avons eu beaucoup de modifications a effectuer car nous n'avions pas implémenté le recuit simulé et que nous ne gérions que la lecture des fichiers ".tsp" et formattés selon le format EUC_2D.
+Nous avons donc modifié notre programme de façon à ce que nous puissions lire les fichiers ".xml" tout en gardant la compatibilité avec les fichiers ".tsp" formattés au format EUC_2D ou CEIL_2D (la différence entre les deux formats étant minime).
+Voici notre code sous forme de diagramme UML.
+
 \section{GestionFichierTSP}
 
+Cette classe permet de lire un fichier ".tsp". Elle contient uniquement une méthode statique qui à partir du nom de fichier donné en paramètre renvoie une arraylist du type Ville. Si il y a une erreur l'arraylist renvoyée est vide.
+Les fichiers lu doivent être formatés selon le format de données de la TSPLIB et le jeu de donnée doit être au format EUC_2D ou CEIL_2D.
 
+\section{GestionFichierXML}
+
+Cette classe permet de lire un fichier ".xml". Elle contient uniquement une méthode statique qui à partir du nom de fichier donné en paramètre renvoie une matrice d'Integer. Si il y a une erreur la matrice renvoyée est vide.
+Les fichiers lu doivent être formatés selon le format de données de la TSPLIB.
+
+\section{Ville}
+
+Cette classe permet de stocker une ville pour les fichiers ".tsp". Elle comprend des méthodes d'accès à ces différents éléments et une fonction pour calculer la distance entre elle-même et une ville voisine.
+
+\section{CycleHamTSP}
+
+Cette classe permet de construire et d'optimiser un cycle Hamiltonien.
+Elle appelle la méthode statique fournie par GestionFichierTSP pour lire le document voulu et initialise le cycle hamiltonien.
+Elle contient trois méthodes pour former un cycle hamiltonien de base :
+\begin{itemize}
+\item{Le Plus Proche Voisin (PPV)}{Cette méthode donne un cycle hamiltonien de base en reliant le point actuellement étudié à son plus proche voisin.}
+\item{La Plus Proche Insertion (PPI)}{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci en trouvant le point le plus proche appartenant au cycle.}
+\item{Le Plus Proche Voisin Threadé (PPVT)}{Cette méthode est exactement la même que celle du Plus Proche Voisin à la différence que pour trouver le plus proche voisin du point étudié nous utilisons deux threads. Cela permet de gagner du temps d'execution sur les grosses instances telles que celle de Mona Lisa. C'est cette méthode que nous utilisons par défault.}
+\end{itemize}
+Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé. Le calcul de la température est automatique. Nous utilisons un algorithme proche de celui du 2-opt pour tourver une solution voisine.
+
+\section{CycleHamXML}
+
+Cette classe, tout comme la classe CycleHamTSP, permet de construire et d'optimiser un cycle Hamiltonien.
+Elle appelle la méthode statique fournie par GestionFichierXML pour lire le document voulu et initialise le cycle hamiltonien.
+À la différence de CycleHamTSP elle ne contient que deux méthodes pour former un cycle hamiltonien de base :
+\begin{itemize}
+\item{Le Plus Proche Voisin (PPV)}{Cette méthode donne un cycle hamiltonien de base en reliant le point actuellement étudié à son plus proche voisin. Nous utilisons cette méthode par défault.}
+\item{La Plus Proche Insertion (PPI)}{Cette méthode part d'un cycle hamiltonnien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci en trouvant le point le plus proche appartenant au cycle.}
+\end{itemize}
+Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé. Le calcul de la température est automatique. Nous utilisons un algorithme proche de celui du 2-opt pour tourver une solution voisine.
+
+\section{Thread_ParcoursArrayVille}
+
+Cette classe a pour simple objectif la parallelisation de la recherche du plus proche voisin d'un point. Elle sert uniquement à l'algorithme du Plus Proche Voisin Threadé de la classe CycleHamTSP. Elle hérite de la classe Thread.
+
+\section{DessinTSP}
+
+Une fois le cycle construit il est agréable de voir le dessin obtenue par nos algorithmes. Cette classe a pour objectif de dessiner le cycle hamiltonien obtenue pour les fichiers ".tsp". Elle hérite de la classe JFrame puis appelle la classe CanvasTSP pour dessiner le cycle.
+
+\section{CanvasTSP}
+
+Cette classe dessine le cycle hamiltonien donné en paramètre. Elle hérite de la classe JPanel.
+
+\section{Tsp_ps}
+
+Cette classe contient le main. Elle gère les options que nous avons implémentées et qui sont décrites dans le document d'utilisateur. Elle permet, entre autre, de spécifier des options pour tester l'influence des paramètres sur le recuit simulé, de comparer des fichiers entre eux et de tester si les fichiers peuvent être lus.
 
 \end{document}
