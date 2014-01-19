@@ -18,7 +18,7 @@ public class Tsp_ps
 	private static boolean PPVT = true;
 	private static boolean PPV = false;
 	private static boolean PPI = false;
-	private static boolean DRAW = true;
+	private static boolean DRAW = false;
 	private static int sommetAleatoire = -1;
 	
 	public static boolean getDEBUG()
@@ -222,7 +222,8 @@ public class Tsp_ps
 					System.out.println("   -ppvt\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible\n\t\t\t\t\t\t\t(impossible pour les fichiers xml execute donc le PPV).");
 					System.out.println("   -ppv\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme du Plus Proche Voisin.");
 					System.out.println("   -ppi\t\t\t\t\t\t\tSpécifie l'utilisation de l'algorithme de la Plus Proche Insertion.");
-					System.out.println("   -Draw\t\t\t\t\t\tSpécifie l'affichage du dessin.");
+					System.out.println("   -Draw\t\t\t\t\t\tSpécifie l'affichage du dessin. Désactivé par défaut.");
+					System.out.println("   -NDraw\t\t\t\t\t\tSpécifie le non affichage du dessin.");
 					System.out.println("   --help, -?\t\t\t\t\t\tAffiche cette aide.");
 				} else
 				{
