@@ -107,8 +107,9 @@ Les fichiers lus doivent être formatés selon le format de données de la TSPLI
 
 Cette classe permet de lire un fichier au format ".xml".
 Elle contient uniquement une méthode statique qui, à partir du nom de fichier donné en paramètre, renvoie une matrice d'Integer.
+Nous avons choisi d'utiliser une matrice pour stocker nos données car nous avons affaire à des graphes qui sont tous complets (exception faîtes du graphe "br17.xml").
 Si il y a une erreur la matrice renvoyée est vide.
-Les fichiers lu doivent être formatés selon le format de données de la TSPLIB.
+Les fichiers lus doivent être formatés selon le format de données de la TSPLIB.
 
 \subsection{Ville}
 
@@ -140,9 +141,11 @@ Elle appelle la méthode statique fournie par GestionFichierXML pour lire le doc
 À la différence de CycleHamTSP, elle ne contient que deux méthodes pour former un cycle hamiltonien de base :
 
 \begin{itemize}
-\item Le Plus Proche Voisin (PPV) \emph{Cette méthode créer un cycle hamiltonien en reliant le point actuellement étudié à son plus proche voisin. Nous utilisons cette méthode par défaut.}\smallskip
+\item Le Plus Proche Voisin (PPV) \emph{Cette méthode créer un cycle hamiltonien en reliant le point actuellement étudié à son plus proche voisin.
+Nous utilisons cette méthode par défaut.}\smallskip
 
-\item La Plus Proche Insertion (PPI) \emph{Cette méthode part d'un cycle hamiltonien constitué du point défini comme départ et son plus proche voisin. Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}
+\item La Plus Proche Insertion (PPI) \emph{Cette méthode part d'un cycle hamiltonien constitué du point défini comme départ et son plus proche voisin.
+Elle ajoute au fur et à mesure tous les points ne faisant pas partie du cycle à celui-ci, en trouvant le point le plus proche appartenant au cycle.}
 \end{itemize}
 
 Cette classe permet aussi d'optimiser un cycle hamiltonien via l'algorithme du recuit simulé.

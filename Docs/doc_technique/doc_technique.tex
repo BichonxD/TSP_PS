@@ -41,7 +41,7 @@ Il s'agit d'un problème d'optimisation combinatoire qui a été formulé de man
 Considérant un certain nombre de villes, le voyageur de commerce doit parcourir toutes les villes une et une seule fois.
 On cherche le chemin le plus court qui part d'une ville, les parcours toutes et rejoins la ville de départ.
 
-Cela semble simple et ça l'est, si l'on ne considère que des petites instances, c'est à dire une dizaine de villes.
+Cela semble simple et ça l'est si l'on ne considère que des petites instances, c'est à dire une dizaine de villes.
 En effet, si l'on a $n$ villes, il est possible de rejoindre $n-1$ et ainsi de suite.
 On trouve donc un premier chemin en un temps proportionel à $O(n)$.
 Mais pour être sur qu'il s'agit du plus court chemin, il faut examiner les autres chemins possible.
@@ -91,7 +91,7 @@ Il devient évident qu'une recherche exhaustive ne peut être envisagée.
 
 L'algorithme que nous allons implémenter est l'algorithme du recuit simulé.
 Il s'agit d'une méta-heuristique inspiré du processus utilisé en métallurgie.
-Une phase de refroidissement lent du matériau est alterne avec une phase de réchauffage, aussi appelé recuit.
+Une phase de refroidissement lent du matériau est alternée avec une phase de réchauffage, aussi appelé recuit.
 Cet alternance a pour effet de minimiser l'énergie total du matériaux.
 Il a été constaté que le refroidissement naturel de certains métaux ne permet pas aux atomes de se placer dans la configuration la plus solide.
 Il faut donc contrôler le refroidissement à l'aide d'une forte chaleur afin de trouver la meilleure configuration possible.
@@ -109,7 +109,7 @@ Une fois le palier terminé, nous diminuons la température et nous recommençon
 Dans notre implémentation, la température suit une décroissance géographique d'un coefficient de $0,9$.
 La condition d'arrêt de notre recuit simulé tiens compte du taux d'acceptation des solutions.
 En effet, si ce taux n'est pas atteint un certain nombre de fois, l'algorithme s'arrête.
-Cela s'explique par le fait que l'on ne trouve plus de solution qui améliore réellement le résultat et que l'on stagne. Il faut alors s'arrêter et renvoyer la meilleurs solutions trouvée.
+Cela s'explique par le fait que l'on ne trouve plus de solution qui améliore réellement le résultat et que l'on stagne. Il faut alors s'arrêter et renvoyer la meilleure solution trouvée.
 
 Ci-dessous se trouve l'algorithme tel que nous l'avons implémenté.
 La solution de base est obtenue à l'aide de l'algorithme glouton du Plus Proche Voisin que nous ne détaillerons pas.
@@ -156,7 +156,7 @@ Le nombre d'itération par palier est de l'ordre de $n^2$, $n$ étant le nombre 
 	\caption{Recuit Simulé}
 \end{algorithm}
 
-Il est possible de passer en paramètre de l'application le taux \emph{$Tx$} d'acceptation minimal,
+Il est possible de passer en paramètre de l'application le taux \emph{$Tx$} d'acceptation minimale,
 le coefficient \emph{Coeff} de décroissance de la température et le nombre \emph{P} d'itération par pallier.
 Si aucun de ces arguments n'est transmis, la valeur de base, décrite plus haut, leur est attribuée.
 Afin d'éviter que notre algorithme ne tourne trop longtemps, nous avons ajouté une limite de temps qui est de 15 minutes, à moins de préciser une autre valeur par passage d'arguments à l'application.
@@ -169,19 +169,27 @@ Nous avons condisérés plusieurs manières de trouver une solution voisine à c
 
 \subsection{Aleatoire}
 
-Le premier algorithme que nous avons implémenté est un algorithme inversant deux villes toutes deux choisient aléatoirement. Mais les résultats n'étaient pas très concluants.
+Le premier algorithme que nous avons implémenté est un algorithme inversant deux villes toutes deux choisient aléatoirement.
+Mais les résultats n'étaient pas très concluants.
 
 \subsection{Inversion de deux villes voisines}
 
-Dans un deuxième temps, nous avons essayé d'inverser deux villes voisines en choisissant aléatoirement la ville à inverser. Mais ici aussi notre algorthme n'étaient pas très concluant.
+Dans un deuxième temps, nous avons essayé d'inverser deux villes voisines en choisissant aléatoirement la ville à inverser.
+Mais ici aussi notre algorithme n'était pas très concluant.
 
 \subsection{Déplacement d'un groupe de ville}
 
-Nous avons suppposé que nos algorithmes n'étaient pas efficace car ils inter-changeaient un trop petit nombre de ville. Alors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle. Mais cet algorithme ne nous a pas apporté les résultats espérés.
+Nous avons suppposé que nos algorithmes n'étaient pas efficaces car ils inter-changeaient un trop petit nombre de ville.
+Alors nous avons implémenté un algorithme qui déplace un nombre de ville donné en paramètre en fin de boucle.
+Nous avons aussi essayé de déplacer un nombre de ville dépendant de la température du recuit.
+Mais ces deux solutions ne nous ont pas apporté les résultats espérés.
 
 \subsection{2-Opt}
 
-Nous en sommes donc venu à implémenter un algorithme proche de celui du 2-opt pour trouver une solution voisine. Cela permet de voir émerger un grand nombre de solutions corrrectes et donc d'améliorer significativement notre solution. Le principe est d'essayer d'échanger deux extrimités d'arrêtes puis d'inverser le sous-tour formé entre ces deux extrémités. C'est cet algorithme que nous utilisons pour trouver une solution voisine.
+Nous en sommes donc venus à implémenter un algorithme proche de celui du 2-opt pour trouver une solution voisine.
+Cela permet de voir émerger un grand nombre de solutions corrrectes et donc d'améliorer significativement notre solution.
+Le principe est d'essayer d'échanger deux extrémités d'arrêtes puis d'inverser le sous-tour formé entre ces deux extrémités.
+C'est cet algorithme que nous utilisons pour trouver une solution voisine.
 
 \subsection{2-Opt simplifié}
 

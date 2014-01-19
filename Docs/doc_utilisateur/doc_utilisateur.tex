@@ -41,32 +41,32 @@ De plus, les fichiers "*.tsp" doivent être formatés selon le format de donnée
 
 Les options possibles sont :\smallskip
 \begin{itemize}
-\item -lectG \emph{Cette option lance uniquement la lecture des fichiers passés en paramètre. Elle est utile pour savoir si un fichier peut être reconnu par notre programme.}\smallskip
+\item \textbf{-lectG :} \emph{Cette option lance uniquement la lecture des fichiers passés en paramètre. Elle est utile pour savoir si un fichier peut être reconnu par notre programme.}\smallskip
 
-\item -t [ENTIER] \emph{Cette option permet de spécifier le temps d'exécution de l'algorithme du recuit simulé. Par défaut, ce temps est fixé à 15 minutes.}\smallskip
+\item \textbf{-t [ENTIER] :} \emph{Cette option permet de spécifier le temps d'exécution de l'algorithme du recuit simulé. Par défaut, ce temps est fixé à 15 minutes.}\smallskip
 
-\item -tauxAccept [DECIMAL] \emph{Cette option permet de spécifier le taux d'acceptation du recuit. C'est à dire le taux en dessous duquel le recuit considérera que les solutions obtenues ne sont plus satisfaisante. Par défaut ce taux est fixé à $0.2$.}\smallskip
+\item \textbf{-tauxAccept [DECIMAL] :} \emph{Cette option permet de spécifier le taux d'acceptation du recuit. C'est à dire le taux en dessous duquel le recuit considérera que les solutions obtenues ne sont plus satisfaisante. Par défaut ce taux est fixé à $0.2$.}\smallskip
 
-\item -nbIt [ENTIER] \emph{Cette option permet de spécifier le nombre d'itération que fera le recuit avant d'évaluer le résultat. Par défaut ce nombre est fixé au nombre de villes du graphe au carré.}\smallskip
+\item \textbf{-nbIt [ENTIER] :} \emph{Cette option permet de spécifier le nombre d'itération que fera le recuit avant d'évaluer le résultat. Par défaut ce nombre est fixé au nombre de villes du graphe au carré, si le graphe contient moins de 300 villes. Sinon il est fixé par défaut au nombre de villes fois deux.}\smallskip
 
-\item -tauxDecT [DECIMAL] \emph{Cette option permet de spécifier le taux de décroissance de la température du recuit. Par défaut ce taux est fixé à $0.9$.}\smallskip
+\item \textbf{-tauxDecT [DECIMAL] :} \emph{Cette option permet de spécifier le taux de décroissance de la température du recuit. Par défaut ce taux est fixé à $0.9$.}\smallskip
 
-\item -debug, -DEBUG, -verbose \emph{Affiche les messages de debug.}\smallskip
+\item \textbf{-debug, -DEBUG, -verbose :} \emph{Affiche les messages de debug.}\smallskip
 
-\item -compare [FICHIER] [OPTION]... [FICHIER] \emph{
+\item \textbf{-compare [FICHIER] [OPTION]... [FICHIER] :} \emph{
 Permet de comparer des fichiers entre eux. L'option fixe le sommet de départ pour qu'il soit identique, si possible, pour tous les graphes.
-De plus, elle fixe aussi l'utilisation de l'algorithme du Plus Proche Voisin pour les graphiques (ceux-ci est modifiable grâce aux options suivantes).
+De plus, elle fixe aussi l'utilisation de l'algorithme du Plus Proche Voisin pour les graphiques (ceci est modifiable grâce aux options suivantes).
 Les options disponibles entre les deux fichiers ne peuvent inclure -DEBUG.}\smallskip
 
-\item -ppvt \emph{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml exécute donc le PPV).}\smallskip
+\item \textbf{-ppvt :} \emph{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin Thréadé si possible (impossible pour les fichiers xml exécute donc le PPV).}\smallskip
 
-\item -ppv \emph{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin.}\smallskip
+\item \textbf{-ppv :} \emph{Spécifie l'utilisation de l'algorithme du Plus Proche Voisin.}\smallskip
 
-\item -ppi \emph{Spécifie l'utilisation de l'algorithme de la Plus Proche Insertion.}\smallskip
+\item \textbf{-ppi :} \emph{Spécifie l'utilisation de l'algorithme de la Plus Proche Insertion.}\smallskip
 
-\item -Draw \emph{Spécifie l'affichage du dessin.}\smallskip
+\item \textbf{-Draw ou -NDraw :} \emph{Respectivement active et désactive l'affichage du dessin.}\smallskip
 
-\item --help, -? \emph{Affiche cette aide.}
+\item \textbf{--help, -? :} \emph{Affiche cette aide.}
 \end{itemize}															
 							
 \end{document}
