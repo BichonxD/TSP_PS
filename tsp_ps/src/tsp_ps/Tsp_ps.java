@@ -53,8 +53,6 @@ public class Tsp_ps
 		if (args.length < 1)
 			System.out.println("ERREUR : Argument manquant. Pour l'aide utilisez l'option --help.");
 		
-		begin0 = System.currentTimeMillis();
-		
 		// Le format des jeux de données peut être XML ou TSP.
 		// Nous avons donc séparé le traitement des XML et TSP.
 		
@@ -237,6 +235,7 @@ public class Tsp_ps
 			// mode compare)
 			else if (args[i].endsWith(".tsp"))
 			{
+				begin0 = System.currentTimeMillis();
 				// Sauvegarde du nom pour plus de commodités si on est en mode compare
 				if (COMPARE)
 					listeName.add(args[i]);
@@ -374,11 +373,16 @@ public class Tsp_ps
 				if (DRAW)
 					new DessinTSP(c);
 				
+				end0 = System.currentTimeMillis();
+				time = ((float) (end0 - begin0)) / 1000f;
+				System.out.println("Temps total d'execution : " + time);
+				
 			}
 			// Si le graph est un XML et qu'il est bien le dernier argument en paramètre (sauf si nous sommes en
 			// mode compare)
 			else if (args[i].endsWith(".xml"))
 			{
+				begin0 = System.currentTimeMillis();
 				// Sauvegarde du nom pour plus de commodit si on est en mode compare
 				if (COMPARE)
 					listeName.add(args[i]);
@@ -500,14 +504,14 @@ public class Tsp_ps
 					setSommetAleatoire(-1);
 				}
 				
+				end0 = System.currentTimeMillis();
+				time = ((float) (end0 - begin0)) / 1000f;
+				System.out.println("Temps total d'execution : " + time);
+				
 			} else
 			{
 				System.out.println("ERREUR : Le format du fichier en entrée n'est ni \"XML\" ni \"TSP\".");
 			}
 		}
-		
-		end0 = System.currentTimeMillis();
-		time = ((float) (end0 - begin0)) / 1000f;
-		System.out.println("Temps total d'execution : " + time);
 	}
 }
